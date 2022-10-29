@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "github.com/mauricioabreu/golings/src/cmd"
 
+func main() {
+	cmd.Execute()
 }
