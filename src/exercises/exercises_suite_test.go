@@ -1,7 +1,6 @@
 package exercises_test
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -19,7 +18,7 @@ var _ = Describe("Exercises", func() {
 	Describe("Checking exercise state", func() {
 		When("'I AM NOT DONE' comment is still there", func() {
 			It("has the Pending state", func() {
-				file, err := ioutil.TempFile("/tmp", "exercise*.go")
+				file, err := os.CreateTemp("/tmp", "exercise*.go")
 				file.Write([]byte(`// exercise1.go
 				// I AM NOT DONE
 				package main
@@ -40,7 +39,7 @@ var _ = Describe("Exercises", func() {
 
 		When("'I AM NOT DONE' comment is not there", func() {
 			It("has the Done state", func() {
-				file, err := ioutil.TempFile("/tmp", "exercise*.go")
+				file, err := os.CreateTemp("/tmp", "exercise*.go")
 				Expect(err).To(BeNil())
 
 				defer os.Remove(file.Name())
