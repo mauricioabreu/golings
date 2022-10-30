@@ -10,9 +10,9 @@ import (
 func PrintList(o io.Writer, exs []exercises.Exercise) {
 	t := table.NewWriter()
 	t.SetOutputMirror(o)
-	t.AppendHeader(table.Row{"Name", "Path"})
+	t.AppendHeader(table.Row{"Name", "Path", "State"})
 	for _, ex := range exs {
-		t.AppendRow(table.Row{ex.Name, ex.Path})
+		t.AppendRow(table.Row{ex.Name, ex.Path, ex.State()})
 	}
 	t.Render()
 }
