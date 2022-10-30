@@ -1,0 +1,6 @@
+[[exercises]]
+name = "variables1"
+path = "exercises/variables/variables1.rs"
+mode = "compile"
+hint = """
+It is missing a symbol used to initialize values."""
