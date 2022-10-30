@@ -1,29 +1,13 @@
 package exercises
 
 import (
+	"errors"
 	"os"
 
 	"github.com/pelletier/go-toml/v2"
 )
 
-type State int
-
-const (
-	Pending State = iota + 1
-	Done
-)
-
-func (s State) String() string {
-	return [...]string{"Pending", "Done"}[s-1]
-}
-
-type Exercise struct {
-	Name  string
-	Path  string
-	Mode  string
-	Hint  string
-	State State
-}
+var ErrExerciseNotFound = errors.New("exercise not found")
 
 type Info struct {
 	Exercises []Exercise
@@ -42,4 +26,19 @@ func List() ([]Exercise, error) {
 	}
 
 	return info.Exercises, nil
+}
+
+func Find(exercise string) (Exercise, error) {
+	exs, err := List()
+	if err != nil {
+		return Exercise{}, err
+	}
+
+	for _, ex := range exs {
+		if ex.Name == exercise {
+			return ex, nil
+		}
+	}
+
+	return Exercise{}, ErrExerciseNotFound
 }

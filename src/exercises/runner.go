@@ -1,9 +1,17 @@
 package exercises
 
-import "os/exec"
+import (
+	"fmt"
+	"os/exec"
+)
 
-func Run(exercise string) (string, error) {
-	cmd := exec.Command("go", "run", "./exercises/"+exercise+".go")
+func Run(name string) (string, error) {
+	exercise, err := Find(name)
+	if err != nil {
+		return "", err
+	}
+
+	cmd := exec.Command("go", "run", fmt.Sprintf("./%s", exercise.Path))
 	cOut, err := cmd.CombinedOutput()
 	return string(cOut), err
 }

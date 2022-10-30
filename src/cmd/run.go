@@ -21,7 +21,7 @@ var cmdRun = &cobra.Command{
 		out, err := exercises.Run(args[0])
 		fmt.Println(out)
 		if err != nil {
-			color.Red("Your exercise is failing")
+			color.Red("Your exercise is failing: %s", err)
 			os.Exit(1)
 		}
 		color.Green("Congratulations!")
