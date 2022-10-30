@@ -1,6 +1,6 @@
 [[exercises]]
 name = "variables1"
-path = "exercises/variables/variables1.rs"
+path = "exercises/variables/variables1.go"
 mode = "compile"
 hint = """
 It is missing a symbol used to initialize values."""
