@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mauricioabreu/golings/src/exercises"
+	"github.com/mauricioabreu/golings/golings/exercises"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
