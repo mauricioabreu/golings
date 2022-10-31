@@ -25,6 +25,12 @@ If you want to run a single exercise:
 golings run variables1
 ```
 
+In case you are stuck and need a hint:
+
+```sh
+golings hint variables1
+```
+
 To list all exercise while checking your progress:
 
 ```sh
