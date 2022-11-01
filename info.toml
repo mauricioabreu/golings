@@ -1,6 +1,13 @@
 [[exercises]]
 name = "variables1"
-path = "exercises/variables/variables1.go"
+path = "exercises/variables/variables1/main.go"
 mode = "compile"
 hint = """
-It is missing a symbol used to initialize values."""
+Variables must have names."""
+
+[[exercises]]
+name = "variables2"
+path = "exercises/variables/variables2/main.go"
+mode = "compile"
+hint = """
+It is missing a symbol used to declare and initialize variables."""

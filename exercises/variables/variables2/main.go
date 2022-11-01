@@ -1,4 +1,4 @@
-// variables1.go
+// variables1
 // Make me compile!
 
 // I AM NOT DONE
