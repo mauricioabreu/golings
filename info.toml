@@ -11,3 +11,11 @@ path = "exercises/variables/variables2/main.go"
 mode = "compile"
 hint = """
 It is missing a symbol used to declare and initialize variables."""
+
+[[exercises]]
+name = "functions1"
+path = "exercises/functions/functions1/main.go"
+mode = "compile"
+hint = """
+The main function is calling another function that it expects to exist.
+It expects a function named `call_me` to exist and receive no arguments."""
