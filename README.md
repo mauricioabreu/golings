@@ -36,3 +36,9 @@ To list all exercise while checking your progress:
 ```sh
 golings list
 ```
+
+To compile and run all the exercises:
+
+```sh
+golings verify
+```
