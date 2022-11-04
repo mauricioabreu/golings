@@ -5,7 +5,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/mauricioabreu/golings/golings/exercises"
-	"github.com/mauricioabreu/golings/golings/printer"
+	"github.com/mauricioabreu/golings/golings/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -22,6 +22,6 @@ var cmdList = &cobra.Command{
 			color.Red(err.Error())
 			os.Exit(1)
 		}
-		printer.PrintList(os.Stdout, exs)
+		ui.PrintList(os.Stdout, exs)
 	},
 }
