@@ -1,12 +1,17 @@
 package exercises
 
+type VerifiedResult struct {
+	Verified chan Result
+	Total    int
+}
+
 // Verify checks if all the exercises compile and pass the tests
-func Verify() (<-chan Result, error) {
+func Verify() (VerifiedResult, error) {
 	verified := make(chan Result)
 
 	exs, err := List()
 	if err != nil {
-		return verified, err
+		return VerifiedResult{Verified: verified}, err
 	}
 
 	go func() {
@@ -17,5 +22,5 @@ func Verify() (<-chan Result, error) {
 		close(verified)
 	}()
 
-	return verified, nil
+	return VerifiedResult{Verified: verified, Total: len(exs)}, nil
 }

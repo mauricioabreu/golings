@@ -25,7 +25,7 @@ var cmdVerify = &cobra.Command{
 		}
 
 		bar := progressbar.NewOptions(
-			3,
+			verified.Total,
 			progressbar.OptionSetWidth(50),
 			progressbar.OptionEnableColorCodes(true),
 			progressbar.OptionSetPredictTime(false),
@@ -40,15 +40,18 @@ var cmdVerify = &cobra.Command{
 			}),
 		)
 
-		for v := range verified {
+		for v := range verified.Verified {
 			bar.Describe(fmt.Sprintf("Running %s", v.Exercise.Name))
 			bar.Add(1)
 			if v.Err != "" {
 				fmt.Print("\n\n")
 				color.Cyan("Failed to compile the exercise %s\n", v.Exercise.Path)
 				color.Red("Check the error: %s", v.Err)
-				break
+				os.Exit(1)
 			}
 		}
+
+		color.Green("Congratulations!!!")
+		color.Green("You passed all the exercises")
 	},
 }
