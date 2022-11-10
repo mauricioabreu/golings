@@ -45,8 +45,9 @@ var cmdVerify = &cobra.Command{
 			bar.Add(1)
 			if v.Err != "" {
 				fmt.Print("\n\n")
-				color.Cyan("Failed to compile the exercise %s\n", v.Exercise.Path)
-				color.Red("Check the error: %s", v.Err)
+				color.Cyan("Failed to compile the exercise %s\n\n", v.Exercise.Path)
+				color.White("Check the error below: \n\n")
+				color.Red(v.Err)
 				os.Exit(1)
 			}
 		}

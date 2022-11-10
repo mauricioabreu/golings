@@ -19,7 +19,9 @@ var cmdRun = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		result, err := exercises.Run(args[0])
 		if err != nil {
-			color.Red("Compilation of %s failed! Compiler error message:\n\n%s", result.Exercise.Path, result.Err)
+			color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
+			color.White("Check the error below: \n\n")
+			color.Red(result.Err)
 			color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
 			os.Exit(1)
 		} else {
