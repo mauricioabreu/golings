@@ -42,3 +42,9 @@ To compile and run all the exercises:
 ```sh
 golings verify
 ```
+
+## Learnign resources
+
+* [Golang official tutorial](https://go.dev/doc/tutorial/)
+* [Go by example](https://gobyexample.com)
+* [Aprenda Go](https://www.youtube.com/playlist?list=PLCKpcjBB_VlBsxJ9IseNxFllf-UFEXOdg)
