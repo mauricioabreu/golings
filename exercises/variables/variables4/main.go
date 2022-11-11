@@ -7,12 +7,12 @@ package main
 import "fmt"
 
 func main() {
-	x := 10 // Don't change this line
-	fmt.Printf("x has the value %d", x)
+	x := "TEN" // Don't change this line
+	fmt.Printf("x has the value %s", x)
 
 	if true {
-		x = "foo"
-		fmt.Println(x)
+		x = 1
+		fmt.Println(x + 1)
 	}
 
 	fmt.Println(x)
