@@ -43,7 +43,7 @@ To compile and run all the exercises:
 golings verify
 ```
 
-## Learnign resources
+## Learning resources
 
 * [Golang official tutorial](https://go.dev/doc/tutorial/)
 * [Go by example](https://gobyexample.com)
