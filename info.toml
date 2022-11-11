@@ -13,6 +13,13 @@ hint = """
 It is missing a symbol used to declare and initialize variables."""
 
 [[exercises]]
+name = "variables3"
+path = "exercises/variables/variables3/main.go"
+mode = "compile"
+hint = """
+Could it be missing the variable type?."""
+
+[[exercises]]
 name = "functions1"
 path = "exercises/functions/functions1/main.go"
 mode = "compile"
