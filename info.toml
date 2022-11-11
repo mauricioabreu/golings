@@ -27,6 +27,20 @@ hint = """
 Variables can be redeclared in new blocks, but it is missing something. What is it?."""
 
 [[exercises]]
+name = "variables5"
+path = "exercises/variables/variables5/main.go"
+mode = "compile"
+hint = """
+Constants need initialization."""
+
+[[exercises]]
+name = "variables6"
+path = "exercises/variables/variables6/main.go"
+mode = "compile"
+hint = """
+Constants can't be changed."""
+
+[[exercises]]
 name = "functions1"
 path = "exercises/functions/functions1/main.go"
 mode = "compile"
