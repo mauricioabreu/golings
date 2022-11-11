@@ -20,6 +20,13 @@ hint = """
 Could it be missing the variable type?."""
 
 [[exercises]]
+name = "variables4"
+path = "exercises/variables/variables4/main.go"
+mode = "compile"
+hint = """
+Variables can be redeclared in new blocks, but it is missing something. What is it?."""
+
+[[exercises]]
 name = "functions1"
 path = "exercises/functions/functions1/main.go"
 mode = "compile"
