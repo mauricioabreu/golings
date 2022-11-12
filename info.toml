@@ -54,3 +54,10 @@ path = "exercises/functions/functions2/main.go"
 mode = "compile"
 hint = """
 Function parameters need to have their types explicitly declared."""
+
+[[exercises]]
+name = "functions3"
+path = "exercises/functions/functions3/main.go"
+mode = "compile"
+hint = """
+When a function expect arguments, you must pass values to them."""
