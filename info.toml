@@ -47,3 +47,10 @@ mode = "compile"
 hint = """
 The main function is calling another function that it expects to exist.
 It expects a function named `call_me` to exist and receive no arguments."""
+
+[[exercises]]
+name = "functions2"
+path = "exercises/functions/functions2/main.go"
+mode = "compile"
+hint = """
+Function parameters need to have their types explicitly declared."""
