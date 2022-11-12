@@ -61,3 +61,10 @@ path = "exercises/functions/functions3/main.go"
 mode = "compile"
 hint = """
 When a function expect arguments, you must pass values to them."""
+
+[[exercises]]
+name = "functions4"
+path = "exercises/functions/functions4/main.go"
+mode = "compile"
+hint = """
+Functions that return values must have return types declared in the function signature."""
