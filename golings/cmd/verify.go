@@ -18,14 +18,14 @@ var cmdVerify = &cobra.Command{
 	Use:   "verify",
 	Short: "Verify all exercises",
 	Run: func(cmd *cobra.Command, args []string) {
-		verified, err := exercises.Verify()
+		exs, err := exercises.List()
 		if err != nil {
 			color.Red(err.Error())
 			os.Exit(1)
 		}
 
 		bar := progressbar.NewOptions(
-			verified.Total,
+			len(exs),
 			progressbar.OptionSetWidth(50),
 			progressbar.OptionEnableColorCodes(true),
 			progressbar.OptionSetPredictTime(false),
@@ -41,14 +41,15 @@ var cmdVerify = &cobra.Command{
 		)
 		bar.RenderBlank()
 
-		for v := range verified.Verified {
-			bar.Describe(fmt.Sprintf("Running %s", v.Exercise.Name))
+		for _, e := range exs {
+			bar.Describe(fmt.Sprintf("Running %s", e.Name))
+			result, _ := exercises.Run(e.Name)
 			bar.Add(1)
-			if v.Err != "" {
+			if result.Err != "" {
 				fmt.Print("\n\n")
-				color.Cyan("Failed to compile the exercise %s\n\n", v.Exercise.Path)
+				color.Cyan("Failed to compile the exercise %s\n\n", e.Path)
 				color.White("Check the error below: \n\n")
-				color.Red(v.Err)
+				color.Red(result.Err)
 				os.Exit(1)
 			}
 		}
