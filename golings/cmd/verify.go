@@ -30,7 +30,7 @@ var cmdVerify = &cobra.Command{
 			progressbar.OptionEnableColorCodes(true),
 			progressbar.OptionSetPredictTime(false),
 			progressbar.OptionSetElapsedTime(false),
-			progressbar.OptionSetDescription("[cyan][reset] Progress:"),
+			progressbar.OptionSetDescription("[cyan][reset] Running exercises"),
 			progressbar.OptionSetTheme(progressbar.Theme{
 				Saucer:        "[yellow]=[reset]",
 				SaucerHead:    "[yellow]>[reset]",
@@ -39,6 +39,7 @@ var cmdVerify = &cobra.Command{
 				BarEnd:        "]",
 			}),
 		)
+		bar.RenderBlank()
 
 		for v := range verified.Verified {
 			bar.Describe(fmt.Sprintf("Running %s", v.Exercise.Name))
