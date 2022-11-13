@@ -20,8 +20,9 @@ var cmdRun = &cobra.Command{
 		result, err := exercises.Run(args[0])
 		if err != nil {
 			color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
-			color.White("Check the error below: \n\n")
+			color.White("Check the output below: \n\n")
 			color.Red(result.Err)
+			color.Red(result.Out)
 			color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
 			os.Exit(1)
 		} else {

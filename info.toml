@@ -68,3 +68,10 @@ path = "exercises/functions/functions4/main.go"
 mode = "compile"
 hint = """
 Functions that return values must have return types declared in the function signature."""
+
+[[exercises]]
+name = "if1"
+path = "exercises/if/if1/main_test.go"
+mode = "test"
+hint = """
+"""
