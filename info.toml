@@ -75,3 +75,10 @@ path = "exercises/if/if1/main_test.go"
 mode = "test"
 hint = """
 """
+
+[[exercises]]
+name = "if2"
+path = "exercises/if/if2/main_test.go"
+mode = "test"
+hint = """
+"""
