@@ -17,7 +17,7 @@ var cmdRun = &cobra.Command{
 	Short: "Run a single exercise",
 	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
-		result, err := exercises.Run(args[0])
+		result, err := exercises.Run(args[0], "info.toml")
 		if err != nil {
 			color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
 			color.White("Check the output below: \n\n")

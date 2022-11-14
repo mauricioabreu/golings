@@ -5,8 +5,8 @@ go 1.19
 require (
 	github.com/fatih/color v1.13.0
 	github.com/jedib0t/go-pretty/v6 v6.4.0
-	github.com/onsi/ginkgo/v2 v2.4.0
-	github.com/onsi/gomega v1.23.0
+	github.com/onsi/ginkgo/v2 v2.5.0
+	github.com/onsi/gomega v1.24.0
 	github.com/pelletier/go-toml/v2 v2.0.5
 	github.com/schollz/progressbar/v3 v3.12.0
 	github.com/spf13/cobra v1.6.1

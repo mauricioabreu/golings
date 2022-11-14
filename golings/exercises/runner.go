@@ -12,8 +12,8 @@ type Result struct {
 	Err      string
 }
 
-func Run(name string) (Result, error) {
-	exercise, err := Find(name)
+func Run(name string, infoFile string) (Result, error) {
+	exercise, err := Find(name, infoFile)
 	if err != nil {
 		return Result{}, err
 	}

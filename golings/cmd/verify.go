@@ -18,7 +18,7 @@ var cmdVerify = &cobra.Command{
 	Use:   "verify",
 	Short: "Verify all exercises",
 	Run: func(cmd *cobra.Command, args []string) {
-		exs, err := exercises.List()
+		exs, err := exercises.List("info.toml")
 		if err != nil {
 			color.Red(err.Error())
 			os.Exit(1)
@@ -43,7 +43,7 @@ var cmdVerify = &cobra.Command{
 
 		for _, e := range exs {
 			bar.Describe(fmt.Sprintf("Running %s", e.Name))
-			result, _ := exercises.Run(e.Name)
+			result, _ := exercises.Run(e.Name, "info.toml")
 			bar.Add(1)
 			if result.Err != "" {
 				fmt.Print("\n\n")

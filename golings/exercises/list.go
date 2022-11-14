@@ -13,10 +13,10 @@ type Info struct {
 	Exercises []Exercise
 }
 
-func List() ([]Exercise, error) {
+func List(infoFile string) ([]Exercise, error) {
 	var info Info
 
-	data, err := os.ReadFile("info.toml")
+	data, err := os.ReadFile(infoFile)
 	if err != nil {
 		return info.Exercises, err
 	}
@@ -28,8 +28,8 @@ func List() ([]Exercise, error) {
 	return info.Exercises, nil
 }
 
-func Find(exercise string) (Exercise, error) {
-	exs, err := List()
+func Find(exercise string, infoFile string) (Exercise, error) {
+	exs, err := List(infoFile)
 	if err != nil {
 		return Exercise{}, err
 	}

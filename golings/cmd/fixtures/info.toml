@@ -1,0 +1,11 @@
+[[exercises]]
+name = "compile1"
+path = "compile/compile1.go"
+mode = "compile"
+hint = ""
+
+[[exercises]]
+name = "test1"
+path = "test/test1.go"
+mode = "test"
+hint = ""

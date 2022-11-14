@@ -10,18 +10,20 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(cmdList)
+	rootCmd.AddCommand(ListCmd("info.toml"))
 }
 
-var cmdList = &cobra.Command{
-	Use:   "list",
-	Short: "List all exercises",
-	Run: func(cmd *cobra.Command, args []string) {
-		exs, err := exercises.List()
-		if err != nil {
-			color.Red(err.Error())
-			os.Exit(1)
-		}
-		ui.PrintList(os.Stdout, exs)
-	},
+func ListCmd(infoFile string) *cobra.Command {
+	return &cobra.Command{
+		Use:   "list",
+		Short: "List all exercises",
+		Run: func(cmd *cobra.Command, args []string) {
+			exs, err := exercises.List(infoFile)
+			if err != nil {
+				color.Red(err.Error())
+				os.Exit(1)
+			}
+			ui.PrintList(os.Stdout, exs)
+		},
+	}
 }
