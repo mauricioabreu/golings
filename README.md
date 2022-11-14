@@ -47,6 +47,10 @@ To compile and run all the exercises:
 golings verify
 ```
 
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
 ## Learning resources
 
 * [Golang official tutorial](https://go.dev/doc/tutorial/)
