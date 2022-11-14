@@ -2,10 +2,10 @@
 name = "compile1"
 path = "compile/compile1.go"
 mode = "compile"
-hint = ""
+hint = "hints are cool"
 
 [[exercises]]
 name = "test1"
 path = "test/test1.go"
 mode = "test"
-hint = ""
+hint = "ask for them if you need any help"

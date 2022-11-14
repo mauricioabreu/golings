@@ -17,7 +17,7 @@ func TestList(t *testing.T) {
 var _ = Describe("List", func() {
 	Context("List exercises", func() {
 		It("returns a list of exercises", func() {
-			list := cmd.ListCmd("fixtures/info.toml")
+			list := cmd.ListCmd("../fixtures/info.toml")
 
 			err := list.Execute()
 
