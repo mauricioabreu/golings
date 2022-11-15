@@ -82,3 +82,10 @@ path = "exercises/if/if2/main_test.go"
 mode = "test"
 hint = """
 """
+
+[[exercises]]
+name = "switch1"
+path = "exercises/switch/switch1/main.go"
+mode = "compile"
+hint = """
+Switch flow is missing a variable to evaluate the statement."""
