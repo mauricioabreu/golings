@@ -22,6 +22,13 @@ hint = "hints are cool"
 
 The exercise mode is very important. It tells `golings` how to run the exercise. If you are adding an exercise that expects the user to only make it compilable, use `compile` mode. If it has a test suite and you need the user to actually have the tests passing, use `test`.
 
+## Running the test suite
+
+```sh
+cd golings
+go test -v ./...
+```
+
 ## Issues and pull requests
 
 There are specific templates that will guide you through opening issues or pull requests.
