@@ -21,6 +21,12 @@ go install github.com/mauricioabreu/golings/golings@latest
 
 ## Doing exercises
 
+First, clone this repository
+
+```sh
+git clone git@github.com:mauricioabreu/golings.git
+```
+
 All the exercises can be found in the directory `golings/exercises/<topic>`.
 
 If you want to run a single exercise:
