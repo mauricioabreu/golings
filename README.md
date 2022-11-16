@@ -1,5 +1,7 @@
 # golings
 
+[![build and test](https://github.com/mauricioabreu/golings/actions/workflows/go.yml/badge.svg)](https://github.com/mauricioabreu/golings/actions/workflows/go.yml)
+
 ![gopher](misc/gopher-dance.gif)
 
 > rustlings but for golang this time
