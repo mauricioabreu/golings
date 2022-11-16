@@ -9,10 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	rootCmd.AddCommand(ListCmd("info.toml"))
-}
-
 func ListCmd(infoFile string) *cobra.Command {
 	return &cobra.Command{
 		Use:   "list",

@@ -1,23 +1,24 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "golings",
-	Short: "Learn go through interactive exercises",
-	Run: func(cmd *cobra.Command, args []string) {
+func NewRootCmd(version string) *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:     "golings",
+		Short:   "Learn go through interactive exercises",
+		Version: version,
+	}
 
-	},
+	rootCmd.AddCommand(cmdHint)
+	rootCmd.AddCommand(ListCmd("info.toml"))
+	rootCmd.AddCommand(cmdRun)
+	rootCmd.AddCommand(cmdVerify)
+
+	return rootCmd
 }
 
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+func Execute(version string) {
+	NewRootCmd(version).Execute()
 }

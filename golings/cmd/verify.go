@@ -10,10 +10,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	rootCmd.AddCommand(cmdVerify)
-}
-
 var cmdVerify = &cobra.Command{
 	Use:   "verify",
 	Short: "Verify all exercises",

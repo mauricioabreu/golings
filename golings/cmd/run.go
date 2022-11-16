@@ -8,10 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	rootCmd.AddCommand(cmdRun)
-}
-
 var cmdRun = &cobra.Command{
 	Use:   "run [exercise]",
 	Short: "Run a single exercise",

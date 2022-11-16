@@ -8,10 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	rootCmd.AddCommand(cmdHint)
-}
-
 var cmdHint = &cobra.Command{
 	Use:   "hint",
 	Short: "Get a hint for an exercise",
