@@ -13,11 +13,17 @@ You may know [rustlings](https://github.com/rust-lang/rustlings), right? If you 
 
 First, you need to have `go` installed. You can install it by visiting the [Go downloads page](https://go.dev/dl/)
 
-For now the only way to install `golings` is using the `go install` command:
+There are two ways to install
+
+### go install
 
 ```sh
 go install github.com/mauricioabreu/golings/golings@latest
 ```
+
+### Binaries
+
+Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and choose the option that best fits your environment.
 
 ## Doing exercises
 
