@@ -21,7 +21,7 @@ var _ = Describe("List", func() {
 
 			err := list.Execute()
 
-			Expect(err).To(BeNil())
+			Expect(err).ToNot(HaveOccurred())
 		})
 	})
 })
