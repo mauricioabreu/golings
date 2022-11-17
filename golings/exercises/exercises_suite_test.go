@@ -81,5 +81,13 @@ var _ = Describe("Exercises", func() {
 				Expect(exercise.Hint).To(Equal("hints are cool"))
 			})
 		})
+		When("exercise does not exist in the info file", func() {
+			It("returns an error", func() {
+				_, err := exercises.Find("compile404", "../fixtures/info.toml")
+
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(Equal(exercises.ErrExerciseNotFound))
+			})
+		})
 	})
 })
