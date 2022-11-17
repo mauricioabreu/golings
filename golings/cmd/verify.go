@@ -35,12 +35,18 @@ var cmdVerify = &cobra.Command{
 				BarEnd:        "]",
 			}),
 		)
-		bar.RenderBlank()
+		if err := bar.RenderBlank(); err != nil {
+			color.Red(err.Error())
+			os.Exit(1)
+		}
 
 		for _, e := range exs {
 			bar.Describe(fmt.Sprintf("Running %s", e.Name))
 			result, _ := exercises.Run(e.Name, "info.toml")
-			bar.Add(1)
+			if err := bar.Add(1); err != nil {
+				color.Red(err.Error())
+				os.Exit(1)
+			}
 			if result.Err != "" {
 				fmt.Print("\n\n")
 				color.Cyan("Failed to compile the exercise %s\n\n", e.Path)

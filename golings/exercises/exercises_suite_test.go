@@ -19,7 +19,8 @@ var _ = Describe("Exercises", func() {
 		When("'I AM NOT DONE' comment is still there", func() {
 			It("has the Pending state", func() {
 				file, err := os.CreateTemp("/tmp", "exercise*.go")
-				file.Write([]byte(`// exercise1.go
+				Expect(err).NotTo(HaveOccurred())
+				_, err = file.Write([]byte(`// exercise1.go
 				// I AM NOT DONE
 				package main
 
