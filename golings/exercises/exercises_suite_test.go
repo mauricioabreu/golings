@@ -35,6 +35,7 @@ var _ = Describe("Exercises", func() {
 				ex := exercises.Exercise{Path: file.Name()}
 
 				Expect(ex.State()).To(Equal(exercises.Pending))
+				Expect(ex.State().String()).To(Equal("Pending"))
 			})
 		})
 
@@ -48,6 +49,7 @@ var _ = Describe("Exercises", func() {
 				ex := exercises.Exercise{Path: file.Name()}
 
 				Expect(ex.State()).To(Equal(exercises.Done))
+				Expect(ex.State().String()).To(Equal("Done"))
 			})
 		})
 	})
