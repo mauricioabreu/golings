@@ -89,3 +89,10 @@ path = "exercises/switch/switch1/main.go"
 mode = "compile"
 hint = """
 Switch flow is missing a variable to evaluate the statement."""
+
+[[exercises]]
+name = "switch2"
+path = "exercises/switch/switch2/main.go"
+mode = "compile"
+hint = """
+Switch without a condition is possible, but that case statement needs a boolean evaluation."""
