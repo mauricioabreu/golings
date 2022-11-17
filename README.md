@@ -1,6 +1,6 @@
 # golings
 
-[![build and test](https://github.com/mauricioabreu/golings/actions/workflows/go.yml/badge.svg)](https://github.com/mauricioabreu/golings/actions/workflows/go.yml)
+[![build and test](https://github.com/mauricioabreu/golings/actions/workflows/test.yml/badge.svg)](https://github.com/mauricioabreu/golings/actions/workflows/test.yml)
 
 ![gopher](misc/gopher-dance.gif)
 
