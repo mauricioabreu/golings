@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"os"
 
 	"github.com/fatih/color"
@@ -14,7 +15,10 @@ var cmdRun = &cobra.Command{
 	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	Run: func(cmd *cobra.Command, args []string) {
 		result, err := exercises.Run(args[0], "info.toml")
-		if err != nil {
+		if errors.Is(err, exercises.ErrExerciseNotFound) {
+			color.White("No exercise found for '%s'", args[0])
+			os.Exit(1)
+		} else if err != nil {
 			color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
 			color.White("Check the output below: \n\n")
 			color.Red(result.Err)
