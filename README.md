@@ -37,6 +37,12 @@ git clone git@github.com:mauricioabreu/golings.git
 
 All the exercises can be found in the directory `golings/exercises/<topic>`.
 
+To run the next pending exercise:
+
+```sh
+golings run next
+```
+
 If you want to run a single exercise:
 
 ```sh
