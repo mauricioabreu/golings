@@ -20,7 +20,7 @@ func RunCmd(infoFile string) *cobra.Command {
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			spinner := progressbar.NewOptions(
-				-1,
+				-1, // a negative number makes turns the progress bar into a spinner
 				progressbar.OptionEnableColorCodes(true),
 				progressbar.OptionSetDescription(color.WhiteString("Running exercise: %s", args[0])),
 				progressbar.OptionOnCompletion(func() {
