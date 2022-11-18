@@ -44,10 +44,8 @@ func VerifyCmd(infoFile string) *cobra.Command {
 			for _, e := range exs {
 				bar.Describe(fmt.Sprintf("Running %s", e.Name))
 				result, _ := exercises.Run(e.Name, "info.toml")
-				if err := bar.Add(1); err != nil {
-					color.Red(err.Error())
-					os.Exit(1)
-				}
+				bar.Add(1) // nolint
+
 				if result.Err != "" {
 					fmt.Print("\n\n")
 					color.Cyan("Failed to compile the exercise %s\n\n", e.Path)
