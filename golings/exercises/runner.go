@@ -19,7 +19,9 @@ func (e Exercise) Run() (Result, error) {
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
-	return Result{Exercise: e, Out: stdout.String(), Err: stderr.String()}, cmd.Run()
+	err := cmd.Run()
+
+	return Result{Exercise: e, Out: stdout.String(), Err: stderr.String()}, err
 }
 
 func BuildArgs(e Exercise) []string {

@@ -1,0 +1,11 @@
+[[exercises]]
+name = "next1"
+path = "../fixtures/next/next1/main.go"
+mode = "compile"
+hint = ""
+
+[[exercises]]
+name = "next1"
+path = "../fixtures/next/next2/main.go"
+mode = "compile"
+hint = ""

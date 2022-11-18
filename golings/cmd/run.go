@@ -19,10 +19,18 @@ func RunCmd(infoFile string) *cobra.Command {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			var exercise exercises.Exercise
+			var err error
+			if args[0] == "next" {
+				exercise, err = exercises.NextPending(infoFile)
+			} else {
+				exercise, err = exercises.Find(args[0], infoFile)
+			}
+
 			spinner := progressbar.NewOptions(
 				-1, // a negative number makes turns the progress bar into a spinner
 				progressbar.OptionEnableColorCodes(true),
-				progressbar.OptionSetDescription(color.WhiteString("Running exercise: %s", args[0])),
+				progressbar.OptionSetDescription(color.WhiteString("Running exercise: %s", exercise.Name)),
 				progressbar.OptionOnCompletion(func() {
 					color.White("\nRunning complete!\n\n")
 				}),
@@ -34,7 +42,6 @@ func RunCmd(infoFile string) *cobra.Command {
 				}
 			}()
 
-			exercise, err := exercises.Find(args[0], infoFile)
 			if errors.Is(err, exercises.ErrExerciseNotFound) {
 				color.White("No exercise found for '%s'", args[0])
 				return err

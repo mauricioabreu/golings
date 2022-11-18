@@ -68,6 +68,16 @@ var _ = Describe("Commands", func() {
 					Expect(err).To(HaveOccurred())
 				})
 			})
+			When("'next' is passed is argument to the command", func() {
+				It("runs the next pending exercise", func() {
+					run := cmd.RunCmd("../fixtures/next/info.toml")
+					run.SetArgs([]string{"next"})
+
+					err := run.Execute()
+
+					Expect(err).To(HaveOccurred())
+				})
+			})
 		})
 	})
 })

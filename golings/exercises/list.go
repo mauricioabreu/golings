@@ -8,6 +8,7 @@ import (
 )
 
 var ErrExerciseNotFound = errors.New("exercise not found")
+var ErrNoPendingExercises = errors.New("no pending exercises")
 
 type Info struct {
 	Exercises []Exercise
@@ -26,6 +27,21 @@ func List(infoFile string) ([]Exercise, error) {
 	}
 
 	return info.Exercises, nil
+}
+
+func NextPending(infoFile string) (Exercise, error) {
+	allExercises, err := List(infoFile)
+	if err != nil {
+		return Exercise{}, err
+	}
+
+	for _, exercise := range allExercises {
+		if exercise.State() == Pending {
+			return exercise, nil
+		}
+	}
+
+	return Exercise{}, ErrNoPendingExercises
 }
 
 func Find(exercise string, infoFile string) (Exercise, error) {
