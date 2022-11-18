@@ -1,6 +1,4 @@
-//go:build !test
-// +build !test
-
+// nolint
 // success1
 // Make me compile!
 package main
