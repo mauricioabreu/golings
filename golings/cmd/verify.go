@@ -10,54 +10,56 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cmdVerify = &cobra.Command{
-	Use:   "verify",
-	Short: "Verify all exercises",
-	Run: func(cmd *cobra.Command, args []string) {
-		exs, err := exercises.List("info.toml")
-		if err != nil {
-			color.Red(err.Error())
-			os.Exit(1)
-		}
-
-		bar := progressbar.NewOptions(
-			len(exs),
-			progressbar.OptionSetWidth(50),
-			progressbar.OptionEnableColorCodes(true),
-			progressbar.OptionSetPredictTime(false),
-			progressbar.OptionSetElapsedTime(false),
-			progressbar.OptionSetDescription("[cyan][reset] Running exercises"),
-			progressbar.OptionSetTheme(progressbar.Theme{
-				Saucer:        "[yellow]=[reset]",
-				SaucerHead:    "[yellow]>[reset]",
-				SaucerPadding: " ",
-				BarStart:      "[",
-				BarEnd:        "]",
-			}),
-		)
-		if err := bar.RenderBlank(); err != nil {
-			color.Red(err.Error())
-			os.Exit(1)
-		}
-
-		for _, e := range exs {
-			bar.Describe(fmt.Sprintf("Running %s", e.Name))
-			result, _ := exercises.Run(e.Name, "info.toml")
-			if err := bar.Add(1); err != nil {
+func VerifyCmd(infoFile string) *cobra.Command {
+	return &cobra.Command{
+		Use:   "verify",
+		Short: "Verify all exercises",
+		Run: func(cmd *cobra.Command, args []string) {
+			exs, err := exercises.List(infoFile)
+			if err != nil {
 				color.Red(err.Error())
 				os.Exit(1)
 			}
-			if result.Err != "" {
-				fmt.Print("\n\n")
-				color.Cyan("Failed to compile the exercise %s\n\n", e.Path)
-				color.White("Check the output below: \n\n")
-				color.Red(result.Err)
-				color.Red(result.Out)
+
+			bar := progressbar.NewOptions(
+				len(exs),
+				progressbar.OptionSetWidth(50),
+				progressbar.OptionEnableColorCodes(true),
+				progressbar.OptionSetPredictTime(false),
+				progressbar.OptionSetElapsedTime(false),
+				progressbar.OptionSetDescription("[cyan][reset] Running exercises"),
+				progressbar.OptionSetTheme(progressbar.Theme{
+					Saucer:        "[yellow]=[reset]",
+					SaucerHead:    "[yellow]>[reset]",
+					SaucerPadding: " ",
+					BarStart:      "[",
+					BarEnd:        "]",
+				}),
+			)
+			if err := bar.RenderBlank(); err != nil {
+				color.Red(err.Error())
 				os.Exit(1)
 			}
-		}
 
-		color.Green("Congratulations!!!")
-		color.Green("You passed all the exercises")
-	},
+			for _, e := range exs {
+				bar.Describe(fmt.Sprintf("Running %s", e.Name))
+				result, _ := exercises.Run(e.Name, "info.toml")
+				if err := bar.Add(1); err != nil {
+					color.Red(err.Error())
+					os.Exit(1)
+				}
+				if result.Err != "" {
+					fmt.Print("\n\n")
+					color.Cyan("Failed to compile the exercise %s\n\n", e.Path)
+					color.White("Check the output below: \n\n")
+					color.Red(result.Err)
+					color.Red(result.Out)
+					os.Exit(1)
+				}
+			}
+
+			color.Green("Congratulations!!!")
+			color.Green("You passed all the exercises")
+		},
+	}
 }
