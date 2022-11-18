@@ -12,21 +12,14 @@ type Result struct {
 	Err      string
 }
 
-func Run(name string, infoFile string) (Result, error) {
-	exercise, err := Find(name, infoFile)
-	if err != nil {
-		return Result{}, err
-	}
-
-	args := BuildArgs(exercise)
+func (e Exercise) Run() (Result, error) {
+	args := BuildArgs(e)
 	cmd := exec.Command("go", args...)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
-	err = cmd.Run()
-
-	return Result{Exercise: exercise, Out: stdout.String(), Err: stderr.String()}, err
+	return Result{Exercise: e, Out: stdout.String(), Err: stderr.String()}, cmd.Run()
 }
 
 func BuildArgs(e Exercise) []string {

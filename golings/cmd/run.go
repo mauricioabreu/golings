@@ -34,13 +34,17 @@ func RunCmd(infoFile string) *cobra.Command {
 				}
 			}()
 
-			result, err := exercises.Run(args[0], infoFile)
+			exercise, err := exercises.Find(args[0], infoFile)
+			if errors.Is(err, exercises.ErrExerciseNotFound) {
+				color.White("No exercise found for '%s'", args[0])
+				return err
+			}
+
+			result, err := exercise.Run()
 
 			spinner.Close()
 
-			if errors.Is(err, exercises.ErrExerciseNotFound) {
-				color.White("No exercise found for '%s'", args[0])
-			} else if err != nil {
+			if err != nil {
 				color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
 				color.White("Check the output below: \n\n")
 				color.Red(result.Err)

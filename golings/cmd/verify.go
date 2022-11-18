@@ -15,14 +15,14 @@ func VerifyCmd(infoFile string) *cobra.Command {
 		Use:   "verify",
 		Short: "Verify all exercises",
 		Run: func(cmd *cobra.Command, args []string) {
-			exs, err := exercises.List(infoFile)
+			allExercises, err := exercises.List(infoFile)
 			if err != nil {
 				color.Red(err.Error())
 				os.Exit(1)
 			}
 
 			bar := progressbar.NewOptions(
-				len(exs),
+				len(allExercises),
 				progressbar.OptionSetWidth(50),
 				progressbar.OptionEnableColorCodes(true),
 				progressbar.OptionSetPredictTime(false),
@@ -41,14 +41,14 @@ func VerifyCmd(infoFile string) *cobra.Command {
 				os.Exit(1)
 			}
 
-			for _, e := range exs {
-				bar.Describe(fmt.Sprintf("Running %s", e.Name))
-				result, _ := exercises.Run(e.Name, "info.toml")
+			for _, exercise := range allExercises {
+				bar.Describe(fmt.Sprintf("Running %s", exercise.Name))
+				result, _ := exercise.Run()
 				bar.Add(1) // nolint
 
 				if result.Err != "" {
 					fmt.Print("\n\n")
-					color.Cyan("Failed to compile the exercise %s\n\n", e.Path)
+					color.Cyan("Failed to compile the exercise %s\n\n", exercise.Path)
 					color.White("Check the output below: \n\n")
 					color.Red(result.Err)
 					color.Red(result.Out)
