@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -9,14 +8,16 @@ import (
 
 func NewRootCmd(version string) *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:     "golings",
-		Short:   "Learn go through interactive exercises",
-		Version: version,
+		Use:           "golings",
+		Short:         "Learn go through interactive exercises",
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		Version:       version,
 	}
 
 	rootCmd.AddCommand(cmdHint)
 	rootCmd.AddCommand(ListCmd("info.toml"))
-	rootCmd.AddCommand(cmdRun)
+	rootCmd.AddCommand(RunCmd("info.toml"))
 	rootCmd.AddCommand(cmdVerify)
 
 	return rootCmd
@@ -24,7 +25,6 @@ func NewRootCmd(version string) *cobra.Command {
 
 func Execute(version string) {
 	if err := NewRootCmd(version).Execute(); err != nil {
-		fmt.Println(err)
 		os.Exit(1)
 	}
 }

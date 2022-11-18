@@ -1,0 +1,5 @@
+[[exercises]]
+name = "pending1"
+path = "../fixtures/pending1/main.go"
+mode = "compile"
+hint = ""
