@@ -73,15 +73,13 @@ Functions that return values must have return types declared in the function sig
 name = "if1"
 path = "exercises/if/if1/main_test.go"
 mode = "test"
-hint = """
-"""
+hint = "No hints this time"
 
 [[exercises]]
 name = "if2"
 path = "exercises/if/if2/main_test.go"
 mode = "test"
-hint = """
-"""
+hint = "No hints this time"
 
 [[exercises]]
 name = "switch1"
@@ -101,12 +99,29 @@ Switch without a condition is possible, but that case statement needs a boolean 
 name = "switch3"
 path = "exercises/switch/switch3/main_test.go"
 mode = "test"
-hint = """
-"""
+hint = "No hints this time"
 
 [[exercises]]
 name = "primitive_types1"
 path = "exercises/primitive_types/primitive_types1/main.go"
 mode = "compile"
+hint = "No hints this time"
+
+[[exercises]]
+name = "primitive_types2"
+path = "exercises/primitive_types/primitive_types2/main.go"
+mode = "compile"
+hint = "No hints this time"
+
+[[exercises]]
+name = "primitive_types3"
+path = "exercises/primitive_types/primitive_types3/main.go"
+mode = "compile"
+hint = "'%s' is used to format strings"
+
+[[exercises]]
+name = "primitive_types4"
+path = "exercises/primitive_types/primitive_types4/main.go"
+mode = "compile"
 hint = """
-"""
+byte can hold from 0 to 255. Could it store a character?"""
