@@ -103,3 +103,10 @@ path = "exercises/switch/switch3/main_test.go"
 mode = "test"
 hint = """
 """
+
+[[exercises]]
+name = "primitive_types1"
+path = "exercises/primitive_types/primitive_types1/main.go"
+mode = "compile"
+hint = """
+"""
