@@ -11,6 +11,8 @@ You may know [rustlings](https://github.com/rust-lang/rustlings), right? If you 
 
 `golings` has the very same idea, but for the [Go programming language](https://go.dev/)
 
+After setting up all the tools required to run `golings` you have the task to fix tiny go programs.
+
 ## Installing
 
 First, you need to have `go` installed. You can install it by visiting the [Go downloads page](https://go.dev/dl/)
@@ -29,13 +31,15 @@ Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and
 
 ## Doing exercises
 
-First, clone this repository
+All the exercises can be found in the directory `golings/exercises/<topic>`. For every topic there is an additional README file with some resources to get you started on the topic. We really recommend that you have a look at them before you start.
+
+Now you have the task to fix all the programs. Some of them don't compile, and you need to fix them. Some of them compile, but have tests and you need to write some code to have them all green (these are the `compile` and `test` modes).
+
+Clone the repository:
 
 ```sh
 git clone git@github.com:mauricioabreu/golings.git
 ```
-
-All the exercises can be found in the directory `golings/exercises/<topic>`.
 
 To run the next pending exercise:
 
