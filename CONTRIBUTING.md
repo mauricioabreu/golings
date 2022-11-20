@@ -26,8 +26,10 @@ The exercise mode is very important. It tells `golings` how to run the exercise.
 
 ```sh
 cd golings
-go test -v ./...
+go test -coverprofile=coverage.out -v $$(go list ./... | grep -v fixtures/error1)
 ```
+
+If you have `make` installed it is easy as running `make test`
 
 ## Issues and pull requests
 
