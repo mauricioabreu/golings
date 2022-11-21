@@ -14,7 +14,14 @@ func HintCmd(infoFile string) *cobra.Command {
 		Short: "Get a hint for an exercise",
 		Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		Run: func(cmd *cobra.Command, args []string) {
-			exercise, err := exercises.Find(args[0], "info.toml")
+			var exercise exercises.Exercise
+			var err error
+			if args[0] == "next" {
+				exercise, err = exercises.NextPending(infoFile)
+			} else {
+				exercise, err = exercises.Find(args[0], infoFile)
+			}
+
 			if err != nil {
 				color.Red(err.Error())
 				os.Exit(1)
