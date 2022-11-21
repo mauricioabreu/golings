@@ -154,4 +154,11 @@ name = "slices2"
 path = "exercises/slices/slices2/main.go"
 mode = "compile"
 hint = """
+Unlike languages like Python or Ruby, go does not let you have slices with mixed data types."""
+
+[[exercises]]
+name = "slices3"
+path = "exercises/slices/slices3/main.go"
+mode = "compile"
+hint = """
 Slices can be created from arrays and you can slice it with a range, with the [low:high] syntax."""
