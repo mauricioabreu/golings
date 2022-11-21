@@ -1,4 +1,4 @@
-// slices2
+// arrays2
 // Make me compile!
 
 // I AM NOT DONE

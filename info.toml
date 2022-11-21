@@ -143,6 +143,13 @@ hint = """
 Arrays are zero-based indexing."""
 
 [[exercises]]
+name = "arrays2"
+path = "exercises/arrays/arrays2/main.go"
+mode = "compile"
+hint = """
+Unlike languages like Python or Ruby, go does not let you have slices with mixed data types."""
+
+[[exercises]]
 name = "slices1"
 path = "exercises/slices/slices1/main.go"
 mode = "compile"
@@ -152,13 +159,6 @@ Slices can be created with the make function and they must have a type."""
 [[exercises]]
 name = "slices2"
 path = "exercises/slices/slices2/main.go"
-mode = "compile"
-hint = """
-Unlike languages like Python or Ruby, go does not let you have slices with mixed data types."""
-
-[[exercises]]
-name = "slices3"
-path = "exercises/slices/slices3/main.go"
 mode = "compile"
 hint = """
 Slices can be created from arrays and you can slice it with a range, with the [low:high] syntax."""
