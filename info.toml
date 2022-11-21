@@ -147,7 +147,7 @@ name = "arrays2"
 path = "exercises/arrays/arrays2/main.go"
 mode = "compile"
 hint = """
-Unlike languages like Python or Ruby, go does not let you have slices with mixed data types."""
+Unlike languages like Python or Ruby, go does not let you have arrays with mixed data types."""
 
 [[exercises]]
 name = "slices1"
