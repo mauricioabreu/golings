@@ -173,3 +173,9 @@ Add some elements and read the output.
 
 If you are still confuse about the append function, don't worry, check out
 the spec: https://go.dev/ref/spec#Appending_and_copying_slices"""
+
+[[exercises]]
+name = "slices4"
+path = "exercises/slices/slices4/main.go"
+mode = "test"
+hint = "No hints this time"
