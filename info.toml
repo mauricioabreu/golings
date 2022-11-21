@@ -162,3 +162,14 @@ path = "exercises/slices/slices2/main.go"
 mode = "compile"
 hint = """
 Slices can be created from arrays and you can slice it with a range, with the [low:high] syntax."""
+
+[[exercises]]
+name = "slices3"
+path = "exercises/slices/slices3/main.go"
+mode = "compile"
+hint = """
+Append is used to add elements to an existing slice.
+Add some elements and read the output.
+
+If you are still confuse about the append function, don't worry, check out
+the spec: https://go.dev/ref/spec#Appending_and_copying_slices"""
