@@ -148,3 +148,10 @@ path = "exercises/slices/slices1/main.go"
 mode = "compile"
 hint = """
 Slices can be created with the make function and they must have a type."""
+
+[[exercises]]
+name = "slices2"
+path = "exercises/slices/slices2/main.go"
+mode = "compile"
+hint = """
+Slices can be created from arrays and you can slice it with a range, with the [low:high] syntax."""
