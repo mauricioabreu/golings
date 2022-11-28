@@ -192,3 +192,12 @@ To make it compile you need to define types.
 Indexing is similar to setting values.
 
 Check the spec for more info: https://go.dev/ref/spec#Map_types"""
+
+[[exercises]]
+name = "maps2"
+path = "exercises/maps/maps2/main.go"
+mode = "compile"
+hint = """
+Very similar to maps1, but this time you can initialize a new map
+in the same line with a different syntax.
+""""

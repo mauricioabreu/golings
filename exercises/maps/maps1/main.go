@@ -5,6 +5,8 @@
 //
 package main
 
+import "fmt"
+
 func main() {
 	// Map with people names and their ages
 	m := make(map)
