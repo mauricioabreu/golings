@@ -71,6 +71,10 @@ To compile and run all the exercises:
 golings verify
 ```
 
+A demo running the command `golings run <exercise name>`
+
+![demo](misc/demo.gif)
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
