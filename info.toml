@@ -200,4 +200,10 @@ mode = "compile"
 hint = """
 Very similar to maps1, but this time you can initialize a new map
 in the same line with a different syntax.
-""""
+"""
+
+[[exercises]]
+name = "maps3"
+path = "exercises/maps/maps3/main_test.go"
+mode = "test"
+hint = "No hints this time"
