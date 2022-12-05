@@ -207,3 +207,20 @@ name = "maps3"
 path = "exercises/maps/maps3/main_test.go"
 mode = "test"
 hint = "No hints this time"
+
+[[exercises]]
+name = "range1"
+path = "exercises/range/range1/main.go"
+mode = "compile"
+hint = """
+You can use the range keyword to iterate over collections. Arrays, slices and maps are iterable
+data types."""
+
+[[exercises]]
+name = "range2"
+path = "exercises/range/range2/main.go"
+mode = "compile"
+hint = """
+Just like slices and array, you can use the range keyword to iterate over maps values.
+One slightly difference between iterating over arrays and slices is that with maps we iterate
+over keys and their values."""
