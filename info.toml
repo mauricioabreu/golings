@@ -224,3 +224,9 @@ hint = """
 Just like slices and array, you can use the range keyword to iterate over maps values.
 One slightly difference between iterating over arrays and slices is that with maps we iterate
 over keys and their values."""
+
+[[exercises]]
+name = "range3"
+path = "exercises/range/range3/main_test.go"
+mode = "test"
+hint = "No hints this time"
