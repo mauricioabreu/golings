@@ -230,3 +230,24 @@ name = "range3"
 path = "exercises/range/range3/main_test.go"
 mode = "test"
 hint = "No hints this time"
+
+[[exercises]]
+name = "structs1"
+path = "exercises/structs/structs1/main.go"
+mode = "compile"
+hint = """
+Structs are created using the 'type structName struct {}' syntax.
+Fields can be declared inside the brackets. They must have their types
+declared along their names.
+"""
+
+[[exercises]]
+name = "structs2"
+path = "exercises/structs/structs2/main.go"
+mode = "compile"
+hint = """
+Embedding is achieved using just the struct name.
+
+After embedding a struct, we are able to access the fields through the base struct, without having to
+specify the full path to the field. But you can do if you want.
+"""
