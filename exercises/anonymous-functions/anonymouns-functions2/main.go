@@ -1,4 +1,4 @@
-// anonymous functions1
+// anonymous functions2
 // Make me compile!
 
 // I AM NOT DONE
