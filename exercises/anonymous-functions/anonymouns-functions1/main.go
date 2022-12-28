@@ -6,27 +6,10 @@ package main
 
 import "fmt"
 
-func status() func() string {
-	var index int
-	orderStatus := map[int]string{
-		1: "TO DO",
-		2: "DOING",
-		3: "DONE",
-	}
-
-	return func() string {
-		index++
-		return "What status should I return?"
-	}
-}
-
 func main() {
-	anonymous_func := status()
-	s := anonymous_func()
 
-	fmt.Println(s)
+	func(name string) {
+		fmt.Printf("Hello %s", name)
+	}()
 
-	if s == "DONE" {
-		fmt.Println("Good Job!")
-	}
 }

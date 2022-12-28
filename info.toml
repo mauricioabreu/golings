@@ -265,7 +265,7 @@ name = "anonymouns-functions2"
 path = "exercises/anonymous-functions/anonymouns-functions2/main.go"
 mode = "compile"
 hint = """
-A function param is missing
+Maybe you should call the function with a param
 """
 
 [[exercises]]
@@ -273,5 +273,5 @@ name = "anonymouns-functions3"
 path = "exercises/anonymous-functions/anonymouns-functions3/main.go"
 mode = "compile"
 hint = """
-Update status to Done calling function more than 1 time
+\n 1 - updateStatus() function should return an orderStatus index like orderStatus[index]\n 2 - Maybe you should call anonymous_func once more time
 """
