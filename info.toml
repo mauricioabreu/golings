@@ -253,25 +253,26 @@ specify the full path to the field. But you can do if you want.
 """
 
 [[exercises]]
-name = "anonymouns-functions1"
-path = "exercises/anonymous-functions/anonymouns-functions1/main.go"
+name = "anonymous-functions1"
+path = "exercises/anonymous-functions/anonymous-functions1/main.go"
 mode = "compile"
 hint = """
 The function needs a string to print
 """
 
 [[exercises]]
-name = "anonymouns-functions2"
-path = "exercises/anonymous-functions/anonymouns-functions2/main.go"
+name = "anonymous-functions2"
+path = "exercises/anonymous-functions/anonymous-functions2/main.go"
 mode = "compile"
 hint = """
 Maybe you should call the function with a param
 """
 
 [[exercises]]
-name = "anonymouns-functions3"
-path = "exercises/anonymous-functions/anonymouns-functions3/main.go"
+name = "anonymous-functions3"
+path = "exercises/anonymous-functions/anonymous-functions3/main.go"
 mode = "compile"
 hint = """
-\n 1 - updateStatus() function should return an orderStatus index like orderStatus[index]\n 2 - Maybe you should call anonymous_func once more time
+1 - updateStatus() function should return an orderStatus index like orderStatus[index]
+2 - Maybe you should call anonymous_func once more time
 """
