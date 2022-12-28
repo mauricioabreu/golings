@@ -251,3 +251,28 @@ Embedding is achieved using just the struct name.
 After embedding a struct, we are able to access the fields through the base struct, without having to
 specify the full path to the field. But you can do if you want.
 """
+
+[[exercises]]
+name = "anonymous-functions1"
+path = "exercises/anonymous-functions/anonymous-functions1/main.go"
+mode = "compile"
+hint = """
+The function needs a string to print
+"""
+
+[[exercises]]
+name = "anonymous-functions2"
+path = "exercises/anonymous-functions/anonymous-functions2/main.go"
+mode = "compile"
+hint = """
+Maybe you should call the function with a param
+"""
+
+[[exercises]]
+name = "anonymous-functions3"
+path = "exercises/anonymous-functions/anonymous-functions3/main.go"
+mode = "compile"
+hint = """
+1 - updateStatus() function should return an orderStatus index like orderStatus[index]
+2 - Maybe you should call anonymous_func once more time
+"""
