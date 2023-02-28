@@ -3,3 +3,6 @@ test:
 
 watch:
 	@go run golings/golings.go watch
+
+run:
+	@go run golings/golings.go run
