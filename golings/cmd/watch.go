@@ -21,37 +21,26 @@ func WatchCmd(infoFile string) *cobra.Command {
 		Use:   "watch",
 		Short: "Run a single exercise",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log.Println("Create watcher")
+			RunNextExercise(infoFile)
 			reader := bufio.NewReader(os.Stdin)
 			update := make(chan string)
 
-			for {
-				go WatchEvents(update)
-
-				go func() {
-					for f := range update {
-						fmt.Println("RECEIVED:", f)
-						exercise, err := exercises.NextPending(infoFile)
-						result, err := exercise.Run()
-
-						if err != nil {
-							color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
-							color.White("Check the output below: \n\n")
-							color.Red(result.Err)
-							color.Red(result.Out)
-							color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
-						} else {
-							color.Green("Congratulations!\n\n")
-							color.Green("Here is the output of your program:\n\n")
-							color.Cyan(result.Out)
-							if result.Exercise.State() == exercises.Pending {
-								color.White("Remove the 'I AM NOT DONE' from the file to keep going\n")
-								color.Red("exercise is still pending")
-							}
+			go WatchEvents(update)
+			go func() {
+				for {
+					select {
+					case f, ok := <-update:
+						if !ok {
+							fmt.Println("OKKKdKKK")
+							return
 						}
+						color.Yellow("=====FILE", f)
+						RunNextExercise(infoFile)
 					}
-				}()
+				}
+			}()
 
+			for {
 				cmdString, err := reader.ReadString('\n')
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
@@ -68,6 +57,7 @@ func WatchCmd(infoFile string) *cobra.Command {
 						os.Exit(1)
 					}
 					ui.PrintList(os.Stdout, exs)
+
 				case "hint":
 					log.Println("HINT command", cmdString)
 					//@TODO: build a regex to match exercise
@@ -86,6 +76,7 @@ func WatchCmd(infoFile string) *cobra.Command {
 }
 
 func WatchEvents(updateF chan<- string) {
+	log.Println("===========WATCHER")
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
@@ -117,20 +108,41 @@ func WatchEvents(updateF chan<- string) {
 	// Start listening for events.
 	go func() {
 		for {
+			log.Println("===========LISTENING EVENTS")
 			select {
 			case event, ok := <-watcher.Events:
 				if !ok {
 					return
 				}
-				log.Println("event:", event)
+
+				fmt.Println("EVENTS:", event)
 				if event.Has(fsnotify.Write) {
+					fmt.Println(event.Op.String())
 					log.Println("modified file:", event.Name)
 					updateF <- event.Name
 				}
 			}
 		}
 	}()
+}
 
-	// Block main goroutine forever.
-	<-make(chan struct{})
+func RunNextExercise(infoFile string) {
+	exercise, err := exercises.NextPending(infoFile)
+	result, err := exercise.Run()
+
+	if err != nil {
+		color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
+		color.White("Check the output below: \n\n")
+		color.Red(result.Err)
+		color.Red(result.Out)
+		color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
+	} else {
+		color.Green("Congratulations!\n\n")
+		color.Green("Here is the output of your program:\n\n")
+		color.Cyan(result.Out)
+		if result.Exercise.State() == exercises.Pending {
+			color.White("Remove the 'I AM NOT DONE' from the file to keep going\n")
+			color.Red("exercise is still pending")
+		}
+	}
 }
