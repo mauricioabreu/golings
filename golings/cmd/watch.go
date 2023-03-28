@@ -25,22 +25,17 @@ func WatchCmd(infoFile string) *cobra.Command {
 			reader := bufio.NewReader(os.Stdin)
 			update := make(chan string)
 
-			go WatchEvents(update)
-			go func() {
-				for {
-					select {
-					case f, ok := <-update:
-						if !ok {
-							fmt.Println("OKKKdKKK")
-							return
-						}
-						color.Yellow("=====FILE", f)
+			for {
+				go WatchEvents(update)
+
+				go func() {
+					for f := range update {
+						// @TODO: use this filename to command hint
+						fmt.Println("FILE UPDATED:", f)
 						RunNextExercise(infoFile)
 					}
-				}
-			}()
+				}()
 
-			for {
 				cmdString, err := reader.ReadString('\n')
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
@@ -68,15 +63,15 @@ func WatchCmd(infoFile string) *cobra.Command {
 					}
 					color.Yellow(exs.Hint)
 				default:
-					fmt.Errorf("ERROR :/")
+					color.Yellow("only list or hint command are avaliable")
 				}
 			}
+			return nil
 		},
 	}
 }
 
 func WatchEvents(updateF chan<- string) {
-	log.Println("===========WATCHER")
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
@@ -108,22 +103,19 @@ func WatchEvents(updateF chan<- string) {
 	// Start listening for events.
 	go func() {
 		for {
-			log.Println("===========LISTENING EVENTS")
 			select {
 			case event, ok := <-watcher.Events:
 				if !ok {
 					return
 				}
-
-				fmt.Println("EVENTS:", event)
 				if event.Has(fsnotify.Write) {
-					fmt.Println(event.Op.String())
-					log.Println("modified file:", event.Name)
 					updateF <- event.Name
 				}
 			}
 		}
 	}()
+
+	<-make(chan struct{})
 }
 
 func RunNextExercise(infoFile string) {
