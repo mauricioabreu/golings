@@ -76,7 +76,6 @@ func WatchEvents(updateF chan<- string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer watcher.Close()
 
 	path, _ := os.Getwd()
 	file_path := fmt.Sprintf("%s/exercises", path)
@@ -114,8 +113,6 @@ func WatchEvents(updateF chan<- string) {
 			}
 		}
 	}()
-
-	<-make(chan struct{})
 }
 
 func RunNextExercise(infoFile string) {
