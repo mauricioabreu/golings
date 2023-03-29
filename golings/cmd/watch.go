@@ -31,8 +31,6 @@ func WatchCmd(infoFile string) *cobra.Command {
 
 				go func() {
 					for f := range update {
-						// @TODO: use this filename to command hint
-						fmt.Println("FILE UPDATED:", f)
 						RunNextExercise(infoFile)
 						curFile = <-update
 					}
@@ -47,7 +45,6 @@ func WatchCmd(infoFile string) *cobra.Command {
 
 				switch cmdStr {
 				case "list":
-					log.Println("List command", cmdString)
 					exs, err := exercises.List(infoFile)
 					if err != nil {
 						color.Red(err.Error())
@@ -69,7 +66,6 @@ func WatchCmd(infoFile string) *cobra.Command {
 					color.Yellow("only list or hint command are avaliable")
 				}
 			}
-			return nil
 		},
 	}
 }
