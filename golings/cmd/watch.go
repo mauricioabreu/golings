@@ -30,9 +30,9 @@ func WatchCmd(infoFile string) *cobra.Command {
 				go WatchEvents(update)
 
 				go func() {
-					for f := range update {
-						RunNextExercise(infoFile)
+					for range update {
 						curFile = <-update
+						RunNextExercise(infoFile)
 					}
 				}()
 
@@ -55,13 +55,18 @@ func WatchCmd(infoFile string) *cobra.Command {
 				case "hint":
 					pathSlice := strings.Split(curFile, "/")
 					exIndex := len(pathSlice) - 2
-					exs, err := exercises.Find(pathSlice[exIndex], infoFile)
 
-					if err != nil {
-						color.Red(err.Error())
-						os.Exit(1)
+					if exIndex != -1 {
+						exs, err := exercises.Find(pathSlice[exIndex], infoFile)
+						if err != nil {
+							color.Red("Error finding file to hint")
+							os.Exit(1)
+						}
+						color.Yellow(exs.Hint)
+					} else {
+						color.Red("Error in detect which file to run hint command. Please save the file again and type hint")
 					}
-					color.Yellow(exs.Hint)
+
 				default:
 					color.Yellow("only list or hint command are avaliable")
 				}
