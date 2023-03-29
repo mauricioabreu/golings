@@ -24,6 +24,7 @@ func WatchCmd(infoFile string) *cobra.Command {
 			RunNextExercise(infoFile)
 			reader := bufio.NewReader(os.Stdin)
 			update := make(chan string)
+			var curFile string
 
 			for {
 				go WatchEvents(update)
@@ -33,6 +34,7 @@ func WatchCmd(infoFile string) *cobra.Command {
 						// @TODO: use this filename to command hint
 						fmt.Println("FILE UPDATED:", f)
 						RunNextExercise(infoFile)
+						curFile = <-update
 					}
 				}()
 
@@ -54,9 +56,10 @@ func WatchCmd(infoFile string) *cobra.Command {
 					ui.PrintList(os.Stdout, exs)
 
 				case "hint":
-					log.Println("HINT command", cmdString)
-					//@TODO: build a regex to match exercise
-					exs, err := exercises.Find("variables1", infoFile)
+					pathSlice := strings.Split(curFile, "/")
+					exIndex := len(pathSlice) - 2
+					exs, err := exercises.Find(pathSlice[exIndex], infoFile)
+
 					if err != nil {
 						color.Red(err.Error())
 						os.Exit(1)
