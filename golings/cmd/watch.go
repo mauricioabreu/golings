@@ -105,15 +105,9 @@ func WatchEvents(updateF chan<- string) {
 
 	// Start listening for events.
 	go func() {
-		for {
-			select {
-			case event, ok := <-watcher.Events:
-				if !ok {
-					return
-				}
-				if event.Has(fsnotify.Write) {
-					updateF <- event.Name
-				}
+		for event := range watcher.Events {
+			if event.Has(fsnotify.Write) {
+				updateF <- event.Name
 			}
 		}
 	}()
