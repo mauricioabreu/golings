@@ -28,13 +28,14 @@ func WatchCmd(infoFile string) *cobra.Command {
 			update := make(chan string)
 			var curFile string
 
-			for {
-				go WatchEvents(update)
+			go WatchEvents(update)
 
+			for {
 				go func() {
 					for range update {
-						curFile = <-update
+						fmt.Println("RECEIVER", update)
 						RunNextExercise(infoFile)
+						curFile = <-update
 					}
 				}()
 
@@ -108,7 +109,9 @@ func WatchEvents(updateF chan<- string) {
 	// Start listening for events.
 	go func() {
 		for event := range watcher.Events {
+			fmt.Println("EVENT", event)
 			if event.Has(fsnotify.Write) {
+				fmt.Println("NOTIFY", event.Name)
 				updateF <- event.Name
 			}
 		}
@@ -117,6 +120,7 @@ func WatchEvents(updateF chan<- string) {
 
 func RunNextExercise(infoFile string) {
 	CallClear()
+	fmt.Println("RUN NEXT EXEERCISE")
 	exercise, err := exercises.NextPending(infoFile)
 	if err != nil {
 		color.Red("Failed to find next exercises")
@@ -142,13 +146,11 @@ func RunNextExercise(infoFile string) {
 
 func CallClear() {
 	if runtime.GOOS == "windows" {
-		fmt.Println("===========CLEARIIIIIING windows")
 		cmd := exec.Command("cmd", "/c", "cls")
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 	} else {
-		fmt.Println("===========CLEARIIIIIING LINUX")
-		cmd := exec.Command("clear") //Linux example, its tested
+		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 	}
