@@ -115,8 +115,11 @@ func WatchEvents(updateF chan<- string) {
 
 func RunNextExercise(infoFile string) {
 	exercise, err := exercises.NextPending(infoFile)
-	result, err := exercise.Run()
+	if err != nil {
+		color.Red("Failed to find next exercises")
+	}
 
+	result, err := exercise.Run()
 	if err != nil {
 		color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
 		color.White("Check the output below: \n\n")
