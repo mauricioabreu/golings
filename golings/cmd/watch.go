@@ -6,7 +6,9 @@ import (
 	"io/fs"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/fatih/color"
@@ -114,6 +116,7 @@ func WatchEvents(updateF chan<- string) {
 }
 
 func RunNextExercise(infoFile string) {
+	CallClear()
 	exercise, err := exercises.NextPending(infoFile)
 	if err != nil {
 		color.Red("Failed to find next exercises")
@@ -134,5 +137,19 @@ func RunNextExercise(infoFile string) {
 			color.White("Remove the 'I AM NOT DONE' from the file to keep going\n")
 			color.Red("exercise is still pending")
 		}
+	}
+}
+
+func CallClear() {
+	if runtime.GOOS == "windows" {
+		fmt.Println("===========CLEARIIIIIING windows")
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	} else {
+		fmt.Println("===========CLEARIIIIIING LINUX")
+		cmd := exec.Command("clear") //Linux example, its tested
+		cmd.Stdout = os.Stdout
+		cmd.Run()
 	}
 }
