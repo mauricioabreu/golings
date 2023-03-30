@@ -26,16 +26,13 @@ func WatchCmd(infoFile string) *cobra.Command {
 			RunNextExercise(infoFile)
 			reader := bufio.NewReader(os.Stdin)
 			update := make(chan string)
-			var curFile string
 
 			go WatchEvents(update)
 
 			for {
 				go func() {
 					for range update {
-						fmt.Println("RECEIVER", update)
 						RunNextExercise(infoFile)
-						curFile = <-update
 					}
 				}()
 
@@ -56,20 +53,12 @@ func WatchCmd(infoFile string) *cobra.Command {
 					ui.PrintList(os.Stdout, exs)
 
 				case "hint":
-					pathSlice := strings.Split(curFile, "/")
-					exIndex := len(pathSlice) - 2
-
-					if exIndex != -1 {
-						exs, err := exercises.Find(pathSlice[exIndex], infoFile)
-						if err != nil {
-							color.Red("Error finding file to hint")
-							os.Exit(1)
-						}
-						color.Yellow(exs.Hint)
-					} else {
-						color.Red("Error in detect which file to run hint command. Please save the file again and type hint")
+					ClearScreen()
+					exercise, err := exercises.NextPending(infoFile)
+					if err != nil {
+						color.Red("Failed to find next exercises")
 					}
-
+					color.Yellow(exercise.Hint)
 				default:
 					color.Yellow("only list or hint command are avaliable")
 				}
@@ -109,9 +98,7 @@ func WatchEvents(updateF chan<- string) {
 	// Start listening for events.
 	go func() {
 		for event := range watcher.Events {
-			fmt.Println("EVENT", event)
 			if event.Has(fsnotify.Write) {
-				fmt.Println("NOTIFY", event.Name)
 				updateF <- event.Name
 			}
 		}
@@ -119,8 +106,7 @@ func WatchEvents(updateF chan<- string) {
 }
 
 func RunNextExercise(infoFile string) {
-	CallClear()
-	fmt.Println("RUN NEXT EXEERCISE")
+	ClearScreen()
 	exercise, err := exercises.NextPending(infoFile)
 	if err != nil {
 		color.Red("Failed to find next exercises")
@@ -144,7 +130,7 @@ func RunNextExercise(infoFile string) {
 	}
 }
 
-func CallClear() {
+func ClearScreen() {
 	if runtime.GOOS == "windows" {
 		cmd := exec.Command("cmd", "/c", "cls")
 		cmd.Stdout = os.Stdout
