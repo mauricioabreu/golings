@@ -88,11 +88,9 @@ func WatchEvents(updateF chan<- string) {
 		log.Fatal("Error in file path:", err.Error())
 	}
 
-	go func() {
-		for event := range watcher.Events {
-			if event.Has(fsnotify.Write) {
-				updateF <- event.Name
-			}
+	for event := range watcher.Events {
+		if event.Has(fsnotify.Write) {
+			updateF <- event.Name
 		}
-	}()
+	}
 }
