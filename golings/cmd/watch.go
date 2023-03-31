@@ -67,9 +67,9 @@ func WatchEvents(updateF chan<- string) {
 	}
 
 	path, _ := os.Getwd()
-	filePath := fmt.Sprintf("%s/exercises", path)
+	directories := fmt.Sprintf("%s/exercises", path)
 
-	err = filepath.WalkDir(filePath, func(path_dir string, d fs.DirEntry, err error) error {
+	err = filepath.WalkDir(directories, func(path_dir string, d fs.DirEntry, err error) error {
 		if err != nil {
 			log.Fatal(err)
 			return err
@@ -88,7 +88,6 @@ func WatchEvents(updateF chan<- string) {
 		log.Fatal("Error in file path:", err.Error())
 	}
 
-	// Start listening for events.
 	go func() {
 		for event := range watcher.Events {
 			if event.Has(fsnotify.Write) {
