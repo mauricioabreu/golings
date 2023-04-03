@@ -27,20 +27,7 @@ func RunCmd(infoFile string) *cobra.Command {
 				exercise, err = exercises.Find(args[0], infoFile)
 			}
 
-			spinner := progressbar.NewOptions(
-				-1, // a negative number makes turns the progress bar into a spinner
-				progressbar.OptionEnableColorCodes(true),
-				progressbar.OptionSetDescription(color.WhiteString("Running exercise: %s", exercise.Name)),
-				progressbar.OptionOnCompletion(func() {
-					color.White("\nRunning complete!\n\n")
-				}),
-			)
-			go func() {
-				for x := 0; x < 100; x++ {
-					spinner.Add(1) // nolint
-					time.Sleep(250 * time.Millisecond)
-				}
-			}()
+			spinner := RunSpinner(exercise.Name)
 
 			if errors.Is(err, exercises.ErrExerciseNotFound) {
 				color.White("No exercise found for '%s'", args[0])
@@ -70,4 +57,23 @@ func RunCmd(infoFile string) *cobra.Command {
 			return err
 		},
 	}
+}
+
+func RunSpinner(exercise string) *progressbar.ProgressBar {
+	spinner := progressbar.NewOptions(
+		-1, // a negative number makes turns the progress bar into a spinner
+		progressbar.OptionEnableColorCodes(true),
+		progressbar.OptionSetDescription(color.WhiteString("Running exercise: %s", exercise)),
+		progressbar.OptionOnCompletion(func() {
+			color.White("\nRunning complete!\n\n")
+		}),
+	)
+	go func() {
+		for x := 0; x < 100; x++ {
+			spinner.Add(1) // nolint
+			time.Sleep(250 * time.Millisecond)
+		}
+	}()
+
+	return spinner
 }
