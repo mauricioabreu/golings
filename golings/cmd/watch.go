@@ -46,9 +46,6 @@ func WatchCmd(infoFile string) *cobra.Command {
 				case "quit":
 					color.Green("Bye by golings o/")
 					os.Exit(0)
-				case "q":
-					color.Green("Bye by golings o/")
-					os.Exit(0)
 				case "exit":
 					color.Green("Bye by golings o/")
 					os.Exit(0)
