@@ -17,7 +17,7 @@ import (
 func WatchCmd(infoFile string) *cobra.Command {
 	return &cobra.Command{
 		Use:   "watch",
-		Short: "Run a single exercise",
+		Short: "Verify exercises when files are edited",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			RunNextExercise(infoFile)
 			reader := bufio.NewReader(os.Stdin)
