@@ -117,7 +117,7 @@ hint = "No hints this time"
 name = "primitive_types3"
 path = "exercises/primitive_types/primitive_types3/main.go"
 mode = "compile"
-hint = "'%s' is used to format strings"
+hint = "fmt.Printf() can take multiples variables as parameters. Try declaring thoses variables."
 
 [[exercises]]
 name = "primitive_types4"
