@@ -253,6 +253,18 @@ specify the full path to the field. But you can do if you want.
 """
 
 [[exercises]]
+name = "structs3"
+path = "exercises/structs/structs3/main.go"
+mode = "compile"
+hint = """
+You can add a function to a struct by adding code similar to the one below:
+
+func (s *StructHere) doSomething() {
+
+}
+"""
+
+[[exercises]]
 name = "anonymous_functions1"
 path = "exercises/anonymous_functions/anonymous_functions1/main.go"
 mode = "compile"
