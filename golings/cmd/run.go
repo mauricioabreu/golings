@@ -13,8 +13,10 @@ import (
 
 func RunCmd(infoFile string) *cobra.Command {
 	return &cobra.Command{
-		Use:           "run [exercise]",
-		Short:         "Run a single exercise",
+		Use:   "run next | <exercise name>",
+		Short: "Run a single exercise",
+		Long: `example next pending exercise : golings run next
+example specific exercise : golings run variables1`,
 		Args:          cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		SilenceUsage:  true,
 		SilenceErrors: true,
