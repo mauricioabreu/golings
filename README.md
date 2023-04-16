@@ -87,11 +87,11 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## Learning resources
 
-- [Golang official tutorial](https://go.dev/doc/tutorial/)
-- [Go by example](https://gobyexample.com)
-- [Aprenda Go](https://www.youtube.com/playlist?list=PLCKpcjBB_VlBsxJ9IseNxFllf-UFEXOdg)
+* [Golang official tutorial](https://go.dev/doc/tutorial/)
+* [Go by example](https://gobyexample.com)
+* [Aprenda Go](https://www.youtube.com/playlist?list=PLCKpcjBB_VlBsxJ9IseNxFllf-UFEXOdg)
 
 ## Other 'lings
 
-- [rustlings](https://github.com/rust-lang/rustlings)
-- [ziglings](https://github.com/ratfactor/ziglings)
+* [rustlings](https://github.com/rust-lang/rustlings)
+* [ziglings](https://github.com/ratfactor/ziglings)
