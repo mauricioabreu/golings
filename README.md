@@ -31,7 +31,7 @@ Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and
 
 ### Web version (playground)
 
-@Grubba27 worked hard to create a web version: https://golings.vercel.app/
+[@Grubba27](https://github.com/Grubba27/) worked hard to create a web version: https://golings.vercel.app/
 
 It's pretty awesome and uses the playground so you can play with the exercises without installing anything.
 
