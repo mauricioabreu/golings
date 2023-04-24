@@ -29,6 +29,12 @@ go install github.com/mauricioabreu/golings/golings@latest
 
 Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and choose the option that best fits your environment.
 
+### Web version (playground)
+
+@Grubba27 worked hard to create a web version: https://golings.vercel.app/
+
+It's pretty awesome and uses the playground so you can play with the exercises without installing anything.
+
 ## Doing exercises
 
 All the exercises can be found in the directory `golings/exercises/<topic>`. For every topic there is an additional README file with some resources to get you started on the topic. We really recommend that you have a look at them before you start.
