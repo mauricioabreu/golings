@@ -8,6 +8,7 @@ import "fmt"
 
 func main() {
 	Print("Hello, World!")
+	Print(42)
 }
 
 func Print(value) {
