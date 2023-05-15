@@ -288,3 +288,18 @@ hint = """
 1 - updateStatus() function should return an orderStatus index like orderStatus[index]
 2 - Maybe you should call anonymous_func once more time
 """
+
+[[exercises]]
+name = "generics1"
+path = "exercises/generics/generics1/main.go"
+mode = "compile"
+hint = """
+Generic functions exist to remove the burden of rewriting the same code multiple times.
+With generics we don't need to copy and paste the code and change only the type.
+
+Types are defined using a syntax like
+
+func FuncName[T any](value T) {
+
+}
+"""
