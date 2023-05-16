@@ -47,6 +47,14 @@ Clone the repository:
 git clone git@github.com:mauricioabreu/golings.git
 ```
 
+To run the exercises in the recommended order while taking advantage of fast feedback loop, use the _watch_ command:
+
+```sh
+golings watch
+```
+
+This command will run golings in interactive mode. Every time you save a file it will verify if the code is correct.
+
 To run the next pending exercise:
 
 ```sh
