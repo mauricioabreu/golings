@@ -303,3 +303,16 @@ func FuncName[T any](value T) {
 
 }
 """
+
+[[exercises]]
+name = "generics2"
+path = "exercises/generics/generics2/main.go"
+mode = "compile"
+hint = """
+We can't mismatch types in arithmetic operations, but our functions can reused to other
+types while sharing the same logic.
+
+In go, we can declare type constraints. It is the case of our Number interface.
+
+Don't forget the type signature.
+"""

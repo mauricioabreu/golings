@@ -7,10 +7,10 @@ package main
 import "fmt"
 
 func main() {
-	Print("Hello, World!")
-	Print(42)
+	print("Hello, World!")
+	print(42)
 }
 
-func Print(value) {
+func print(value) {
 	fmt.Println(value)
 }
