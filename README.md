@@ -35,6 +35,13 @@ Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and
 
 It's pretty awesome and uses the playground so you can play with the exercises without installing anything.
 
+### DevContainer
+
+1. Install Docker/Podman & VSCode & Configure
+1. Clone the repository and open it in VSCode.
+1. You will be prompted to reopen the code in a devcontainer. The container is pre-configured with go and all of the tools needed to debug go code.
+1. Open a new embeded terminal and run `golings watch` to start the exercises.
+
 ## Doing exercises
 
 All the exercises can be found in the directory `golings/exercises/<topic>`. For every topic there is an additional README file with some resources to get you started on the topic. We really recommend that you have a look at them before you start.
