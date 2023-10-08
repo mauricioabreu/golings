@@ -25,6 +25,10 @@ There are two ways to install `golings`
 go install github.com/mauricioabreu/golings/golings@latest
 ```
 
+Add `go/bin` to your PATH if you want to run golings anywhere in your terminal. From the official docs:
+
+> The install directory is controlled by the GOPATH and GOBIN environment variables. If GOBIN is set, binaries are installed to that directory. If GOPATH is set, binaries are installed to the bin subdirectory of the first directory in the GOPATH list. Otherwise, binaries are installed to the bin subdirectory of the default GOPATH ($HOME/go or %USERPROFILE%\go).
+
 ### Binaries
 
 Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and choose the option that best fits your environment.
