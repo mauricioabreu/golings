@@ -47,6 +47,7 @@ example specific exercise : golings run variables1`,
 				color.Red(result.Out)
 				color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
 			} else {
+				color.Green("✅ Successfully tested %s!\n\n", result.Exercise.Path)
 				color.Green("Congratulations!\n\n")
 				color.Green("Here is the output of your program:\n\n")
 				color.Cyan(result.Out)
