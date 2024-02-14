@@ -342,3 +342,15 @@ A counter is a good example. Your counter could be updated with a different valu
 
 Read a little about mutexes: https://pkg.go.dev/sync#Mutex.
 """
+
+[[exercises]]
+name = "concurrent3"
+path = "exercises/concurrent/concurrent3/main_test.go"
+mode = "test"
+hint = """
+Writing messages to closed channels will panic.
+
+To avoid panics, we don't want to send messages to closed channels.
+
+Remember: channels can be iterated using for-range loops.
+"""
