@@ -29,7 +29,7 @@ func BuildArgs(e Exercise) []string {
 	if e.Mode == "compile" {
 		args = append(args, "run")
 	} else {
-		args = append(args, "test", "-v")
+		args = append(args, "test", "-v", "-race")
 	}
 
 	args = append(args, fmt.Sprintf("./%s", e.Path))

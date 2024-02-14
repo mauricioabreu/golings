@@ -316,3 +316,29 @@ In go, we can declare type constraints. It is the case of our Number interface.
 
 Don't forget the type signature.
 """
+
+[[exercises]]
+name = "concurrent1"
+path = "exercises/concurrent/concurrent1/main_test.go"
+mode = "test"
+hint = """
+We have multiple printers (as the others, these ones don't work too).
+
+Our goal is to print something. But what is this?
+"""
+
+[[exercises]]
+name = "concurrent2"
+path = "exercises/concurrent/concurrent2/main_test.go"
+mode = "test"
+hint = """
+Updating a variable from multiple goroutines can lead to a data race.
+A data race is when the same variable is concurrently read and written by multiple goroutines without
+any kind of protection.
+
+Imagine if a program is reading a variable while another one is writing.
+
+A counter is a good example. Your counter could be updated with a different value than expected.
+
+Read a little about mutexes: https://pkg.go.dev/sync#Mutex.
+"""
