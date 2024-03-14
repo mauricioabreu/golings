@@ -55,7 +55,7 @@ Now you have the task to fix all the programs. Some of them don't compile, and y
 Clone the repository:
 
 ```sh
-git clone git@github.com:mauricioabreu/golings.git
+git clone https://github.com/mauricioabreu/golings.git
 ```
 
 To run the exercises in the recommended order while taking advantage of fast feedback loop, use the _watch_ command:
