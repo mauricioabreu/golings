@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
@@ -30,6 +31,14 @@ func PrintList(infoFile string) {
 
 func RunNextExercise(infoFile string) {
 	ClearScreen()
+
+	progress, err:= exercises.Progress(infoFile)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	} else {
+		color.Blue("%.2f%% done.\n\n", progress * 100)
+	}
+
 	exercise, err := exercises.NextPending(infoFile)
 	if err != nil {
 		color.Red("Failed to find next exercises")
