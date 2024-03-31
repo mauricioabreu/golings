@@ -58,3 +58,18 @@ func Find(exercise string, infoFile string) (Exercise, error) {
 
 	return Exercise{}, ErrExerciseNotFound
 }
+
+func Progress(infoFile string) (float32, error) {
+    allExercises, err := List(infoFile)
+    if err != nil {
+        return 0.0, err
+    }
+    done := []Exercise{}
+    for _, exercise := range allExercises {
+        if exercise.State() == Done {
+            done = append(done, exercise)
+        }
+    }
+
+    return float32(len(done)) / float32(len(allExercises)), nil
+}

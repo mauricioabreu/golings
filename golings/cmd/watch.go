@@ -12,6 +12,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/cobra"
+
+	"github.com/mauricioabreu/golings/golings/exercises"
 )
 
 func WatchCmd(infoFile string) *cobra.Command {
@@ -31,6 +33,13 @@ func WatchCmd(infoFile string) *cobra.Command {
 						RunNextExercise(infoFile)
 					}
 				}()
+
+                progress, err:= exercises.Progress(infoFile)
+                if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+                } else {
+                    color.Blue("\n%.2f%% done.", progress * 100)
+                }
 
 				cmdString, err := reader.ReadString('\n')
 				if err != nil {
