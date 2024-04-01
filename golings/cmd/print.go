@@ -36,7 +36,7 @@ func RunNextExercise(infoFile string) {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	} else {
-		color.Blue("Progress: %d/%d (%.2f%% done)\n\n", done, total, progress * 100)
+		color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress * 100)
 	}
 
 	exercise, err := exercises.NextPending(infoFile)
