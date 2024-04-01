@@ -32,11 +32,11 @@ func PrintList(infoFile string) {
 func RunNextExercise(infoFile string) {
 	ClearScreen()
 
-	progress, done, total, err:= exercises.Progress(infoFile)
+	progress, done, total, err := exercises.Progress(infoFile)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	} else {
-		color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress * 100)
+		color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress*100)
 	}
 
 	exercise, err := exercises.NextPending(infoFile)
