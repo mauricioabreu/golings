@@ -7,6 +7,9 @@ package main_test
 import "testing"
 
 func fooIfFizz(fizzish string) string {
+	// When the input is fizz return foo
+	// When the input is fuzz return bar
+	// When the input is neither fizz or fuzz return baz
 	if fizzish == "fizz" {
 		return "foo"
 	} else {
