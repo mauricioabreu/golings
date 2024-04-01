@@ -1,0 +1,11 @@
+[[exercises]]
+name = "pending1"
+path = "../fixtures/pending1/main.go"
+mode = "compile"
+hint = ""
+
+[[exercises]]
+name = "success1"
+path = "../fixtures/success1/main.go"
+mode = "compile"
+hint = ""
