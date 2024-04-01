@@ -71,8 +71,8 @@ func Progress(infoFile string) (float32, int, int, error) {
 		}
 	}
 
-    totalDone := len(done)
-    total := len(allExercises)
+	totalDone := len(done)
+	total := len(allExercises)
 
 	return float32(totalDone) / float32(total), totalDone, total, nil
 }
