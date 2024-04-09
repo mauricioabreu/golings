@@ -86,7 +86,7 @@ func WatchEvents(updateF chan<- string) {
 	}
 
 	for event := range watcher.Events {
-		if event.Has(fsnotify.Write) {
+		if event.Has(fsnotify.Write) || event.Has(fsnotify.Rename) {
 			updateF <- event.Name
 		}
 	}
