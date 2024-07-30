@@ -34,6 +34,6 @@ func TestGetLastTwoNames(t *testing.T) {
 	expectedLastTwoNames := []string{"Carl", "Peter"}
 
 	if !reflect.DeepEqual(lastTwoNames, expectedLastTwoNames) {
-		t.Errorf("firstTwoNames should be %v, but got %v", expectedLastTwoNames, lastTwoNames)
+		t.Errorf("lastTwoNames should be %v, but got %v", expectedLastTwoNames, lastTwoNames)
 	}
 }
