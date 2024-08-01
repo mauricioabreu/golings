@@ -17,9 +17,9 @@ After setting up all the tools required to run `golings` you have the task to fi
 
 First, you need to have `go` installed. You can install it by visiting the [Go downloads page](https://go.dev/dl/)
 
-There are two ways to install `golings`
+There are several ways to install `golings`
 
-### go install
+### Option 1: GO install
 
 ```sh
 go install github.com/mauricioabreu/golings/golings@latest
@@ -29,17 +29,33 @@ Add `go/bin` to your PATH if you want to run golings anywhere in your terminal. 
 
 > The install directory is controlled by the GOPATH and GOBIN environment variables. If GOBIN is set, binaries are installed to that directory. If GOPATH is set, binaries are installed to the bin subdirectory of the first directory in the GOPATH list. Otherwise, binaries are installed to the bin subdirectory of the default GOPATH ($HOME/go or %USERPROFILE%\go).
 
-### Binaries
+#### Windows installation
+
+Some tests depend on `CGO` which is not installed by default.
+
+1. Install scoop package manager [Scoop Homepage](https://scoop.sh)
+    ```powershell
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+    ```
+1. Install MINGW using scoop
+    ```powershell
+    scoop install mingw
+    ```
+1. Close the Powershell session
+
+
+### Option 2: Binaries
 
 Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and choose the option that best fits your environment.
 
-### Web version (playground)
+### Option 3: Web version (playground)
 
 [@Grubba27](https://github.com/Grubba27/) worked hard to create a web version: https://golings.vercel.app/
 
 It's pretty awesome and uses the playground so you can play with the exercises without installing anything.
 
-### DevContainer
+### Option 4: DevContainer
 
 1. Install Docker/Podman & VSCode & Configure
 1. Clone the repository and open it in VSCode.
@@ -61,6 +77,12 @@ git clone git@github.com:mauricioabreu/golings.git
 To run the exercises in the recommended order while taking advantage of fast feedback loop, use the _watch_ command:
 
 ```sh
+golings watch
+```
+
+For Windows:
+```powershell
+$env:CGO_ENABLED=1
 golings watch
 ```
 
