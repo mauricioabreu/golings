@@ -17,14 +17,14 @@ name = "variables3"
 path = "exercises/variables/variables3/main.go"
 mode = "compile"
 hint = """
-Could it be missing the variable type?."""
+Could it be missing the variable type?"""
 
 [[exercises]]
 name = "variables4"
 path = "exercises/variables/variables4/main.go"
 mode = "compile"
 hint = """
-Variables can be redeclared in new blocks, but it is missing something. What is it?."""
+Variables can be redeclared in new blocks, but it is missing something. What is it?"""
 
 [[exercises]]
 name = "variables5"
@@ -60,7 +60,7 @@ name = "functions3"
 path = "exercises/functions/functions3/main.go"
 mode = "compile"
 hint = """
-When a function expect arguments, you must pass values to them."""
+When a function expects arguments, you must pass values to them."""
 
 [[exercises]]
 name = "functions4"
@@ -73,13 +73,13 @@ Functions that return values must have return types declared in the function sig
 name = "if1"
 path = "exercises/if/if1/main_test.go"
 mode = "test"
-hint = "No hints this time"
+hint = "Use an if statement to compare a and b, and return the larger number."
 
 [[exercises]]
 name = "if2"
 path = "exercises/if/if2/main_test.go"
 mode = "test"
-hint = "No hints this time"
+hint = "Implement fooIfFizz function by using if and else statements."
 
 [[exercises]]
 name = "switch1"
@@ -99,39 +99,39 @@ Switch without a condition is possible, but that case statement needs a boolean 
 name = "switch3"
 path = "exercises/switch/switch3/main_test.go"
 mode = "test"
-hint = "No hints this time"
+hint = "Ensure that each case statement in a switch block has a condition."
 
 [[exercises]]
 name = "primitive_types1"
 path = "exercises/primitive_types/primitive_types1/main.go"
 mode = "compile"
-hint = "No hints this time"
+hint = "Update the code to reflect the store closing before the second check."
 
 [[exercises]]
 name = "primitive_types2"
 path = "exercises/primitive_types/primitive_types2/main.go"
 mode = "compile"
-hint = "No hints this time"
+hint = "Make sure 'who' is declared and assigned a value before using it."
 
 [[exercises]]
 name = "primitive_types3"
 path = "exercises/primitive_types/primitive_types3/main.go"
 mode = "compile"
-hint = "fmt.Printf() can take multiples variables as parameters. Try declaring thoses variables."
+hint = "fmt.Printf() can take multiple variables as parameters. Try declaring those variables."
 
 [[exercises]]
 name = "primitive_types4"
 path = "exercises/primitive_types/primitive_types4/main.go"
 mode = "compile"
 hint = """
-byte can hold from 0 to 255. Could it store a character?"""
+byte can hold values from 0 to 255. Could it store a character?"""
 
 [[exercises]]
 name = "primitive_types5"
 path = "exercises/primitive_types/primitive_types5/main.go"
 mode = "compile"
 hint = """
-These names seem misleading, no? But they are close to be correct.
+These names seem misleading, no? But they are close to being correct.
 Check this documentation to understand the variety of
 numeric data types: https://go.dev/ref/spec#Numeric_types"""
 
@@ -140,56 +140,58 @@ name = "arrays1"
 path = "exercises/arrays/arrays1/main.go"
 mode = "compile"
 hint = """
-Arrays are zero-based indexing."""
+Arrays use zero-based indexing."""
 
 [[exercises]]
 name = "arrays2"
 path = "exercises/arrays/arrays2/main.go"
 mode = "compile"
 hint = """
-Unlike languages like Python or Ruby, go does not let you have arrays with mixed data types."""
+Unlike languages like Python or Ruby, Go does not allow arrays with mixed data types."""
 
 [[exercises]]
 name = "slices1"
 path = "exercises/slices/slices1/main.go"
 mode = "compile"
 hint = """
-Slices can be created with the make function and they must have a type."""
+Slices can be created with the `make` function and must have a specified type."""
 
 [[exercises]]
 name = "slices2"
 path = "exercises/slices/slices2/main.go"
 mode = "compile"
 hint = """
-Slices can be created from arrays and you can slice it with a range, with the [low:high] syntax."""
+Slices can be created from arrays using the [low:high] syntax."""
 
 [[exercises]]
 name = "slices3"
 path = "exercises/slices/slices3/main.go"
 mode = "compile"
 hint = """
-Append is used to add elements to an existing slice.
-Add some elements and read the output.
+Use the `append` function to add elements to an existing slice.
+Check the output after adding some elements.
 
-If you are still confuse about the append function, don't worry, check out
-the spec: https://go.dev/ref/spec#Appending_and_copying_slices"""
+For more on the `append` function, refer to: https://go.dev/ref/spec#Appending_and_copying_slices"""
 
 [[exercises]]
 name = "slices4"
 path = "exercises/slices/slices4/main_test.go"
 mode = "test"
-hint = "No hints this time"
+hint = """
+Check the slice indices to ensure they fall within the bounds of the names slice.
+
+For more information: https://go.dev/ref/spec#Appending_and_copying_slices"""
 
 [[exercises]]
 name = "maps1"
 path = "exercises/maps/maps1/main.go"
 mode = "compile"
 hint = """
-Maps have types, for the key and the values.
+Maps have types for both keys and values.
 
-To make it compile you need to define types.
+Define these types to make the code compile.
 
-Indexing is similar to setting values.
+Indexing in maps is similar to setting values.
 
 Check the spec for more info: https://go.dev/ref/spec#Map_types"""
 
@@ -198,66 +200,59 @@ name = "maps2"
 path = "exercises/maps/maps2/main.go"
 mode = "compile"
 hint = """
-Very similar to maps1, but this time you can initialize a new map
-in the same line with a different syntax.
-"""
+Similar to `maps1`, but you can initialize a new map in the same line using a different syntax."""
 
 [[exercises]]
 name = "maps3"
 path = "exercises/maps/maps3/main_test.go"
 mode = "test"
-hint = "No hints this time"
+hint = """
+Verify that the keys used to access map values match the keys defined in the phoneBook map."""
 
 [[exercises]]
 name = "range1"
 path = "exercises/range/range1/main.go"
 mode = "compile"
 hint = """
-You can use the range keyword to iterate over collections. Arrays, slices and maps are iterable
-data types."""
+Use the `range` keyword to iterate over collections like arrays, slices, and maps."""
 
 [[exercises]]
 name = "range2"
 path = "exercises/range/range2/main.go"
 mode = "compile"
 hint = """
-Just like slices and array, you can use the range keyword to iterate over maps values.
-One slightly difference between iterating over arrays and slices is that with maps we iterate
-over keys and their values."""
+Use the `range` keyword to iterate over map values. Unlike arrays and slices, maps are iterated over by keys and values."""
 
 [[exercises]]
 name = "range3"
 path = "exercises/range/range3/main_test.go"
 mode = "test"
-hint = "No hints this time"
+hint = """
+Use a `for` loop with `range` to check if each number is even and append it to the `evenNumbers` slice."""
 
 [[exercises]]
 name = "structs1"
 path = "exercises/structs/structs1/main.go"
 mode = "compile"
 hint = """
-Structs are created using the 'type structName struct {}' syntax.
-Fields can be declared inside the brackets. They must have their types
-declared along their names.
-"""
+Structs are created using the `type structName struct {}` syntax.
+Fields inside the brackets must have their types declared along with their names."""
 
 [[exercises]]
 name = "structs2"
 path = "exercises/structs/structs2/main.go"
 mode = "compile"
 hint = """
-Embedding is achieved using just the struct name.
+Embedding a struct is done using just the struct name.
 
-After embedding a struct, we are able to access the fields through the base struct, without having to
-specify the full path to the field. But you can do if you want.
-"""
+After embedding, fields can be accessed directly through the base struct without specifying the full path, but you can if needed."""
 
 [[exercises]]
 name = "structs3"
 path = "exercises/structs/structs3/main.go"
 mode = "compile"
 hint = """
-You can add a function to a struct by adding code similar to the one below:
+Add a function to a struct by defining it as follows:
 
 func (s *StructHere) doSomething() {
 
@@ -269,35 +264,31 @@ name = "anonymous_functions1"
 path = "exercises/anonymous_functions/anonymous_functions1/main.go"
 mode = "compile"
 hint = """
-The function needs a string to print
-"""
+The function needs a string to print."""
 
 [[exercises]]
 name = "anonymous_functions2"
 path = "exercises/anonymous_functions/anonymous_functions2/main.go"
 mode = "compile"
 hint = """
-Maybe you should call the function with a param
-"""
+You should call the function with a parameter."""
 
 [[exercises]]
 name = "anonymous_functions3"
 path = "exercises/anonymous_functions/anonymous_functions3/main.go"
 mode = "compile"
 hint = """
-1 - updateStatus() function should return an orderStatus index like orderStatus[index]
-2 - Maybe you should call anonymous_func once more time
-"""
+1 - The `updateStatus()` function should return an order status index like `orderStatus[index]`.
+2 - You may need to call `anonymous_func` once more."""
 
 [[exercises]]
 name = "generics1"
 path = "exercises/generics/generics1/main.go"
 mode = "compile"
 hint = """
-Generic functions exist to remove the burden of rewriting the same code multiple times.
-With generics we don't need to copy and paste the code and change only the type.
+Generic functions prevent code duplication by allowing the same function to handle different types.
 
-Types are defined using a syntax like
+Types are defined using syntax like:
 
 func FuncName[T any](value T) {
 
@@ -309,12 +300,11 @@ name = "generics2"
 path = "exercises/generics/generics2/main.go"
 mode = "compile"
 hint = """
-We can't mismatch types in arithmetic operations, but our functions can reused to other
-types while sharing the same logic.
+Type mismatches in arithmetic operations are not allowed, but generics enable functions to handle different types while maintaining the same logic.
 
-In go, we can declare type constraints. It is the case of our Number interface.
+In Go, type constraints can be declared. For this exercise, the `Number` interface is an example.
 
-Don't forget the type signature.
+Ensure you include the appropriate type signature.
 """
 
 [[exercises]]
@@ -322,9 +312,9 @@ name = "concurrent1"
 path = "exercises/concurrent/concurrent1/main_test.go"
 mode = "test"
 hint = """
-We have multiple printers (as the others, these ones don't work too).
+We have multiple printers (though these may also be non-functional).
 
-Our goal is to print something. But what is this?
+Our goal is to print something, but what exactly should be printed?
 """
 
 [[exercises]]
@@ -332,15 +322,11 @@ name = "concurrent2"
 path = "exercises/concurrent/concurrent2/main_test.go"
 mode = "test"
 hint = """
-Updating a variable from multiple goroutines can lead to a data race.
-A data race is when the same variable is concurrently read and written by multiple goroutines without
-any kind of protection.
+Updating a variable from multiple goroutines can lead to a data race. A data race occurs when multiple goroutines read and write the same variable simultaneously without proper synchronization.
 
-Imagine if a program is reading a variable while another one is writing.
+Consider a counter as an example: concurrent updates can lead to unexpected results.
 
-A counter is a good example. Your counter could be updated with a different value than expected.
-
-Read a little about mutexes: https://pkg.go.dev/sync#Mutex.
+Learn more about mutexes to handle this issue: https://pkg.go.dev/sync#Mutex.
 """
 
 [[exercises]]
@@ -348,9 +334,9 @@ name = "concurrent3"
 path = "exercises/concurrent/concurrent3/main_test.go"
 mode = "test"
 hint = """
-Writing messages to closed channels will panic.
+Writing messages to closed channels will cause a panic.
 
-To avoid panics, we don't want to send messages to closed channels.
+To prevent panics, avoid sending messages to channels that have been closed.
 
-Remember: channels can be iterated using for-range loops.
+Note: Channels can be iterated using `for-range` loops.
 """
