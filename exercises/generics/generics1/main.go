@@ -1,7 +1,5 @@
 // generics1
 // Make me compile!
-
-// I AM NOT DONE
 package main
 
 import "fmt"
@@ -11,6 +9,6 @@ func main() {
 	print(42)
 }
 
-func print(value) {
+func print(value any) {
 	fmt.Println(value)
 }
