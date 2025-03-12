@@ -39,6 +39,15 @@ func RunNextExercise(infoFile string) {
 		color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress*100)
 	}
 
+	if progress == 1.0 {
+		color.Green("Congratulations!!\n\n")
+		color.Green("You have completed all %d of the currently available exercises.")
+		color.Blue("If you enjoyed working through this introduction to Golang please give the github repository a star")
+		color.White("\t> https://github.com/mauricioabreu/golings <")
+
+		return;
+	}
+
 	exercise, err := exercises.NextPending(infoFile)
 	if err != nil {
 		color.Red("Failed to find next exercises")
