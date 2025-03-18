@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/fatih/color"
 	"github.com/fsnotify/fsnotify"
@@ -20,7 +19,7 @@ func WatchCmd(infoFile string) *cobra.Command {
 		Short: "Verify exercises when files are edited",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			RunNextExercise(infoFile)
-			reader := bufio.NewReader(os.Stdin)
+			scanner := bufio.NewScanner(os.Stdin)
 			update := make(chan string)
 
 			go WatchEvents(update)
@@ -32,11 +31,11 @@ func WatchCmd(infoFile string) *cobra.Command {
 					}
 				}()
 
-				cmdString, err := reader.ReadString('\n')
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
+				scanner.Scan()
+				if err := scanner.Err(); err != nil {
+					fmt.Fprintln(os.Stderr, "reading standard input:", err)
 				}
-				cmdStr := strings.TrimSuffix(cmdString, "\n")
+				cmdStr := scanner.Text()
 
 				switch cmdStr {
 				case "list":
