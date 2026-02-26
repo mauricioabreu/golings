@@ -32,6 +32,29 @@ func PrintList(infoFile string) {
 func RunNextExercise(infoFile string) {
 	ClearScreen()
 
+	allExs, err := exercises.List(infoFile)
+	if err != nil {
+		color.Red("Failed to list exercises: %v", err)
+		return
+	}
+
+	var target exercises.Exercise
+	var lastResult exercises.Result
+	found := false
+
+	// Iterate through all exercises to find the first one that isn't actually "done"
+	for _, ex := range allExs {
+		res, _ := ex.Run()
+		// An exercise is only truly done if it compiles/passes AND the comment is gone
+		if res.Err != "" || ex.State() == exercises.Pending {
+			target = ex
+			lastResult = res
+			found = true
+			break
+		}
+	}
+
+	// Update progress based on actual completion
 	progress, done, total, err := exercises.Progress(infoFile)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -39,39 +62,33 @@ func RunNextExercise(infoFile string) {
 		color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress*100)
 	}
 
-	if done == total {
+	if !found {
 		color.Green("Congratulations!!\n")
 		color.Green("You have completed all %d of the currently available exercises.", total)
 		color.Blue("If you enjoyed working through this introduction to Golang,")
 		color.Blue("please give the github repository a star")
-		color.White("> https://github.com/mauricioabreu/golings <\n\n\n")
-
+		color.White("> https://github.com <\n\n\n")
 		color.Yellow("To quit out of watch, please type `exit` and hit enter:")
-
-		return;
+		return
 	}
 
-	exercise, err := exercises.NextPending(infoFile)
-	if err != nil {
-		color.Red("Failed to find next exercises")
-	}
-
-	result, err := exercise.Run()
-	if err != nil {
-		color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
+	// If there's a compilation/test error, show it immediately
+	if lastResult.Err != "" {
+		color.Cyan("Failed to compile the exercise %s\n\n", lastResult.Exercise.Path)
 		color.White("Check the output below: \n\n")
-		color.Red(result.Err)
-		color.Red(result.Out)
-		color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
-	} else {
-		color.Green("Congratulations!\n\n")
-		color.Green("Here is the output of your program:\n\n")
-		color.Cyan(result.Out)
-		if result.Exercise.State() == exercises.Pending {
-			color.White("Remove the 'I AM NOT DONE' from the file to keep going\n")
-			color.Red("exercise is still pending")
-		}
+		color.Red(lastResult.Err)
+		color.Red(lastResult.Out)
+		color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", target.Name)
+		return
 	}
+
+	// If it passes but the comment is still there
+	color.Green("Successfully tested %s!\n\n", target.Path)
+	color.Green("Congratulations!\n\n")
+	color.Green("Here is the output of your program:\n\n")
+	color.Cyan(lastResult.Out)
+	color.White("Remove the 'I AM NOT DONE' from the file to keep going\n")
+	color.Red("exercise is still pending")
 }
 
 func ClearScreen() {
