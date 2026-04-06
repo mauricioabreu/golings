@@ -5,5 +5,5 @@
 package main
 
 func main() {
-	call_me()
+	callMe()
 }

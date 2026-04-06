@@ -21,11 +21,11 @@ func updateStatus() func() string {
 }
 
 func main() {
-	anonymous_func := updateStatus()
+	anonymousFunc := updateStatus()
 	var status string
 
-	status = anonymous_func()
-	status = anonymous_func()
+	status = anonymousFunc()
+	status = anonymousFunc()
 
 	if status == "DONE" {
 		fmt.Println("Good Job!")

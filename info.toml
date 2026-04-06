@@ -46,7 +46,7 @@ path = "exercises/functions/functions1/main.go"
 mode = "compile"
 hint = """
 The main function is calling another function that it expects to exist.
-It expects a function named `call_me` to exist and receive no arguments."""
+It expects a function named `callMe` to exist and receive no arguments."""
 
 [[exercises]]
 name = "functions2"
@@ -279,7 +279,7 @@ path = "exercises/anonymous_functions/anonymous_functions3/main.go"
 mode = "compile"
 hint = """
 1 - The `updateStatus()` function should return an order status index like `orderStatus[index]`.
-2 - You may need to call `anonymous_func` once more."""
+2 - You may need to call `anonymousFunc` once more."""
 
 [[exercises]]
 name = "generics1"
