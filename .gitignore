@@ -1,3 +1,6 @@
 dist/
 coverage.out
 .DS_Store
+.solutions/
+.exgen/
+.idea/
