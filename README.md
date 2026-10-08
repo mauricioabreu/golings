@@ -142,3 +142,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 * [rustlings](https://github.com/rust-lang/rustlings)
 * [ziglings](https://github.com/ratfactor/ziglings)
+* [robolings](https://github.com/12-Twelve-12/robolings) - robot learning: kinematics, control, diffusion and flow-matching policies, in NumPy
