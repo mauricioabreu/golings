@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cleonte/golings"
 	"github.com/cleonte/golings/golings/tui"
 	"github.com/cleonte/golings/golings/watcher"
 	"github.com/fatih/color"
@@ -43,7 +44,13 @@ example when piping.`,
 			}
 
 			if !plain && isTerminal(cmd.InOrStdin()) && isTerminal(cmd.OutOrStdout()) {
-				return tui.Run(ctx, tui.Config{InfoFile: infoFile, Changes: changes})
+				return tui.Run(ctx, tui.Config{
+					InfoFile:  infoFile,
+					Changes:   changes,
+					Source:    golings.FS,
+					Root:      filepath.Dir(infoFile),
+					Solutions: golings.Solutions,
+				})
 			}
 
 			watchLoop(cmd.InOrStdin(), changes, watchActions{

@@ -18,9 +18,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-// workspace writes exercises/<topic>/<name>/main.go files ("topic/name",
+// newWorkspace writes exercises/<topic>/<name>/main.go files ("topic/name",
 // a leading "!" leaves it unsolved) and returns the path of its info file.
-func workspace(t *testing.T, specs ...string) string {
+func newWorkspace(t *testing.T, specs ...string) string {
 	t.Helper()
 	root := t.TempDir()
 	var info strings.Builder
@@ -142,7 +142,7 @@ func settle(cmd tea.Cmd) tea.Msg {
 func TestShowsProgressTopicAndTheRunningExercise(t *testing.T) {
 	g := NewWithT(t)
 	noColor(t)
-	info := workspace(t, "a/a1", "!a/a2", "!b/b1")
+	info := newWorkspace(t, "a/a1", "!a/a2", "!b/b1")
 	fake := &fakeRuns{}
 	m, cmd := start(t, Config{InfoFile: info, Run: fake.run})
 	m.Update(tea.WindowSizeMsg{Width: 80, Height: 20})
@@ -161,7 +161,7 @@ func TestShowsProgressTopicAndTheRunningExercise(t *testing.T) {
 func TestShowsTheFailureOfTheExercise(t *testing.T) {
 	g := NewWithT(t)
 	noColor(t)
-	info := workspace(t, "!a/a1")
+	info := newWorkspace(t, "!a/a1")
 	fake := &fakeRuns{result: func(ex exercises.Exercise) (exercises.Result, error) {
 		return exercises.Result{Exercise: ex, BuildFailed: true, Err: ex.Path + ":4:6: undefined: nope\n"}, errors.New("exit status 1")
 	}}
@@ -178,7 +178,7 @@ func TestShowsTheFailureOfTheExercise(t *testing.T) {
 func TestAWorkingExerciseThatIsStillPendingAsksToRemoveTheMarker(t *testing.T) {
 	g := NewWithT(t)
 	noColor(t)
-	info := workspace(t, "!a/a1")
+	info := newWorkspace(t, "!a/a1")
 	fake := &fakeRuns{result: func(ex exercises.Exercise) (exercises.Result, error) {
 		return exercises.Result{Exercise: ex, Out: "hello from the exercise\n"}, nil
 	}}
@@ -195,7 +195,7 @@ func TestAWorkingExerciseThatIsStillPendingAsksToRemoveTheMarker(t *testing.T) {
 func TestASaveCancelsTheRunInProgress(t *testing.T) {
 	g := NewWithT(t)
 	noColor(t)
-	info := workspace(t, "!a/a1")
+	info := newWorkspace(t, "!a/a1")
 	fake := &fakeRuns{block: true}
 	m, cmd := start(t, Config{InfoFile: info, Run: fake.run})
 
@@ -222,7 +222,7 @@ func TestQuitStopsTheRunAndExits(t *testing.T) {
 	for _, key := range []tea.KeyPressMsg{{Code: 'q', Text: "q"}, {Code: 'c', Mod: tea.ModCtrl}} {
 		t.Run(key.String(), func(t *testing.T) {
 			g := NewWithT(t)
-			m, _ := start(t, Config{InfoFile: workspace(t, "!a/a1"), Run: (&fakeRuns{block: true}).run})
+			m, _ := start(t, Config{InfoFile: newWorkspace(t, "!a/a1"), Run: (&fakeRuns{block: true}).run})
 			before := m.runID
 
 			_, cmd := m.Update(key)
@@ -235,7 +235,7 @@ func TestQuitStopsTheRunAndExits(t *testing.T) {
 
 func TestOtherKeysDoNothing(t *testing.T) {
 	g := NewWithT(t)
-	m, _ := start(t, Config{InfoFile: workspace(t, "!a/a1"), Run: (&fakeRuns{}).run})
+	m, _ := start(t, Config{InfoFile: newWorkspace(t, "!a/a1"), Run: (&fakeRuns{}).run})
 
 	_, cmd := m.Update(tea.KeyPressMsg{Code: 'x', Text: "x"})
 
@@ -246,7 +246,7 @@ func TestWhenEverythingIsDone(t *testing.T) {
 	g := NewWithT(t)
 	noColor(t)
 	fake := &fakeRuns{}
-	m, cmd := start(t, Config{InfoFile: workspace(t, "a/a1", "a/a2"), Run: fake.run})
+	m, cmd := start(t, Config{InfoFile: newWorkspace(t, "a/a1", "a/a2"), Run: fake.run})
 
 	runCmds(t, m, cmd)
 
@@ -285,7 +285,7 @@ func TestLongOutputIsCutToTheHeight(t *testing.T) {
 	fake := &fakeRuns{result: func(ex exercises.Exercise) (exercises.Result, error) {
 		return exercises.Result{Exercise: ex, Out: long}, nil
 	}}
-	m, cmd := start(t, Config{InfoFile: workspace(t, "!a/a1"), Run: fake.run})
+	m, cmd := start(t, Config{InfoFile: newWorkspace(t, "!a/a1"), Run: fake.run})
 	m.Update(tea.WindowSizeMsg{Width: 60, Height: 12})
 	runCmds(t, m, cmd)
 
@@ -298,7 +298,7 @@ func TestLongOutputIsCutToTheHeight(t *testing.T) {
 
 func TestKeepsWorkingWhenTheWatcherStops(t *testing.T) {
 	g := NewWithT(t)
-	m, _ := start(t, Config{InfoFile: workspace(t, "!a/a1"), Run: (&fakeRuns{}).run})
+	m, _ := start(t, Config{InfoFile: newWorkspace(t, "!a/a1"), Run: (&fakeRuns{}).run})
 
 	_, cmd := m.Update(changesClosedMsg{})
 
@@ -308,7 +308,7 @@ func TestKeepsWorkingWhenTheWatcherStops(t *testing.T) {
 func TestWaitsForTheNextSave(t *testing.T) {
 	g := NewWithT(t)
 	changes := make(chan []string, 1)
-	m := New(Config{InfoFile: workspace(t, "!a/a1"), Changes: changes})
+	m := New(Config{InfoFile: newWorkspace(t, "!a/a1"), Changes: changes})
 
 	wait := m.waitForChanges()
 	changes <- []string{"a.go"}
@@ -355,7 +355,7 @@ func TestProgramRunsAndQuits(t *testing.T) {
 	input, typed := newPipe()
 	out := &syncBuffer{}
 	program := tea.NewProgram(
-		New(Config{InfoFile: workspace(t, "!a/a1"), Changes: changes, Run: run}),
+		New(Config{InfoFile: newWorkspace(t, "!a/a1"), Changes: changes, Run: run}),
 		tea.WithInput(input), tea.WithOutput(out), tea.WithWindowSize(80, 24), tea.WithoutSignalHandler(),
 	)
 

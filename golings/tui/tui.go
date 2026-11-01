@@ -8,12 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"strings"
 
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	"github.com/cleonte/golings/golings/exercises"
 	"github.com/cleonte/golings/golings/ui"
+	"github.com/cleonte/golings/golings/workspace"
 )
 
 // RunFunc builds and runs an exercise. It must give up when ctx is cancelled.
@@ -25,6 +27,14 @@ type Config struct {
 	Changes <-chan []string
 	// Run defaults to running the exercise with exercises.DefaultTimeout.
 	Run RunFunc
+	// Source holds the original exercises, used to reset one. Root is the folder
+	// the exercise paths of the info file are relative to. Without a Source the
+	// reset key says it is not available.
+	Source fs.FS
+	Root   string
+	// Solutions holds the solutions shown on request, laid out like
+	// exercises/. Without it the solution key says it is not available.
+	Solutions fs.FS
 }
 
 type status int
@@ -38,10 +48,25 @@ const (
 	statusError
 )
 
+// mode is what the lower part of the screen is showing.
+type mode int
+
+const (
+	modeResult mode = iota // the result of the run
+	modeHint
+	modeSolution
+	modeConfirmSolution
+	modeConfirmReset
+)
+
 type Model struct {
 	cfg    Config
 	width  int
 	height int
+
+	mode   mode
+	scroll int    // lines scrolled off the top of the body
+	notice string // one line shown instead of the key help, e.g. "Reset a1."
 
 	status   status
 	message  string // for statusError
@@ -99,11 +124,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width, m.height = msg.Width, msg.Height
 
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "q", "ctrl+c":
-			m.stopRun()
-			return m, tea.Quit
-		}
+		return m.handleKey(msg)
 
 	case startMsg:
 		return m, tea.Batch(m.startRun(), m.waitForChanges())
@@ -122,6 +143,110 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+func (m *Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
+	key := msg.String()
+	if key == "q" || key == "ctrl+c" {
+		m.stopRun()
+		return m, tea.Quit
+	}
+	m.notice = ""
+
+	// A question is open: only yes or no answer it.
+	if m.mode == modeConfirmSolution || m.mode == modeConfirmReset {
+		pending := m.mode
+		m.mode, m.scroll = modeResult, 0
+		if key != "y" {
+			return m, nil
+		}
+		if pending == modeConfirmSolution {
+			m.showSolution()
+			return m, nil
+		}
+		return m, m.reset()
+	}
+
+	switch key {
+	case "esc":
+		m.mode, m.scroll = modeResult, 0
+	case "h":
+		m.toggle(modeHint)
+	case "s":
+		m.askToShowSolution()
+	case "r":
+		m.askToReset()
+	case "down", "j":
+		m.scroll = min(m.scroll+1, m.maxScroll())
+	case "up", "k":
+		m.scroll = max(m.scroll-1, 0)
+	case "pgdown", "space":
+		m.scroll = min(m.scroll+m.available(), m.maxScroll())
+	case "pgup":
+		m.scroll = max(m.scroll-m.available(), 0)
+	}
+	return m, nil
+}
+
+// hasExercise reports whether there is a current exercise to act on.
+func (m *Model) hasExercise() bool {
+	return m.status == statusRunning || m.status == statusFinished
+}
+
+func (m *Model) toggle(target mode) {
+	if !m.hasExercise() {
+		return
+	}
+	m.scroll = 0
+	if m.mode == target {
+		m.mode = modeResult
+		return
+	}
+	m.mode = target
+}
+
+func (m *Model) askToShowSolution() {
+	switch {
+	case !m.hasExercise():
+	case m.cfg.Solutions == nil:
+		m.notice = "Solutions are not available here."
+	default:
+		m.mode, m.scroll = modeConfirmSolution, 0
+	}
+}
+
+func (m *Model) showSolution() {
+	if _, err := fs.Stat(m.cfg.Solutions, m.exercise.SolutionPath()); err != nil {
+		m.notice = "No solution available for " + m.exercise.Name + " yet."
+		return
+	}
+	m.mode, m.scroll = modeSolution, 0
+}
+
+func (m *Model) askToReset() {
+	switch {
+	case !m.hasExercise():
+	case m.cfg.Source == nil:
+		m.notice = "Reset is not available here."
+	default:
+		m.mode, m.scroll = modeConfirmReset, 0
+	}
+}
+
+// reset puts the original exercise back and runs it again.
+func (m *Model) reset() tea.Cmd {
+	root := m.cfg.Root
+	if root == "" {
+		root = "."
+	}
+	path, err := workspace.Reset(m.cfg.Source, root, m.exercise.Name)
+	if err != nil {
+		m.notice = "Reset failed: " + err.Error()
+		return nil
+	}
+	cmd := m.startRun()
+	m.notice = "Reset " + path + " to its original state."
+	return cmd
+}
+
 func (m *Model) stopRun() {
 	if m.cancel != nil {
 		m.cancel()
@@ -134,6 +259,7 @@ func (m *Model) stopRun() {
 // starts running it.
 func (m *Model) startRun() tea.Cmd {
 	m.stopRun()
+	m.mode, m.scroll = modeResult, 0
 
 	_, done, total, err := exercises.Progress(m.cfg.InfoFile)
 	if err != nil {
@@ -246,38 +372,108 @@ func (m *Model) header() string {
 	return title + "\n" + current + "\n" + rule + "\n"
 }
 
-func (m *Model) body() string {
-	var lines []string
+// available is the number of lines the body can use.
+func (m *Model) available() int {
+	return max(m.height-headerLines-footerLines, 1)
+}
+
+// maxScroll is how far the body can be scrolled before running out of lines.
+func (m *Model) maxScroll() int {
+	return max(len(m.lines())-m.available(), 0)
+}
+
+// lines is everything the body would show, before cutting it to the screen.
+func (m *Model) lines() []string {
+	switch m.mode {
+	case modeHint:
+		return m.hintLines()
+	case modeSolution:
+		return m.solutionLines()
+	case modeConfirmSolution:
+		return []string{
+			warnStyle.Render("Show the solution of " + m.exercise.Name + "?"),
+			"It spoils the exercise: try a bit longer, or read the hint (esc, then h) first.",
+			"",
+			"y to show it, any other key to go back",
+		}
+	case modeConfirmReset:
+		return []string{
+			warnStyle.Render("Reset " + m.exercise.Name + " to its original state?"),
+			"This discards your changes to " + m.exercise.Path + ".",
+			"",
+			"y to reset it, any other key to keep your work",
+		}
+	}
 
 	switch m.status {
 	case statusStarting:
-		lines = []string{"Starting…"}
+		return []string{"Starting…"}
 	case statusRunning:
-		lines = []string{dimStyle.Render("Running " + m.exercise.Name + "…")}
+		return []string{dimStyle.Render("Running " + m.exercise.Name + "…")}
 	case statusAllDone:
-		lines = []string{
+		return []string{
 			okStyle.Render("Congratulations! You have completed all the exercises."),
 			"",
 			"If you enjoyed it, please give the repository a star:",
 			"https://github.com/cleonte/golings",
 		}
 	case statusNothingToRun:
-		lines = []string{warnStyle.Render("There are no exercises to run."), "Try `golings doctor` to check your setup."}
+		return []string{warnStyle.Render("There are no exercises to run."), "Try `golings doctor` to check your setup."}
 	case statusError:
-		lines = []string{errStyle.Render(m.message), "Run golings from the folder that holds info.toml, create one with `golings init`, or try `golings doctor`."}
+		return []string{errStyle.Render(m.message), "Run golings from the folder that holds info.toml, create one with `golings init`, or try `golings doctor`."}
 	case statusFinished:
-		lines = m.resultLines()
+		return m.resultLines()
 	}
+	return nil
+}
 
-	available := max(m.height-headerLines-footerLines, 1)
+func (m *Model) hintLines() []string {
+	lines := []string{titleStyle.Render("Hint for " + m.exercise.Name), ""}
+	hint := strings.TrimSpace(m.exercise.Hint)
+	if hint == "" {
+		hint = "There is no hint for this exercise."
+	}
+	return append(lines, strings.Split(hint, "\n")...)
+}
+
+func (m *Model) solutionLines() []string {
+	lines := []string{titleStyle.Render("Solution for " + m.exercise.Name), ""}
+	source, err := fs.ReadFile(m.cfg.Solutions, m.exercise.SolutionPath())
+	if err != nil {
+		return append(lines, errStyle.Render(err.Error()))
+	}
+	source = bytes.ReplaceAll(source, []byte("\t"), []byte("    "))
+	return append(lines, strings.Split(strings.TrimRight(string(source), "\n"), "\n")...)
+}
+
+func (m *Model) body() string {
+	lines := m.lines()
+	available := m.available()
+
+	start := min(m.scroll, max(len(lines)-available, 0))
+	lines = lines[start:]
 	if len(lines) > available {
 		hidden := len(lines) - (available - 1)
-		lines = append(lines[:available-1], dimStyle.Render(fmt.Sprintf("… %d more lines", hidden)))
+		lines = append(lines[:available-1], dimStyle.Render(fmt.Sprintf("… %d more lines (↓ to scroll)", hidden)))
 	}
 	for len(lines) < available {
 		lines = append(lines, "")
 	}
-	return strings.Join(lines, "\n") + "\n" + dimStyle.Render("q quit")
+	return strings.Join(lines, "\n") + "\n" + m.footer()
+}
+
+func (m *Model) footer() string {
+	switch {
+	case m.notice != "":
+		return warnStyle.Render(m.notice)
+	case m.mode == modeConfirmSolution || m.mode == modeConfirmReset:
+		return dimStyle.Render("y yes   any other key: no   q quit")
+	case m.mode != modeResult:
+		return dimStyle.Render("esc back   ↑↓ scroll   q quit")
+	case m.hasExercise():
+		return dimStyle.Render("h hint   s solution   r reset   ↑↓ scroll   q quit")
+	}
+	return dimStyle.Render("q quit")
 }
 
 func (m *Model) resultLines() []string {
