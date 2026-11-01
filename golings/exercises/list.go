@@ -98,5 +98,9 @@ func Progress(infoFile string) (float32, int, int, error) {
 		}
 	}
 
+	if total == 0 {
+		return 0, 0, 0, nil
+	}
+
 	return float32(totalDone) / float32(total), totalDone, total, nil
 }

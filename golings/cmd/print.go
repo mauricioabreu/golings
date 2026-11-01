@@ -17,6 +17,7 @@ func PrintHint(infoFile string) {
 	exercise, err := exercises.NextPending(infoFile)
 	if err != nil {
 		color.Red("Failed to find next exercises")
+		return
 	}
 	color.Yellow(exercise.Hint)
 }
@@ -26,8 +27,38 @@ func PrintList(infoFile string) {
 	exs, err := exercises.List(infoFile)
 	if err != nil {
 		color.Red("Failed to list exercises")
+		return
 	}
 	ui.PrintList(os.Stdout, exs)
+	printTopicProgress(infoFile)
+}
+
+// printTopicProgress prints the per-topic table below the exercise list.
+func printTopicProgress(infoFile string) {
+	topics, err := exercises.ProgressByTopic(infoFile)
+	if err != nil || len(topics) == 0 {
+		return
+	}
+	fmt.Println()
+	ui.PrintTopicProgress(os.Stdout, topics)
+}
+
+// currentTopicLine describes how far along the learner is in a topic,
+// e.g. "Topic: slices (2/5)". It is empty for exercises without a topic.
+func currentTopicLine(infoFile string, exercise exercises.Exercise) string {
+	if exercise.Topic() == "" {
+		return ""
+	}
+	topics, err := exercises.ProgressByTopic(infoFile)
+	if err != nil {
+		return ""
+	}
+	for _, t := range topics {
+		if t.Topic == exercise.Topic() {
+			return fmt.Sprintf("Topic: %s (%d/%d)", t.Topic, t.Done, t.Total)
+		}
+	}
+	return ""
 }
 
 func RunNextExercise(infoFile string) {
@@ -35,13 +66,19 @@ func RunNextExercise(infoFile string) {
 
 	progress, done, total, err := exercises.Progress(infoFile)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	} else {
-		color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress*100)
+		color.Red("Failed to read the exercises: %s", err)
+		color.Yellow("Run golings from the folder that holds info.toml, or try `golings doctor`.")
+		return
 	}
+	color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress*100)
 
 	if skipped, err := exercises.Skipped(infoFile); err == nil && len(skipped) > 0 {
 		color.Yellow("%d exercise(s) skipped: they need a newer Go than %s\n\n", len(skipped), localGo())
+	}
+
+	if total == 0 {
+		color.Yellow("There are no exercises to run. Try `golings doctor` to check your setup.")
+		return
 	}
 
 	if done == total {
@@ -59,6 +96,11 @@ func RunNextExercise(infoFile string) {
 	exercise, err := exercises.NextPending(infoFile)
 	if err != nil {
 		color.Red("Failed to find next exercises")
+		return
+	}
+
+	if line := currentTopicLine(infoFile, exercise); line != "" {
+		color.Blue(line + "\n")
 	}
 
 	result, err := exercise.Run()

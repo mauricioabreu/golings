@@ -22,6 +22,7 @@ func ListCmd(infoFile string) *cobra.Command {
 				return err
 			}
 			ui.PrintList(os.Stdout, exs)
+			printTopicProgress(infoFile)
 			return nil
 		},
 	}

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/cleonte/golings/golings/cmd"
 	"github.com/fatih/color"
@@ -69,6 +70,35 @@ mode = "test"
 hint = ""
 `), 0o644)).To(Succeed())
 	return info
+}
+
+// writeTopicInfo creates exercises laid out as exercises/<topic>/<name>/main.go
+// ("topic/name", a leading "!" leaves it unsolved) and returns the info file.
+func writeTopicInfo(specs ...string) string {
+	root := GinkgoT().TempDir()
+	wd, err := os.Getwd()
+	Expect(err).NotTo(HaveOccurred())
+
+	info := ""
+	for _, spec := range specs {
+		unsolved := strings.HasPrefix(spec, "!")
+		spec = strings.TrimPrefix(spec, "!")
+		file := filepath.Join(root, "exercises", spec, "main.go")
+		Expect(os.MkdirAll(filepath.Dir(file), 0o755)).To(Succeed())
+
+		source := "package main\n\nfunc main() {}\n"
+		if unsolved {
+			source = "// I AM NOT DONE\n" + source
+		}
+		Expect(os.WriteFile(file, []byte(source), 0o644)).To(Succeed())
+
+		rel, err := filepath.Rel(wd, file)
+		Expect(err).NotTo(HaveOccurred())
+		info += "[[exercises]]\nname = \"" + filepath.Base(spec) + "\"\npath = \"" + rel + "\"\nmode = \"compile\"\nhint = \"\"\n\n"
+	}
+	infoFile := filepath.Join(root, "info.toml")
+	Expect(os.WriteFile(infoFile, []byte(info), 0o644)).To(Succeed())
+	return infoFile
 }
 
 var _ = Describe("More commands", func() {
@@ -151,6 +181,20 @@ var _ = Describe("More commands", func() {
 			Expect(out.String()).To(ContainSubstring("Progress: 1/1 (100.00%)"))
 			Expect(out.String()).To(ContainSubstring("completed all 1 of the currently available exercises"))
 		})
+		It("does not congratulate when the info file can't be read", func() {
+			cmd.RunNextExercise("../fixtures/info404.toml")
+
+			Expect(out.String()).To(ContainSubstring("Failed to read the exercises"))
+			Expect(out.String()).NotTo(ContainSubstring("Congratulations"))
+			Expect(out.String()).NotTo(ContainSubstring("NaN"))
+		})
+		It("does not congratulate when there are no exercises to run", func() {
+			cmd.RunNextExercise("../fixtures/empty/info.toml")
+
+			Expect(out.String()).To(ContainSubstring("no exercises to run"))
+			Expect(out.String()).NotTo(ContainSubstring("Congratulations"))
+			Expect(out.String()).NotTo(ContainSubstring("NaN"))
+		})
 		It("explains that a compiling exercise is still pending", func() {
 			cmd.RunNextExercise("../fixtures/pending1/info.toml")
 
@@ -164,6 +208,20 @@ var _ = Describe("More commands", func() {
 			Expect(out.String()).To(ContainSubstring("declared and not used"))
 			Expect(out.String()).To(ContainSubstring("a := 1"))
 			Expect(out.String()).To(ContainSubstring("golings hint broken"))
+		})
+	})
+
+	Describe("Topic progress in watch", func() {
+		It("shows how far along the learner is in the current topic", func() {
+			cmd.RunNextExercise(writeTopicInfo("a/a1", "!a/a2", "!b/b1"))
+
+			Expect(out.String()).To(ContainSubstring("Progress: 1/3 (33.33%)"))
+			Expect(out.String()).To(ContainSubstring("Topic: a (1/2)"))
+		})
+		It("does not show a topic for exercises without one", func() {
+			cmd.RunNextExercise("../fixtures/pending1/info.toml")
+
+			Expect(out.String()).NotTo(ContainSubstring("Topic:"))
 		})
 	})
 
