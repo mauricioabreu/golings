@@ -18,6 +18,20 @@ func (e Exercise) Topic() string {
 	return ""
 }
 
+// SolutionPath is where the solution of the exercise lives, relative to the
+// root of the solutions: `exercises/slices/slices1/main.go` becomes
+// `solutions/slices/slices1/main.go`. It is empty for exercises that aren't
+// laid out as `exercises/<topic>/<name>/...`.
+func (e Exercise) SolutionPath() string {
+	parts := strings.Split(filepath.ToSlash(e.Path), "/")
+	for i, part := range parts {
+		if part == "exercises" && len(parts) > i+3 {
+			return "solutions/" + strings.Join(parts[i+1:], "/")
+		}
+	}
+	return ""
+}
+
 type TopicProgress struct {
 	Topic string
 	Done  int

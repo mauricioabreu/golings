@@ -127,6 +127,13 @@ If you want to start an exercise over, restore it to its original state (this di
 golings reset variables1
 ```
 
+Once an exercise is done you can compare your answer with the solution. While it is still pending the solution stays hidden, unless you ask for it:
+
+```sh
+golings solution variables1
+golings solution variables1 --reveal
+```
+
 To list all exercises and your progress per topic:
 
 ```sh

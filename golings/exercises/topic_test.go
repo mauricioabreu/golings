@@ -46,6 +46,16 @@ var _ = Describe("Topics", func() {
 		Entry("exercises folder without a topic", "exercises/main.go", ""),
 	)
 
+	DescribeTable("SolutionPath",
+		func(path, want string) {
+			Expect(exercises.Exercise{Path: path}.SolutionPath()).To(Equal(want))
+		},
+		Entry("regular exercise", "exercises/slices/slices1/main.go", "solutions/slices/slices1/main.go"),
+		Entry("test-mode exercise", "exercises/if/if1/main_test.go", "solutions/if/if1/main_test.go"),
+		Entry("workspace below another folder", "../tmp/ws/exercises/a/a1/main.go", "solutions/a/a1/main.go"),
+		Entry("no topic folder", "compile/compile1.go", ""),
+	)
+
 	Describe("ProgressByTopic", func() {
 		It("counts done and total per topic in manifest order", func() {
 			info := writeTopicWorkspace("a/a1", "a/a2", "!a/a3", "!b/b1", "c/c1")

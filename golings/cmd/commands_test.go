@@ -345,6 +345,52 @@ var _ = Describe("More commands", func() {
 		})
 	})
 
+	Describe("Solution", func() {
+		const solutionSource = "package main\n\nfunc main() { println(\"100%d\") }\n"
+		var solutions fstest.MapFS
+
+		BeforeEach(func() {
+			solutions = fstest.MapFS{"solutions/a/a1/main.go": {Data: []byte(solutionSource)}}
+		})
+
+		It("hides the solution while the exercise is pending", func() {
+			solution := cmd.SolutionCmd(writeTopicInfo("!a/a1"), solutions)
+			solution.SetArgs([]string{"a1"})
+
+			Expect(solution.Execute()).To(HaveOccurred())
+			Expect(out.String()).To(ContainSubstring("not done yet"))
+			Expect(out.String()).NotTo(ContainSubstring("println"))
+		})
+		It("shows it on request with --reveal", func() {
+			solution := cmd.SolutionCmd(writeTopicInfo("!a/a1"), solutions)
+			solution.SetArgs([]string{"a1", "--reveal"})
+
+			Expect(solution.Execute()).To(Succeed())
+			Expect(out.String()).To(ContainSubstring("Solution for a1 (solutions/a/a1/main.go)"))
+			Expect(out.String()).To(ContainSubstring(solutionSource), "the source is printed verbatim, % signs included")
+		})
+		It("shows it once the exercise is done", func() {
+			solution := cmd.SolutionCmd(writeTopicInfo("a/a1"), solutions)
+			solution.SetArgs([]string{"a1"})
+
+			Expect(solution.Execute()).To(Succeed())
+			Expect(out.String()).To(ContainSubstring(solutionSource))
+		})
+		It("says so when the exercise has no solution yet", func() {
+			solution := cmd.SolutionCmd(writeTopicInfo("a/a1"), fstest.MapFS{})
+			solution.SetArgs([]string{"a1"})
+
+			Expect(solution.Execute()).To(HaveOccurred())
+			Expect(out.String()).To(ContainSubstring("No solution available for a1 yet"))
+		})
+		It("fails for an unknown exercise", func() {
+			solution := cmd.SolutionCmd(writeTopicInfo("a/a1"), solutions)
+			solution.SetArgs([]string{"404", "--reveal"})
+
+			Expect(solution.Execute()).To(MatchError(exercises.ErrExerciseNotFound))
+		})
+	})
+
 	Describe("Root", func() {
 		It("registers every command", func() {
 			root := cmd.NewRootCmd("test")
@@ -353,7 +399,7 @@ var _ = Describe("More commands", func() {
 			for _, c := range root.Commands() {
 				names = append(names, c.Name())
 			}
-			Expect(names).To(ContainElements("doctor", "hint", "init", "reset", "list", "run", "verify", "watch"))
+			Expect(names).To(ContainElements("doctor", "hint", "init", "reset", "solution", "list", "run", "verify", "watch"))
 			Expect(root.Version).To(Equal("test"))
 		})
 	})

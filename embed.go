@@ -13,3 +13,11 @@ import "embed"
 //
 //go:embed info.toml exercises
 var FS embed.FS
+
+// Solutions contains a working version of each exercise, laid out like
+// exercises/ (solutions/<topic>/<name>/<file>). It is only ever read by
+// `golings solution`; `golings init` must not write it, which is why it is
+// separate from FS.
+//
+//go:embed solutions
+var Solutions embed.FS

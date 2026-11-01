@@ -95,6 +95,15 @@ func TestLearnerJourney(t *testing.T) {
 	out, code = run(t, bin, ws, "verify")
 	expect(t, out, code, 1, "Failed to compile the exercise")
 
+	// The solution stays hidden until the exercise is done, or on request.
+	out, code = run(t, bin, ws, "solution", "variables1")
+	expect(t, out, code, 1, "not done yet")
+	if strings.Contains(out, "var x = 5") {
+		t.Errorf("the solution leaked:\n%s", out)
+	}
+	out, code = run(t, bin, ws, "solution", "variables1", "--reveal")
+	expect(t, out, code, 0, "var x = 5", `"x has the value %d"`)
+
 	// Fix variables1 the way a learner would.
 	file := filepath.Join(ws, "exercises", "variables", "variables1", "main.go")
 	original, err := os.ReadFile(file)
@@ -108,6 +117,13 @@ func TestLearnerJourney(t *testing.T) {
 	}
 	out, code = run(t, bin, ws, "run", "variables1")
 	expect(t, out, code, 0, "Successfully tested")
+	out, code = run(t, bin, ws, "solution", "variables1")
+	expect(t, out, code, 0, "var x = 5")
+
+	// init must never hand out the solutions.
+	if _, err := os.Stat(filepath.Join(ws, "solutions")); err == nil {
+		t.Errorf("init wrote a solutions folder into the learner's workspace")
+	}
 
 	// Reset brings back the broken original, marker included.
 	out, code = run(t, bin, ws, "reset", "variables1", "--yes")
