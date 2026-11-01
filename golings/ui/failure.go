@@ -32,6 +32,9 @@ func PrintFailure(w io.Writer, ex exercises.Exercise, f exercises.Failure) {
 		write(w, cyan, "Failed to compile the exercise %s\n\n", ex.Path)
 	case exercises.TestFailure:
 		write(w, cyan, "Tests failed for the exercise %s\n\n", ex.Path)
+	case exercises.TimeoutFailure:
+		write(w, cyan, "The exercise %s didn't finish within %s and was stopped\n\n", ex.Path, f.Timeout)
+		write(w, nil, "Look for an infinite loop, or a goroutine that waits forever (a channel nobody sends to, a lock that is never released).\n\n")
 	default:
 		write(w, cyan, "The exercise %s failed while running\n\n", ex.Path)
 	}

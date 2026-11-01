@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type FailureKind int
@@ -15,6 +16,8 @@ const (
 	TestFailure
 	// RuntimeFailure means the exercise compiled but crashed or exited non-zero.
 	RuntimeFailure
+	// TimeoutFailure means the exercise was stopped because it ran for too long.
+	TimeoutFailure
 )
 
 // Diagnostic is a single compiler message such as `main.go:10:6: undefined: x`.
@@ -28,8 +31,9 @@ type Diagnostic struct {
 // Failure is the learner-facing interpretation of a failed Result.
 type Failure struct {
 	Kind        FailureKind
-	Diagnostics []Diagnostic // only for CompileFailure
-	Output      string       // everything else worth showing, with toolchain noise removed
+	Diagnostics []Diagnostic  // only for CompileFailure
+	Output      string        // everything else worth showing, with toolchain noise removed
+	Timeout     time.Duration // for TimeoutFailure: how long the exercise was given
 }
 
 // Compiler messages start at the beginning of a line; indented file:line
@@ -39,15 +43,19 @@ var diagnosticRegex = regexp.MustCompile(`^(?:vet: )?(\S.*?\.go):(\d+):(?:(\d+):
 // Failure interprets the output of a failed run.
 func (r Result) Failure() Failure {
 	combined := r.Err + "\n" + r.Out
-	buildFailed := strings.Contains(combined, "[build failed]") || strings.Contains(combined, "[setup failed]")
 
-	if r.Exercise.Mode != "test" || buildFailed {
+	if r.TimedOut {
+		return Failure{Kind: TimeoutFailure, Output: cleanOutput(combined), Timeout: r.Timeout}
+	}
+
+	if r.BuildFailed {
 		if diagnostics, rest := parseDiagnostics(combined); len(diagnostics) > 0 {
 			return Failure{Kind: CompileFailure, Diagnostics: diagnostics, Output: rest}
 		}
+		return Failure{Kind: CompileFailure, Output: cleanOutput(combined)}
 	}
 
-	if r.Exercise.Mode == "test" && !buildFailed {
+	if r.Exercise.Mode == "test" {
 		return Failure{Kind: TestFailure, Output: cleanOutput(combined)}
 	}
 	return Failure{Kind: RuntimeFailure, Output: cleanOutput(combined)}

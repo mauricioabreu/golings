@@ -1,6 +1,8 @@
 package exercises_test
 
 import (
+	"time"
+
 	"github.com/cleonte/golings/golings/exercises"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -11,7 +13,7 @@ var _ = Describe("Interpreting failures", func() {
 	test := exercises.Exercise{Name: "e", Mode: "test"}
 
 	It("extracts compiler diagnostics and drops the package header", func() {
-		result := exercises.Result{Exercise: compile, Err: "# command-line-arguments\nexercises/a/main.go:10:6: syntax error: unexpected =, expected name\nexercises/a/main.go:12:2: undefined: x\n"}
+		result := exercises.Result{Exercise: compile, BuildFailed: true, Err: "# command-line-arguments\nexercises/a/main.go:10:6: syntax error: unexpected =, expected name\nexercises/a/main.go:12:2: undefined: x\n"}
 
 		f := result.Failure()
 
@@ -23,25 +25,25 @@ var _ = Describe("Interpreting failures", func() {
 		Expect(f.Output).To(BeEmpty())
 	})
 	It("keeps messages that are not diagnostics", func() {
-		result := exercises.Result{Exercise: compile, Err: "# command-line-arguments\na/main.go:3:1: undefined: y\na/main.go:3:1: too many errors\n"}
+		result := exercises.Result{Exercise: compile, BuildFailed: true, Err: "# command-line-arguments\na/main.go:3:1: undefined: y\na/main.go:3:1: too many errors\n"}
 
 		Expect(result.Failure().Diagnostics).To(HaveLen(2))
 
-		result = exercises.Result{Exercise: compile, Err: "a/main.go:3:1: undefined: y\ntoo many errors\n"}
+		result = exercises.Result{Exercise: compile, BuildFailed: true, Err: "a/main.go:3:1: undefined: y\ntoo many errors\n"}
 
 		f := result.Failure()
 		Expect(f.Diagnostics).To(HaveLen(1))
 		Expect(f.Output).To(Equal("too many errors"))
 	})
 	It("understands diagnostics without a column", func() {
-		result := exercises.Result{Exercise: compile, Err: "vet: a/main.go:7: oops\n"}
+		result := exercises.Result{Exercise: compile, BuildFailed: true, Err: "vet: a/main.go:7: oops\n"}
 
 		Expect(result.Failure().Diagnostics).To(ConsistOf(
 			exercises.Diagnostic{File: "a/main.go", Line: 7, Message: "oops"},
 		))
 	})
 	It("reports a compile failure of a test-mode exercise as such", func() {
-		result := exercises.Result{Exercise: test, Out: "# command-line-arguments\na/main_test.go:5:2: undefined: Foo\nFAIL\tcommand-line-arguments [build failed]\n"}
+		result := exercises.Result{Exercise: test, BuildFailed: true, Err: "# command-line-arguments\na/main_test.go:5:2: undefined: Foo\n"}
 
 		f := result.Failure()
 
@@ -56,6 +58,23 @@ var _ = Describe("Interpreting failures", func() {
 		Expect(f.Kind).To(Equal(exercises.TestFailure))
 		Expect(f.Diagnostics).To(BeEmpty())
 		Expect(f.Output).To(Equal("=== RUN   TestX\n    main_test.go:17: 2 is bigger than 1\n--- FAIL: TestX (0.00s)"))
+	})
+	It("reports a timeout and keeps what the program printed before it", func() {
+		result := exercises.Result{Exercise: compile, TimedOut: true, Timeout: 5 * time.Second, Out: "started\n"}
+
+		f := result.Failure()
+
+		Expect(f.Kind).To(Equal(exercises.TimeoutFailure))
+		Expect(f.Timeout).To(Equal(5 * time.Second))
+		Expect(f.Output).To(Equal("started"))
+	})
+	It("reports a build failure without diagnostics as a compile failure", func() {
+		result := exercises.Result{Exercise: compile, BuildFailed: true, Err: "go: cannot find main module\n"}
+
+		f := result.Failure()
+
+		Expect(f.Kind).To(Equal(exercises.CompileFailure))
+		Expect(f.Output).To(ContainSubstring("cannot find main module"))
 	})
 	It("reports a crash of a compiled program as a runtime failure", func() {
 		result := exercises.Result{Exercise: compile, Err: "panic: boom\n\ngoroutine 1 [running]:\nexit status 2\n"}

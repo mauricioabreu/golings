@@ -25,19 +25,6 @@ func writeExercise(mode, name, source string) exercises.Exercise {
 }
 
 var _ = Describe("Running exercises", func() {
-	Describe("BuildArgs", func() {
-		It("uses go run for compile mode", func() {
-			ex := exercises.Exercise{Path: "exercises/a/main.go", Mode: "compile"}
-
-			Expect(exercises.BuildArgs(ex)).To(Equal([]string{"run", "./exercises/a/main.go"}))
-		})
-		It("uses go test -v -race for test mode", func() {
-			ex := exercises.Exercise{Path: "exercises/a/main_test.go", Mode: "test"}
-
-			Expect(exercises.BuildArgs(ex)).To(Equal([]string{"test", "-v", "-race", "./exercises/a/main_test.go"}))
-		})
-	})
-
 	Describe("Run", func() {
 		It("captures the output of a compile-mode exercise that works", func() {
 			ex := writeExercise("compile", "main.go", `package main
@@ -62,7 +49,35 @@ func main() { a := 1 }
 			result, err := ex.Run()
 
 			Expect(err).To(HaveOccurred())
+			Expect(result.BuildFailed).To(BeTrue())
 			Expect(result.Err).To(ContainSubstring("declared and not used"))
+		})
+		It("reports a test-mode exercise that does not compile as a build failure", func() {
+			ex := writeExercise("test", "x_test.go", `package x
+
+import "testing"
+
+func TestBroken(t *testing.T) { undefinedThing() }
+`)
+
+			result, err := ex.Run()
+
+			Expect(err).To(HaveOccurred())
+			Expect(result.BuildFailed).To(BeTrue())
+			Expect(result.Failure().Kind).To(Equal(exercises.CompileFailure))
+		})
+		It("reports a program that crashes while running as a runtime failure", func() {
+			ex := writeExercise("compile", "main.go", `package main
+
+func main() { panic("boom") }
+`)
+
+			result, err := ex.Run()
+
+			Expect(err).To(HaveOccurred())
+			Expect(result.BuildFailed).To(BeFalse())
+			Expect(result.Failure().Kind).To(Equal(exercises.RuntimeFailure))
+			Expect(result.Err).To(ContainSubstring("boom"))
 		})
 		It("passes a test-mode exercise whose tests pass", func() {
 			ex := writeExercise("test", "x_test.go", `package x
@@ -88,6 +103,7 @@ func TestBroken(t *testing.T) { t.Fatal("not yet") }
 			result, err := ex.Run()
 
 			Expect(err).To(HaveOccurred())
+			Expect(result.BuildFailed).To(BeFalse(), "it compiled, its tests failed")
 			Expect(result.Out).To(ContainSubstring("not yet"))
 		})
 	})

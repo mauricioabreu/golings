@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/cleonte/golings/golings/exercises"
 	"github.com/cleonte/golings/golings/ui"
@@ -87,4 +88,14 @@ func TestPrintTestAndRuntimeFailures(t *testing.T) {
 	runtime := render(t, exercises.Exercise{Path: "a/main.go"}, exercises.Failure{Kind: exercises.RuntimeFailure, Output: "panic: boom"})
 	g.Expect(runtime).To(ContainSubstring("The exercise a/main.go failed while running"))
 	g.Expect(runtime).To(ContainSubstring("panic: boom"))
+}
+
+func TestPrintTimeoutFailure(t *testing.T) {
+	g := NewWithT(t)
+
+	got := render(t, exercises.Exercise{Path: "a/main.go"}, exercises.Failure{Kind: exercises.TimeoutFailure, Timeout: 30 * time.Second, Output: "started"})
+
+	g.Expect(got).To(ContainSubstring("The exercise a/main.go didn't finish within 30s and was stopped"))
+	g.Expect(got).To(ContainSubstring("infinite loop"))
+	g.Expect(got).To(ContainSubstring("started"))
 }
