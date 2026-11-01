@@ -48,7 +48,7 @@ func RunNextExercise(infoFile string) {
 
 		color.Yellow("To quit out of watch, please type `exit` and hit enter:")
 
-		return;
+		return
 	}
 
 	exercise, err := exercises.NextPending(infoFile)
