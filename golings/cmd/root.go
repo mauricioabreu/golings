@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/cleonte/golings"
 	"github.com/spf13/cobra"
 )
 
@@ -17,6 +18,8 @@ func NewRootCmd(version string) *cobra.Command {
 
 	rootCmd.AddCommand(DoctorCmd("info.toml"))
 	rootCmd.AddCommand(HintCmd("info.toml"))
+	rootCmd.AddCommand(InitCmd(golings.FS))
+	rootCmd.AddCommand(ResetCmd(golings.FS, "."))
 	rootCmd.AddCommand(ListCmd("info.toml"))
 	rootCmd.AddCommand(RunCmd("info.toml"))
 	rootCmd.AddCommand(VerifyCmd("info.toml"))

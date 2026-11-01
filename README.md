@@ -76,15 +76,18 @@ It's pretty awesome and uses the playground so you can play with the exercises w
 
 ## Doing exercises
 
-All the exercises can be found in the directory `golings/exercises/<topic>`. For every topic there is an additional README file with some resources to get you started on the topic. We really recommend that you have a look at them before you start.
+All the exercises can be found in the directory `exercises/<topic>`. For every topic there is an additional README file with some resources to get you started on the topic. We really recommend that you have a look at them before you start.
 
 Now you have the task to fix all the programs. Some of them don't compile, and you need to fix them. Some of them compile, but have tests and you need to write some code to have them all green (these are the `compile` and `test` modes).
 
-Clone the repository:
+If you installed golings with `go install` or from a binary, create a folder with all the exercises:
 
 ```sh
-git clone https://github.com/cleonte/golings.git
+golings init
+cd golings-exercises
 ```
+
+`golings init` takes an optional folder name. If you cloned the repository instead, run the commands below from the root of the clone.
 
 To run the exercises in the recommended order while taking advantage of fast feedback loop, use the _watch_ command:
 
@@ -118,7 +121,13 @@ In case you are stuck and need a hint:
 golings hint variables1
 ```
 
-To list all exercise while checking your progress:
+If you want to start an exercise over, restore it to its original state (this discards your changes, so it asks first):
+
+```sh
+golings reset variables1
+```
+
+To list all exercises and your progress per topic:
 
 ```sh
 golings list

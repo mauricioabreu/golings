@@ -67,7 +67,7 @@ func RunNextExercise(infoFile string) {
 	progress, done, total, err := exercises.Progress(infoFile)
 	if err != nil {
 		color.Red("Failed to read the exercises: %s", err)
-		color.Yellow("Run golings from the folder that holds info.toml, or try `golings doctor`.")
+		color.Yellow("Run golings from the folder that holds info.toml, create one with `golings init`, or try `golings doctor`.")
 		return
 	}
 	color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress*100)

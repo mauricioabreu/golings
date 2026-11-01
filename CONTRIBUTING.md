@@ -24,6 +24,8 @@ The exercise mode is very important. It tells `golings` how to run the exercise.
 
 If the exercise needs a newer Go than the project floor, add an optional `go_version` (for example `go_version = "1.27"`). `golings` then skips the exercise with a warning when the installed Go is older.
 
+Exercises and `info.toml` are embedded in the binary (see `embed.go`), which is what `golings init` and `golings reset` use, so a new exercise needs no extra registration. Files whose names start with `.` or `_` are not embedded.
+
 ## Running the test suite
 
 ```sh

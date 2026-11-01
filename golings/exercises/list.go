@@ -15,13 +15,17 @@ type Info struct {
 }
 
 func List(infoFile string) ([]Exercise, error) {
-	var info Info
-
 	data, err := os.ReadFile(infoFile)
 	if err != nil {
-		return info.Exercises, err
+		return nil, err
 	}
 
+	return ParseInfo(data)
+}
+
+// ParseInfo reads the exercises from the contents of an info.toml.
+func ParseInfo(data []byte) ([]Exercise, error) {
+	var info Info
 	if err := toml.Unmarshal(data, &info); err != nil {
 		return info.Exercises, err
 	}

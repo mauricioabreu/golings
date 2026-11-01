@@ -5,8 +5,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"testing/fstest"
 
 	"github.com/cleonte/golings/golings/cmd"
+	"github.com/cleonte/golings/golings/exercises"
+	"github.com/cleonte/golings/golings/workspace"
 	"github.com/fatih/color"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -99,6 +102,19 @@ func writeTopicInfo(specs ...string) string {
 	infoFile := filepath.Join(root, "info.toml")
 	Expect(os.WriteFile(infoFile, []byte(info), 0o644)).To(Succeed())
 	return infoFile
+}
+
+// exerciseSource is a tiny embedded-exercises stand-in with one exercise, "a1".
+func exerciseSource() fstest.MapFS {
+	return fstest.MapFS{
+		"info.toml": {Data: []byte(`[[exercises]]
+name = "a1"
+path = "exercises/a/a1/main.go"
+mode = "compile"
+hint = ""
+`)},
+		"exercises/a/a1/main.go": {Data: []byte("// I AM NOT DONE\npackage main\n\nfunc main() {}\n")},
+	}
 }
 
 var _ = Describe("More commands", func() {
@@ -260,6 +276,75 @@ var _ = Describe("More commands", func() {
 		})
 	})
 
+	Describe("Init", func() {
+		It("creates a workspace with the exercises", func() {
+			dest := filepath.Join(GinkgoT().TempDir(), "ws")
+			initCmd := cmd.InitCmd(exerciseSource())
+			initCmd.SetArgs([]string{dest})
+
+			Expect(initCmd.Execute()).To(Succeed())
+			Expect(filepath.Join(dest, "exercises", "a", "a1", "main.go")).To(BeAnExistingFile())
+			Expect(filepath.Join(dest, "go.mod")).To(BeAnExistingFile())
+			Expect(out.String()).To(ContainSubstring("cd " + dest))
+		})
+		It("refuses to touch an existing folder", func() {
+			dest := GinkgoT().TempDir()
+			initCmd := cmd.InitCmd(exerciseSource())
+			initCmd.SetArgs([]string{dest})
+
+			Expect(initCmd.Execute()).To(MatchError(workspace.ErrExists))
+			Expect(filepath.Join(dest, "info.toml")).NotTo(BeAnExistingFile())
+		})
+	})
+
+	Describe("Reset", func() {
+		var root, file string
+
+		BeforeEach(func() {
+			root = GinkgoT().TempDir()
+			file = filepath.Join(root, "exercises", "a", "a1", "main.go")
+			Expect(os.MkdirAll(filepath.Dir(file), 0o755)).To(Succeed())
+			Expect(os.WriteFile(file, []byte("package main // my work\n"), 0o644)).To(Succeed())
+		})
+
+		It("restores the exercise when called with --yes", func() {
+			reset := cmd.ResetCmd(exerciseSource(), root)
+			reset.SetArgs([]string{"a1", "--yes"})
+
+			Expect(reset.Execute()).To(Succeed())
+			data, _ := os.ReadFile(file)
+			Expect(string(data)).To(ContainSubstring("I AM NOT DONE"))
+			Expect(out.String()).To(ContainSubstring("Reset exercises/a/a1/main.go"))
+		})
+		It("restores the exercise when the learner confirms", func() {
+			reset := cmd.ResetCmd(exerciseSource(), root)
+			reset.SetIn(strings.NewReader("y\n"))
+			reset.SetArgs([]string{"a1"})
+
+			Expect(reset.Execute()).To(Succeed())
+			data, _ := os.ReadFile(file)
+			Expect(string(data)).To(ContainSubstring("I AM NOT DONE"))
+		})
+		It("keeps the learner's work unless confirmed", func() {
+			for _, answer := range []string{"n\n", "\n", "", "maybe\n"} {
+				reset := cmd.ResetCmd(exerciseSource(), root)
+				reset.SetIn(strings.NewReader(answer))
+				reset.SetArgs([]string{"a1"})
+
+				Expect(reset.Execute()).To(HaveOccurred(), "answer %q", answer)
+				data, _ := os.ReadFile(file)
+				Expect(string(data)).To(Equal("package main // my work\n"), "answer %q", answer)
+			}
+		})
+		It("fails for an unknown exercise", func() {
+			reset := cmd.ResetCmd(exerciseSource(), root)
+			reset.SetArgs([]string{"404", "--yes"})
+
+			Expect(reset.Execute()).To(MatchError(exercises.ErrExerciseNotFound))
+			Expect(out.String()).To(ContainSubstring("No exercise found for '404'"))
+		})
+	})
+
 	Describe("Root", func() {
 		It("registers every command", func() {
 			root := cmd.NewRootCmd("test")
@@ -268,7 +353,7 @@ var _ = Describe("More commands", func() {
 			for _, c := range root.Commands() {
 				names = append(names, c.Name())
 			}
-			Expect(names).To(ContainElements("doctor", "hint", "list", "run", "verify", "watch"))
+			Expect(names).To(ContainElements("doctor", "hint", "init", "reset", "list", "run", "verify", "watch"))
 			Expect(root.Version).To(Equal("test"))
 		})
 	})

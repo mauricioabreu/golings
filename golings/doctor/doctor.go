@@ -72,7 +72,7 @@ func Run(infoFile string, env Env) []Check {
 		return append(checks, Check{
 			Name:   "Exercise manifest",
 			Status: Fail,
-			Detail: fmt.Sprintf("can't read %s: %v (run golings from the folder that holds it)", infoFile, err),
+			Detail: fmt.Sprintf("can't read %s: %v (run golings from the folder that holds it, or create one with `golings init`)", infoFile, err),
 		})
 	}
 	checks = append(checks, Check{Name: "Exercise manifest", Status: OK, Detail: fmt.Sprintf("%s lists %d exercises", infoFile, len(all))})

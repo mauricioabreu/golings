@@ -17,7 +17,7 @@ Exit: `make test` green on the floor and latest Go.
 ## Phase 2 — Tooling and learner experience
 - [x] `golings doctor`: check Go version against the floor and per-exercise minimums, check the workspace.
 - [x] Per-exercise `go_version` (min) field in `info.toml`; runner skips or warns when the local Go is too old.
-- [ ] `golings reset <exercise>`: restore an exercise to its original broken state.
+- [x] `golings reset <exercise>` (and `golings init`, which creates the exercises folder from the embedded copy): restore an exercise to its original broken state.
 - [ ] Solutions behind an explicit flag (`golings solution <exercise>`), not shown by default.
 - [x] Clearer compile-error output (show file:line, trim noise).
 - [x] Progress shown by topic; fix the completion-state edge cases.
