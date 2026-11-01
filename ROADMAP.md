@@ -34,7 +34,7 @@ The TUI (Bubble Tea, Lip Gloss, Bubbles; check each module's current major versi
 ## Phase 3 — Missing core topics (highest value)
 Add in learning order; 3–6 exercises each, hints in `info.toml`.
 1. ~~**strings**~~ (done: 6 exercises, strings1-6) — runes vs bytes, `strings.Builder`, `strings.Fields`, `SplitSeq`/`Lines` (1.24).
-2. **pointers** — address/deref, pointer vs value params, nil pointers, `new`.
+2. ~~**pointers**~~ (done: 5 exercises, pointers1-5) — address/deref, pointer vs value params, nil pointers, `new`.
 3. **methods** — value vs pointer receivers, method sets.
 4. **interfaces** — implicit satisfaction, empty interface/`any`, type assertions and switches, the nil-interface gotcha, embedding.
 5. **errors** — sentinel errors, wrapping with `%w`, `errors.Is/As/Join`, custom error types.

@@ -314,6 +314,51 @@ func (s *StructHere) doSomething() {
 """
 
 [[exercises]]
+name = "pointers1"
+path = "exercises/pointers/pointers1/main.go"
+mode = "compile"
+hint = """
+& gives the address of a variable and * follows a pointer to its value. Check which of the two each line needs: the types must match on both sides.
+
+For more information: https://go.dev/tour/moretypes/1"""
+
+[[exercises]]
+name = "pointers2"
+path = "exercises/pointers/pointers2/main_test.go"
+mode = "test"
+hint = """
+Go passes arguments by value, so a function only changes a copy. To change the caller's variables, take pointers (*int) and pass the addresses (&n). Write through the pointer with *n. Change the calls in the tests too.
+
+For more information: https://go.dev/ref/spec#Address_operators"""
+
+[[exercises]]
+name = "pointers3"
+path = "exercises/pointers/pointers3/main_test.go"
+mode = "test"
+hint = """
+&Person{...} creates a Person and gives you a pointer to it. On a pointer to a struct you can write p.Age directly, no need for (*p).Age.
+
+For more information: https://go.dev/ref/spec#Composite_literals"""
+
+[[exercises]]
+name = "pointers4"
+path = "exercises/pointers/pointers4/main_test.go"
+mode = "test"
+hint = """
+Following a nil pointer panics. Compare the pointer with nil before using its fields, and return the greeting for nobody in that case.
+
+For more information: https://go.dev/ref/spec#Pointer_types"""
+
+[[exercises]]
+name = "pointers5"
+path = "exercises/pointers/pointers5/main.go"
+mode = "compile"
+hint = """
+new(int) returns a *int. count++ would add one to the pointer itself, which is not allowed: add one to the value it points to instead.
+
+For more information: https://go.dev/doc/effective_go#allocation_new"""
+
+[[exercises]]
 name = "anonymous_functions1"
 path = "exercises/anonymous_functions/anonymous_functions1/main.go"
 mode = "compile"
