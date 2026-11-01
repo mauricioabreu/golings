@@ -359,6 +359,51 @@ new(int) returns a *int. count++ would add one to the pointer itself, which is n
 For more information: https://go.dev/doc/effective_go#allocation_new"""
 
 [[exercises]]
+name = "methods1"
+path = "exercises/methods/methods1/main.go"
+mode = "compile"
+hint = """
+main calls Area on the rectangle, like r.Area(). A method is a function with a receiver written between func and the name: func (r Rectangle) Area() int.
+
+For more information: https://go.dev/tour/methods/1"""
+
+[[exercises]]
+name = "methods2"
+path = "exercises/methods/methods2/main_test.go"
+mode = "test"
+hint = """
+A value receiver gets a copy of the rectangle, so Scale changes the copy and the original stays the same. Use a pointer receiver, (r *Rectangle), to change the original. The call r.Scale(2) stays as it is: Go takes the address of r for you.
+
+For more information: https://go.dev/doc/effective_go#pointers_vs_values"""
+
+[[exercises]]
+name = "methods3"
+path = "exercises/methods/methods3/main_test.go"
+mode = "test"
+hint = """
+The loop variable c in "for _, c := range counters" is a copy of each element, so Increment changes the copy. Reach the element itself through the slice: counters[i].
+
+For more information: https://go.dev/ref/spec#For_range"""
+
+[[exercises]]
+name = "methods4"
+path = "exercises/methods/methods4/main.go"
+mode = "compile"
+hint = """
+You can only declare methods on types defined in the same package. float64 is not one of them, but Celsius is. You will need a conversion between the two inside the method.
+
+For more information: https://go.dev/ref/spec#Method_declarations"""
+
+[[exercises]]
+name = "methods5"
+path = "exercises/methods/methods5/main.go"
+mode = "compile"
+hint = """
+Increment has a pointer receiver, so only *Counter has it in its method set, not Counter. Read the compiler message: it tells you why. Give the interface a pointer.
+
+For more information: https://go.dev/ref/spec#Method_sets"""
+
+[[exercises]]
 name = "anonymous_functions1"
 path = "exercises/anonymous_functions/anonymous_functions1/main.go"
 mode = "compile"
