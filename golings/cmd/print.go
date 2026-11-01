@@ -6,9 +6,9 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/fatih/color"
 	"github.com/cleonte/golings/golings/exercises"
 	"github.com/cleonte/golings/golings/ui"
+	"github.com/fatih/color"
 )
 
 func PrintHint(infoFile string) {

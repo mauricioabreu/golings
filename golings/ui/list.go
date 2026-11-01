@@ -3,8 +3,8 @@ package ui
 import (
 	"io"
 
-	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/cleonte/golings/golings/exercises"
+	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 func PrintList(o io.Writer, exs []exercises.Exercise) {

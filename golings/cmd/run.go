@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fatih/color"
 	"github.com/cleonte/golings/golings/exercises"
+	"github.com/fatih/color"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
