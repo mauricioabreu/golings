@@ -13,6 +13,10 @@ type Result struct {
 }
 
 func (e Exercise) Run() (Result, error) {
+	if local, err := LocalGoVersion(); err == nil && !e.Supports(local) {
+		return Result{Exercise: e}, fmt.Errorf("%w: %s needs Go %s, found %s", ErrGoVersionTooOld, e.Name, e.GoVersion, local)
+	}
+
 	args := BuildArgs(e)
 	cmd := exec.Command("go", args...)
 	var stdout, stderr bytes.Buffer

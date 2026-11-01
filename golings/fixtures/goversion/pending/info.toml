@@ -1,0 +1,12 @@
+[[exercises]]
+name = "future1"
+path = "../fixtures/pending1/main.go"
+mode = "compile"
+go_version = "99.0"
+hint = ""
+
+[[exercises]]
+name = "success1"
+path = "../fixtures/success1/main.go"
+mode = "compile"
+hint = ""

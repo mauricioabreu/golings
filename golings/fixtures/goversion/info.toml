@@ -1,0 +1,12 @@
+[[exercises]]
+name = "old1"
+path = "compile/compile1.go"
+mode = "compile"
+hint = "no minimum"
+
+[[exercises]]
+name = "future1"
+path = "compile/compile1.go"
+mode = "compile"
+go_version = "99.0"
+hint = "needs a Go that does not exist yet"

@@ -1,0 +1,7 @@
+# error1 does not compile: if the go_version guard fails, running it would fail loudly
+[[exercises]]
+name = "future-broken"
+path = "../fixtures/error1/main.go"
+mode = "compile"
+go_version = "99.0"
+hint = ""

@@ -12,6 +12,8 @@ type Exercise struct {
 	Path string
 	Mode string
 	Hint string
+	// GoVersion is the minimum Go version (e.g. "1.26") needed to run the exercise.
+	GoVersion string `toml:"go_version"`
 }
 
 func (e Exercise) State() State {

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -39,6 +40,10 @@ func RunNextExercise(infoFile string) {
 		color.Blue("Progress: %d/%d (%.2f%%)\n\n", done, total, progress*100)
 	}
 
+	if skipped, err := exercises.Skipped(infoFile); err == nil && len(skipped) > 0 {
+		color.Yellow("%d exercise(s) skipped: they need a newer Go than %s\n\n", len(skipped), localGo())
+	}
+
 	if done == total {
 		color.Green("Congratulations!!\n")
 		color.Green("You have completed all %d of the currently available exercises.", total)
@@ -57,6 +62,10 @@ func RunNextExercise(infoFile string) {
 	}
 
 	result, err := exercise.Run()
+	if errors.Is(err, exercises.ErrGoVersionTooOld) {
+		color.Yellow(err.Error())
+		return
+	}
 	if err != nil {
 		color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
 		color.White("Check the output below: \n\n")
@@ -90,4 +99,12 @@ func ClearScreen() {
 			color.Red("Clear terminal command error")
 		}
 	}
+}
+
+func localGo() string {
+	v, err := exercises.LocalGoVersion()
+	if err != nil {
+		return "the installed version"
+	}
+	return v
 }

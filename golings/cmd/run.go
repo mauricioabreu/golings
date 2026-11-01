@@ -40,6 +40,11 @@ example specific exercise : golings run variables1`,
 
 			spinner.Close() // nolint
 
+			if errors.Is(err, exercises.ErrGoVersionTooOld) {
+				color.Yellow(err.Error())
+				return err
+			}
+
 			if err != nil {
 				color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
 				color.White("Check the output below: \n\n")

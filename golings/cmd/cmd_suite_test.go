@@ -1,12 +1,15 @@
 package cmd_test
 
 import (
+	"bytes"
 	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"github.com/cleonte/golings/golings/cmd"
+	"github.com/cleonte/golings/golings/exercises"
+	"github.com/fatih/color"
 )
 
 func TestCmd(t *testing.T) {
@@ -78,6 +81,42 @@ var _ = Describe("Commands", func() {
 					Expect(err).To(HaveOccurred())
 				})
 			})
+		})
+	})
+	Describe("Exercises that need a newer Go", func() {
+		const infoFile = "../fixtures/goversion/cmd/info.toml"
+		var out *bytes.Buffer
+
+		BeforeEach(func() {
+			out = &bytes.Buffer{}
+			prevOutput, prevNoColor := color.Output, color.NoColor
+			color.Output, color.NoColor = out, true
+			DeferCleanup(func() { color.Output, color.NoColor = prevOutput, prevNoColor })
+		})
+
+		It("run refuses to run it and says why", func() {
+			run := cmd.RunCmd(infoFile)
+			run.SetArgs([]string{"future-broken"})
+
+			err := run.Execute()
+
+			Expect(err).To(MatchError(exercises.ErrGoVersionTooOld))
+			Expect(out.String()).To(ContainSubstring("needs Go 99.0"))
+			Expect(out.String()).NotTo(ContainSubstring("Failed to compile"))
+		})
+		It("verify skips it instead of running or passing it", func() {
+			verify := cmd.VerifyCmd(infoFile)
+
+			err := verify.Execute()
+
+			Expect(err).ToNot(HaveOccurred())
+			Expect(out.String()).To(ContainSubstring("Skipped"))
+			Expect(out.String()).To(ContainSubstring("You passed all the exercises"))
+		})
+		It("watch reports how many exercises were skipped", func() {
+			cmd.RunNextExercise(infoFile)
+
+			Expect(out.String()).To(ContainSubstring("1 exercise(s) skipped"))
 		})
 	})
 })

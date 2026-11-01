@@ -29,6 +29,29 @@ func List(infoFile string) ([]Exercise, error) {
 	return info.Exercises, nil
 }
 
+// runnable reports whether the local Go can run the exercise. If the local
+// version can't be determined, exercises are assumed runnable.
+func runnable(e Exercise) bool {
+	local, err := LocalGoVersion()
+	return err != nil || e.Supports(local)
+}
+
+// Skipped lists the exercises the local Go is too old to run.
+func Skipped(infoFile string) ([]Exercise, error) {
+	allExercises, err := List(infoFile)
+	if err != nil {
+		return nil, err
+	}
+
+	var skipped []Exercise
+	for _, exercise := range allExercises {
+		if !runnable(exercise) {
+			skipped = append(skipped, exercise)
+		}
+	}
+	return skipped, nil
+}
+
 func NextPending(infoFile string) (Exercise, error) {
 	allExercises, err := List(infoFile)
 	if err != nil {
@@ -36,7 +59,7 @@ func NextPending(infoFile string) (Exercise, error) {
 	}
 
 	for _, exercise := range allExercises {
-		if exercise.State() == Pending {
+		if exercise.State() == Pending && runnable(exercise) {
 			return exercise, nil
 		}
 	}
@@ -64,15 +87,16 @@ func Progress(infoFile string) (float32, int, int, error) {
 	if err != nil {
 		return 0.0, 0, 0, err
 	}
-	done := []Exercise{}
+	totalDone, total := 0, 0
 	for _, exercise := range allExercises {
+		if !runnable(exercise) {
+			continue
+		}
+		total++
 		if exercise.State() == Done {
-			done = append(done, exercise)
+			totalDone++
 		}
 	}
-
-	totalDone := len(done)
-	total := len(allExercises)
 
 	return float32(totalDone) / float32(total), totalDone, total, nil
 }

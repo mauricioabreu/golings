@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -43,8 +44,14 @@ func VerifyCmd(infoFile string) *cobra.Command {
 
 			for _, exercise := range allExercises {
 				bar.Describe(fmt.Sprintf("Running %s", exercise.Name))
-				result, _ := exercise.Run()
+				result, err := exercise.Run()
 				bar.Add(1) // nolint
+
+				if errors.Is(err, exercises.ErrGoVersionTooOld) {
+					fmt.Print("\n")
+					color.Yellow("Skipped: %s", err)
+					continue
+				}
 
 				if result.Err != "" {
 					fmt.Print("\n\n")
