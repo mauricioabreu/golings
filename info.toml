@@ -136,6 +136,60 @@ Check this documentation to understand the variety of
 numeric data types: https://go.dev/ref/spec#Numeric_types"""
 
 [[exercises]]
+name = "strings1"
+path = "exercises/strings/strings1/main.go"
+mode = "compile"
+hint = """
+A string can't be changed in place. Convert it to a []byte, change that, and convert the result back to a string.
+
+For more information: https://go.dev/blog/strings"""
+
+[[exercises]]
+name = "strings2"
+path = "exercises/strings/strings2/main_test.go"
+mode = "test"
+hint = """
+len counts bytes, and a character like é or 世 takes more than one. Count runes instead: look at the unicode/utf8 package, or convert the text to a []rune first.
+
+For more information: https://pkg.go.dev/unicode/utf8#RuneCountInString"""
+
+[[exercises]]
+name = "strings3"
+path = "exercises/strings/strings3/main_test.go"
+mode = "test"
+hint = """
+Reverse runes, not bytes: convert the text to a []rune, reverse that (the slices package has a function for it) and convert it back to a string.
+
+For more information: https://pkg.go.dev/slices#Reverse"""
+
+[[exercises]]
+name = "strings4"
+path = "exercises/strings/strings4/main_test.go"
+mode = "test"
+hint = """
+The first test already passes: the second one counts how often the function allocates memory. Every += builds a new string. A strings.Builder appends to a buffer instead: use WriteString, then String at the end.
+
+For more information: https://pkg.go.dev/strings#Builder"""
+
+[[exercises]]
+name = "strings5"
+path = "exercises/strings/strings5/main_test.go"
+mode = "test"
+hint = """
+Splitting on a single space gives empty parts when there are several spaces in a row. strings.Fields splits around any amount of whitespace. For normalize, combine strings.TrimSpace and strings.ToLower.
+
+For more information: https://pkg.go.dev/strings#Fields"""
+
+[[exercises]]
+name = "strings6"
+path = "exercises/strings/strings6/main.go"
+mode = "compile"
+hint = """
+strings.SplitSeq takes the separator as its second argument, like strings.Split. An iterator over a sequence of strings, like the one strings.Lines returns, gives one value per loop: there is no index, so count the lines yourself.
+
+For more information: https://pkg.go.dev/strings#SplitSeq and https://pkg.go.dev/strings#Lines"""
+
+[[exercises]]
 name = "arrays1"
 path = "exercises/arrays/arrays1/main.go"
 mode = "compile"
