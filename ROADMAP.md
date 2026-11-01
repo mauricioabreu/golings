@@ -5,13 +5,13 @@ Baseline (upstream HEAD): last commit 2025-03-12, `go 1.19` in go.mod and CI, `a
 Go version policy: set the project floor at **Go 1.26** (latest deps such as x/sys, x/term, x/text require it; raised from the original 1.24 plan). Exercises needing a newer Go than the floor are tagged with a minimum Go version. CI tests a matrix: the floor and the latest stable.
 
 ## Phase 1 — Housekeeping
-- [ ] Fork, add `upstream` remote, create branch.
-- [ ] `go.mod`: `go 1.26`; update every dependency (`go get -u ./... && go mod tidy`); fix any breaking API changes (cobra, go-pretty, progressbar).
-- [ ] CI: `actions/checkout@v4+`, `actions/setup-go@v5+`, version matrix (1.26, stable), cache on; keep the `fixtures/error1` exclusion.
-- [ ] Run `go fix ./...` and `gofmt`; replace `interface{}` with `any`; remove deprecated APIs.
-- [ ] Verify all 43 existing exercises still behave: unsolved fails correctly, solved passes.
-- [ ] README: modern install (`go install .../golings@latest`), fork notice, supported Go versions.
-- [ ] Release config (GoReleaser) check; tag a release so binaries exist.
+- [x] Fork, add `upstream` remote, create branch.
+- [x] `go.mod`: `go 1.26`; update every dependency (`go get -u ./... && go mod tidy`); fix any breaking API changes (cobra, go-pretty, progressbar).
+- [x] CI: `actions/checkout@v4+`, `actions/setup-go@v5+`, version matrix (1.26, stable), cache on; keep the `fixtures/error1` exclusion.
+- [x] Run `go fix ./...` and `gofmt`; replace `interface{}` with `any`; remove deprecated APIs.
+- [x] Verify all 43 existing exercises still behave: unsolved fails correctly (done); solved passes (deferred to Phase 5, no solutions yet).
+- [x] README: modern install (`go install github.com/cleonte/golings/golings@latest`), fork notice, supported Go versions.
+- [x] Release config (GoReleaser) check; tag a release so binaries exist (v0.9.1, release workflow on `v*` tags).
 Exit: `make test` green on the floor and latest Go.
 
 ## Phase 2 — Tooling and learner experience
