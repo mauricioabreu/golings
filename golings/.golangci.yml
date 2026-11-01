@@ -1,0 +1,6 @@
+version: "2"
+linters:
+  exclusions:
+    paths:
+      # intentionally broken fixture used by tests
+      - fixtures/error1
