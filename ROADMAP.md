@@ -22,6 +22,15 @@ Exit: `make test` green on the floor and latest Go.
 - [x] Clearer compile-error output (show file:line, trim noise).
 - [x] Progress shown by topic; fix the completion-state edge cases.
 
+## Phase 2.5 — Terminal UI (rustlings-style `watch`)
+Prerequisites (each its own small PR):
+- [ ] Runner: build first, then run the compiled binary under a timeout; `RunContext(ctx)` so a new save can cancel a run; `ErrTimeout` with a "didn't finish, possible infinite loop" message; the whole process tree is killed (test: no leftover process). Record whether the build step failed on `Result` instead of parsing `[build failed]`.
+- [ ] Watcher: extract `WatchEvents` (reads the working dir, `log.Fatal`s) into a testable function with a root folder, a context and an events channel; debounce a burst of events; treat create/rename as changes so atomic saves (vim, JetBrains) are seen. Fix the goroutine leak in `watch` (one more `for range update` goroutine is started per typed command).
+The TUI (Bubble Tea, Lip Gloss, Bubbles; check each module's current major version and `go` directive first):
+- [ ] Minimal TUI: header with overall and per-topic progress, output pane for the current exercise, auto re-run on save, quit. `Update` unit tested without a terminal.
+- [ ] Keys: hint, list/jump, reset (with confirmation), reveal solution, check all, next.
+- [ ] `--plain` line mode kept for pipes and CI; `watch` falls back to it when stdin is not a terminal.
+
 ## Phase 3 — Missing core topics (highest value)
 Add in learning order; 3–6 exercises each, hints in `info.toml`.
 1. **strings** — runes vs bytes, `strings.Builder`, `strings.Fields`, `SplitSeq`/`Lines` (1.24).
