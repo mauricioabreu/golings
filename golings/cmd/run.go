@@ -72,7 +72,7 @@ func RunSpinner(exercise string) *progressbar.ProgressBar {
 		}),
 	)
 	go func() {
-		for x := 0; x < 100; x++ {
+		for range 100 {
 			spinner.Add(1) // nolint
 			time.Sleep(250 * time.Millisecond)
 		}
