@@ -10,9 +10,9 @@ import (
 	"github.com/cleonte/golings/golings/exercises"
 )
 
-// allSolutionsRequired is switched on once every exercise has a solution.
-// From then on a new exercise without one fails the build.
-const allSolutionsRequired = false
+// allSolutionsRequired makes an exercise without a solution fail the build.
+// Every exercise has one now, so a new exercise has to come with its solution.
+const allSolutionsRequired = true
 
 const repoRoot = "../.."
 

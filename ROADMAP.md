@@ -18,7 +18,7 @@ Exit: `make test` green on the floor and latest Go.
 - [x] `golings doctor`: check Go version against the floor and per-exercise minimums, check the workspace.
 - [x] Per-exercise `go_version` (min) field in `info.toml`; runner skips or warns when the local Go is too old.
 - [x] `golings reset <exercise>` (and `golings init`, which creates the exercises folder from the embedded copy): restore an exercise to its original broken state.
-- [x] Solutions behind an explicit flag (`golings solution <exercise>`), not shown by default. (Command and proof test are in; the solutions themselves are being added topic by topic, see Phase 5.)
+- [x] Solutions behind an explicit flag (`golings solution <exercise>`), not shown by default. (All 43 exercises have a verified solution.)
 - [x] Clearer compile-error output (show file:line, trim noise).
 - [x] Progress shown by topic; fix the completion-state edge cases.
 
@@ -47,10 +47,10 @@ Expand **generics** beyond 2 exercises: constraints, `cmp.Ordered`, generic stru
 ## Phase 5 — Concurrency and pitfalls
 - [ ] Concurrency, from 3 to ~10: goroutines, `sync.WaitGroup`, `sync.Mutex`/`RWMutex`, channels (buffered/unbuffered), `select` with timeouts, `context` cancellation and deadlines, worker pool, fan-in/fan-out, `errgroup`-style patterns using stdlib only, races and `go test -race`.
 - [ ] "Pitfalls" track: nil-interface != nil, slice aliasing and append capacity, map iteration order, shadowing with `:=`, defer in loops, closing channels twice, copying a mutex.
-- [ ] Solutions tree: a verified solution for every exercise, used by CI to prove each exercise is solvable.
+- [x] Solutions tree: a verified solution for every exercise, used by CI to prove each exercise is solvable.
 
 ## Phase 6 — Quality and release
-- [ ] CI job that, for each exercise, checks the unsolved version fails and the solution passes.
+- [x] CI job that, for each exercise, checks the unsolved version fails and the solution passes. (`TestSolutions`, part of the normal test run; a new exercise without a solution fails the build.)
 - [ ] Contributor docs: how to add an exercise (update CONTRIBUTING.md).
 - [ ] Tag a release; publish binaries.
 - [ ] Decide: open PRs back to upstream (small, per-phase) or keep the fork independent. Upstream is dormant, so expect to maintain the fork.
