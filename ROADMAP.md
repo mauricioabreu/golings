@@ -15,12 +15,12 @@ Go version policy: set the project floor at **Go 1.26** (latest deps such as x/s
 Exit: `make test` green on the floor and latest Go.
 
 ## Phase 2 — Tooling and learner experience
-- [ ] `golings doctor`: check Go version against the floor and per-exercise minimums, check the workspace.
-- [ ] Per-exercise `go_version` (min) field in `info.toml`; runner skips or warns when the local Go is too old.
+- [x] `golings doctor`: check Go version against the floor and per-exercise minimums, check the workspace.
+- [x] Per-exercise `go_version` (min) field in `info.toml`; runner skips or warns when the local Go is too old.
 - [ ] `golings reset <exercise>`: restore an exercise to its original broken state.
 - [ ] Solutions behind an explicit flag (`golings solution <exercise>`), not shown by default.
-- [ ] Clearer compile-error output (show file:line, trim noise).
-- [ ] Progress shown by topic; fix the completion-state edge cases.
+- [x] Clearer compile-error output (show file:line, trim noise).
+- [x] Progress shown by topic; fix the completion-state edge cases.
 
 ## Phase 3 — Missing core topics (highest value)
 Add in learning order; 3–6 exercises each, hints in `info.toml`.
