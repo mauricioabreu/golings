@@ -2,12 +2,12 @@
 
 Baseline (upstream HEAD): last commit 2025-03-12, `go 1.19` in go.mod and CI, `actions/checkout@v3` / `setup-go@v3`, deps from 2022 (cobra 1.6, fsnotify 1.6, go-pretty 6.4, ginkgo 2.5, progressbar 3.12, go-toml 2.0.5, fatih/color 1.13). 43 exercises in 13 topics: variables, primitive_types, functions, anonymous_functions, if, switch, arrays, slices, maps, range, structs, generics (2), concurrent (3).
 
-Go version policy: set the project floor at **Go 1.24** (broad compatibility). Features from 1.25 and 1.26 go in exercises tagged with a minimum Go version. CI tests a matrix: the floor and the latest stable.
+Go version policy: set the project floor at **Go 1.26** (latest deps such as x/sys, x/term, x/text require it; raised from the original 1.24 plan). Exercises needing a newer Go than the floor are tagged with a minimum Go version. CI tests a matrix: the floor and the latest stable.
 
 ## Phase 1 — Housekeeping
 - [ ] Fork, add `upstream` remote, create branch.
-- [ ] `go.mod`: `go 1.24`; update every dependency (`go get -u ./... && go mod tidy`); fix any breaking API changes (cobra, go-pretty, progressbar).
-- [ ] CI: `actions/checkout@v4+`, `actions/setup-go@v5+`, version matrix (1.24, stable), cache on; keep the `fixtures/error1` exclusion.
+- [ ] `go.mod`: `go 1.26`; update every dependency (`go get -u ./... && go mod tidy`); fix any breaking API changes (cobra, go-pretty, progressbar).
+- [ ] CI: `actions/checkout@v4+`, `actions/setup-go@v5+`, version matrix (1.26, stable), cache on; keep the `fixtures/error1` exclusion.
 - [ ] Run `go fix ./...` and `gofmt`; replace `interface{}` with `any`; remove deprecated APIs.
 - [ ] Verify all 43 existing exercises still behave: unsolved fails correctly, solved passes.
 - [ ] README: modern install (`go install .../golings@latest`), fork notice, supported Go versions.
