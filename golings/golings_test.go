@@ -2,6 +2,7 @@ package main
 
 import (
 	"runtime"
+	"runtime/debug"
 	"strings"
 	"testing"
 )
@@ -23,5 +24,33 @@ func TestBuildVersionOmitsEmptyFields(t *testing.T) {
 		if strings.Contains(got, unwanted) {
 			t.Errorf("BuildVersion() = %q, should not contain %q", got, unwanted)
 		}
+	}
+}
+
+func TestResolveVersion(t *testing.T) {
+	installed := &debug.BuildInfo{Main: debug.Module{Version: "v0.10.0"}}
+	devel := &debug.BuildInfo{Main: debug.Module{Version: "(devel)"}}
+
+	tests := []struct {
+		name                              string
+		version, commit, date             string
+		info                              *debug.BuildInfo
+		ok                                bool
+		wantVersion, wantCommit, wantDate string
+	}{
+		{"go install of a tagged version", "dev", "none", "unknown", installed, true, "0.10.0", "", ""},
+		{"stamped by goreleaser", "0.10.0", "abc", "2026-01-01", installed, true, "0.10.0", "abc", "2026-01-01"},
+		{"built from a working copy", "dev", "none", "unknown", devel, true, "dev", "none", "unknown"},
+		{"no build info", "dev", "none", "unknown", nil, false, "dev", "none", "unknown"},
+		{"empty module version", "dev", "none", "unknown", &debug.BuildInfo{}, true, "dev", "none", "unknown"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			version, commit, date := resolveVersion(tt.version, tt.commit, tt.date, tt.info, tt.ok)
+
+			if version != tt.wantVersion || commit != tt.wantCommit || date != tt.wantDate {
+				t.Errorf("resolveVersion() = (%q, %q, %q), want (%q, %q, %q)", version, commit, date, tt.wantVersion, tt.wantCommit, tt.wantDate)
+			}
+		})
 	}
 }

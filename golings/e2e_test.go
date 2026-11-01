@@ -10,7 +10,9 @@ import (
 )
 
 // These tests build the real binary and drive it like a learner who installed
-// it with `go install` and has no clone of the repository.
+// it with `go install` and has no clone of the repository. The binary is stamped
+// with a version, the way GoReleaser does, because a plain `go build` inside a
+// git checkout reports a version derived from the commit.
 
 func buildBinary(t *testing.T) string {
 	t.Helper()
@@ -18,7 +20,7 @@ func buildBinary(t *testing.T) string {
 		t.Skip("builds the binary and runs go; skipped in -short mode")
 	}
 	bin := filepath.Join(t.TempDir(), "golings")
-	if out, err := exec.Command("go", "build", "-o", bin, ".").CombinedOutput(); err != nil {
+	if out, err := exec.Command("go", "build", "-ldflags", "-X main.version=e2e-test", "-o", bin, ".").CombinedOutput(); err != nil {
 		t.Fatalf("go build: %v\n%s", err, out)
 	}
 	return bin
@@ -60,7 +62,7 @@ func TestLearnerJourney(t *testing.T) {
 	home := t.TempDir()
 
 	out, code := run(t, bin, home, "--version")
-	expect(t, out, code, 0, "dev")
+	expect(t, out, code, 0, "e2e-test")
 
 	out, code = run(t, bin, home, "init")
 	expect(t, out, code, 0, "Created golings-exercises", "cd golings-exercises")
