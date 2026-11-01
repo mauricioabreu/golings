@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
+	"time"
 )
 
 // These tests build the real binary and drive it like a learner who installed
@@ -140,4 +143,90 @@ func TestLearnerJourney(t *testing.T) {
 
 	out, code = run(t, bin, ws, "reset", "nope", "--yes")
 	expect(t, out, code, 1, "No exercise found for 'nope'")
+}
+
+// lockedBuffer collects the output of a process that is still running.
+type lockedBuffer struct {
+	mu  sync.Mutex
+	buf bytes.Buffer
+}
+
+func (b *lockedBuffer) Write(p []byte) (int, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return b.buf.Write(p)
+}
+
+func (b *lockedBuffer) String() string {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return b.buf.String()
+}
+
+func waitFor(t *testing.T, out *lockedBuffer, want string) {
+	t.Helper()
+	deadline := time.Now().Add(60 * time.Second)
+	for !strings.Contains(out.String(), want) {
+		if time.Now().After(deadline) {
+			t.Fatalf("timed out waiting for %q in:\n%s", want, out.String())
+		}
+		time.Sleep(50 * time.Millisecond)
+	}
+}
+
+func TestWatchReactsToSavedFiles(t *testing.T) {
+	bin := buildBinary(t)
+	home := t.TempDir()
+	if out, code := run(t, bin, home, "init"); code != 0 {
+		t.Fatalf("init failed:\n%s", out)
+	}
+	ws := filepath.Join(home, "golings-exercises")
+
+	cmd := exec.Command(bin, "watch")
+	cmd.Dir = ws
+	cmd.Env = append(os.Environ(), "NO_COLOR=1")
+	out := &lockedBuffer{}
+	cmd.Stdout, cmd.Stderr = out, out
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := cmd.Start(); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = cmd.Process.Kill() })
+
+	// The first exercise is broken...
+	waitFor(t, out, "Failed to compile the exercise")
+
+	// ...and saving a fix, the way an editor does (write a temp file, rename it
+	// over the original), makes watch run it again.
+	file := filepath.Join(ws, "exercises", "variables", "variables1", "main.go")
+	original, err := os.ReadFile(file)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixed := strings.ReplaceAll(string(original), "var = 5", "var x = 5")
+	temp := file + ".tmp"
+	if err := os.WriteFile(temp, []byte(fixed), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Rename(temp, file); err != nil {
+		t.Fatal(err)
+	}
+	waitFor(t, out, "Here is the output of your program")
+
+	if _, err := stdin.Write([]byte("exit\n")); err != nil {
+		t.Fatal(err)
+	}
+	done := make(chan error, 1)
+	go func() { done <- cmd.Wait() }()
+	select {
+	case err := <-done:
+		if err != nil {
+			t.Errorf("watch exited with an error after `exit`: %v\n%s", err, out.String())
+		}
+	case <-time.After(10 * time.Second):
+		t.Errorf("watch did not exit after `exit`:\n%s", out.String())
+	}
 }

@@ -2,92 +2,89 @@ package cmd
 
 import (
 	"bufio"
-	"fmt"
-	"io/fs"
-	"log"
-	"os"
+	"context"
+	"io"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/cleonte/golings/golings/watcher"
 	"github.com/fatih/color"
-	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/cobra"
 )
+
+// debounce is how long the watcher waits for a burst of file events to settle.
+const debounce = 150 * time.Millisecond
 
 func WatchCmd(infoFile string) *cobra.Command {
 	return &cobra.Command{
 		Use:   "watch",
 		Short: "Verify exercises when files are edited",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			RunNextExercise(infoFile)
-			reader := bufio.NewReader(os.Stdin)
-			update := make(chan string)
+			ctx, cancel := context.WithCancel(cmd.Context())
+			defer cancel()
 
-			go WatchEvents(update)
-
-			for {
-				go func() {
-					for range update {
-						RunNextExercise(infoFile)
-					}
-				}()
-
-				cmdString, err := reader.ReadString('\n')
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
-				cmdStr := strings.TrimSuffix(cmdString, "\n")
-
-				switch cmdStr {
-				case "list":
-					PrintList(infoFile)
-				case "hint":
-					PrintHint(infoFile)
-				case "quit":
-					color.Green("Bye by golings o/")
-					os.Exit(0)
-				case "exit":
-					color.Green("Bye by golings o/")
-					os.Exit(0)
-				default:
-					color.Yellow("only list or hint commands are available")
-				}
+			root := filepath.Join(filepath.Dir(infoFile), "exercises")
+			changes, err := watcher.Watch(ctx, root, debounce)
+			if err != nil {
+				color.Red("Can't watch %s: %s", root, err)
+				color.Yellow("Run golings from the folder that holds the exercises, create one with `golings init`, or try `golings doctor`.")
+				return err
 			}
+
+			watchLoop(cmd.InOrStdin(), changes, watchActions{
+				run:  func() { RunNextExercise(infoFile) },
+				list: func() { PrintList(infoFile) },
+				hint: func() { PrintHint(infoFile) },
+			})
+			return nil
 		},
 	}
 }
 
-func WatchEvents(updateF chan<- string) {
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		log.Fatal(err)
-	}
+type watchActions struct {
+	run, list, hint func()
+}
 
-	path, _ := os.Getwd()
-	directories := fmt.Sprintf("%s/exercises", path)
+// watchLoop runs the next exercise now and whenever files change, and answers
+// the commands typed by the learner, until they quit or input ends. Everything
+// happens in this one loop, so a run never overlaps with another run or with a
+// command.
+func watchLoop(in io.Reader, changes <-chan []string, actions watchActions) {
+	actions.run()
 
-	err = filepath.WalkDir(directories, func(path_dir string, d fs.DirEntry, err error) error {
-		if err != nil {
-			log.Fatal(err)
-			return err
+	lines := make(chan string)
+	go func() {
+		defer close(lines)
+		scanner := bufio.NewScanner(in)
+		for scanner.Scan() {
+			lines <- strings.TrimSpace(scanner.Text())
 		}
-		if d.IsDir() {
-			err = watcher.Add(path_dir)
+	}()
 
-			if err != nil {
-				log.Fatal(err)
+	for {
+		select {
+		case _, ok := <-changes:
+			if !ok {
+				return
 			}
-		}
-		return nil
-	})
+			actions.run()
 
-	if err != nil {
-		log.Fatal("Error in file path:", err.Error())
-	}
-
-	for event := range watcher.Events {
-		if event.Has(fsnotify.Write) || event.Has(fsnotify.Rename) {
-			updateF <- event.Name
+		case line, ok := <-lines:
+			if !ok {
+				return
+			}
+			switch line {
+			case "list":
+				actions.list()
+			case "hint":
+				actions.hint()
+			case "quit", "exit":
+				color.Green("Bye by golings o/")
+				return
+			default:
+				color.Yellow("only list or hint commands are available")
+			}
 		}
 	}
 }
