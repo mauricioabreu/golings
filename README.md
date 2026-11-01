@@ -1,6 +1,6 @@
 # golings
 
-[![build and test](https://github.com/mauricioabreu/golings/actions/workflows/test.yml/badge.svg)](https://github.com/mauricioabreu/golings/actions/workflows/test.yml)
+[![build and test](https://github.com/cleonte/golings/actions/workflows/test.yml/badge.svg)](https://github.com/cleonte/golings/actions/workflows/test.yml)
 
 ![gopher](misc/gopher-dance.gif)
 
@@ -11,6 +11,10 @@ You may know [rustlings](https://github.com/rust-lang/rustlings), right? If you 
 
 `golings` has the very same idea, but for the [Go programming language](https://go.dev/)
 
+> **Fork notice:** this is a modernized fork of [mauricioabreu/golings](https://github.com/mauricioabreu/golings), created by Mauricio Abreu and released under the Apache-2.0 license. The upstream project is no longer actively maintained; this fork updates it for current Go and adds new topics. Credit for the original idea and exercises goes to the upstream author and contributors.
+
+**Supported Go versions:** Go 1.26 or newer (the latest stable release is also tested in CI).
+
 After setting up all the tools required to run `golings` you have the task to fix tiny go programs.
 
 ## Installing
@@ -19,11 +23,17 @@ First, you need to have `go` installed. You can install it by visiting the [Go d
 
 There are several ways to install `golings`
 
-### Option 1: GO install
+### Option 1: From source
+
+Clone this fork and install from the checkout (requires Go 1.26+):
 
 ```sh
-go install github.com/mauricioabreu/golings/golings@latest
+git clone https://github.com/cleonte/golings.git
+cd golings
+go install ./golings
 ```
+
+> `go install github.com/mauricioabreu/golings/golings@latest` installs the **upstream** version, not this fork. The module path has not been renamed yet, so installing the fork directly with `go install ...@latest` is not available.
 
 Add `go/bin` to your PATH if you want to run golings anywhere in your terminal. From the official docs:
 
@@ -47,7 +57,7 @@ Some tests depend on `CGO` which is not installed by default.
 
 ### Option 2: Binaries
 
-Go to the [releases page](https://github.com/mauricioabreu/golings/releases) and choose the option that best fits your environment.
+Go to the [releases page](https://github.com/cleonte/golings/releases) and choose the option that best fits your environment.
 
 ### Option 3: Web version (playground)
 
@@ -71,7 +81,7 @@ Now you have the task to fix all the programs. Some of them don't compile, and y
 Clone the repository:
 
 ```sh
-git clone git@github.com:mauricioabreu/golings.git
+git clone git@github.com:cleonte/golings.git
 ```
 
 To run the exercises in the recommended order while taking advantage of fast feedback loop, use the _watch_ command:
