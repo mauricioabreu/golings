@@ -23,3 +23,5 @@ jobs:
         with:
           version: latest
           working-directory: golings
+          # fixtures/error1 is intentionally broken, so lint the other packages explicitly
+          args: . ./cmd/... ./exercises/... ./ui/... ./fixtures/next/... ./fixtures/pending1/... ./fixtures/success1/...
