@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/fatih/color"
-	"github.com/mauricioabreu/golings/golings/exercises"
+	"github.com/cleonte/golings/golings/exercises"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )

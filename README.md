@@ -23,17 +23,19 @@ First, you need to have `go` installed. You can install it by visiting the [Go d
 
 There are several ways to install `golings`
 
-### Option 1: From source
+### Option 1: GO install
 
-Clone this fork and install from the checkout (requires Go 1.26+):
+```sh
+go install github.com/cleonte/golings/golings@latest
+```
+
+Or build from a checkout of this fork:
 
 ```sh
 git clone https://github.com/cleonte/golings.git
 cd golings
 go install ./golings
 ```
-
-> `go install github.com/mauricioabreu/golings/golings@latest` installs the **upstream** version, not this fork. The module path has not been renamed yet, so installing the fork directly with `go install ...@latest` is not available.
 
 Add `go/bin` to your PATH if you want to run golings anywhere in your terminal. From the official docs:
 

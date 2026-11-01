@@ -58,4 +58,4 @@ Expand **generics** beyond 2 exercises: constraints, `cmp.Ordered`, generic stru
 ## Open questions
 - Exercise file format and `info.toml` schema details: confirm by reading `golings/exercises/` before Phase 2.
 - Where the solutions live so learners don't stumble on them (separate `solutions/` dir vs build-tagged files).
-- Rename the fork's module path? Keeping `github.com/mauricioabreu/golings` avoids churn but blocks `go install` from the fork; decide before the first release.
+- ~~Rename the fork's module path?~~ Done: module is now `github.com/cleonte/golings`.

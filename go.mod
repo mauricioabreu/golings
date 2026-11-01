@@ -1,4 +1,4 @@
-module github.com/mauricioabreu/golings
+module github.com/cleonte/golings
 
 go 1.26.0
 

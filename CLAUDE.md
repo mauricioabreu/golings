@@ -10,7 +10,7 @@ Upstream is Apache-2.0: keep LICENSE, keep attribution to the original author in
 - Work on a branch per roadmap phase, e.g. `phase-1-housekeeping`. Never commit straight to main.
 
 ## Repo layout (as of upstream HEAD)
-- `golings/` — the CLI (Go module `github.com/mauricioabreu/golings`): `cmd/`, `exercises/` (loader/runner code), `ui/`, `fixtures/`, `golings.go`.
+- `golings/` — the CLI (Go module `github.com/cleonte/golings`): `cmd/`, `exercises/` (loader/runner code), `ui/`, `fixtures/`, `golings.go`.
 - `exercises/<topic>/<name>/` — the learner-facing exercises (13 topics, 43 exercises).
 - `info.toml` — the exercise manifest (name, dir, mode, hint). Every exercise must be listed here, in learning order.
 - `Makefile` — `make test`, `make watch`, `make run`.
