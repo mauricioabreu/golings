@@ -11,15 +11,18 @@ import (
 
 func ListCmd(infoFile string) *cobra.Command {
 	return &cobra.Command{
-		Use:   "list",
-		Short: "List all exercises",
-		Run: func(cmd *cobra.Command, args []string) {
+		Use:           "list",
+		Short:         "List all exercises",
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		RunE: func(cmd *cobra.Command, args []string) error {
 			exs, err := exercises.List(infoFile)
 			if err != nil {
 				color.Red(err.Error())
-				os.Exit(1)
+				return err
 			}
 			ui.PrintList(os.Stdout, exs)
+			return nil
 		},
 	}
 }

@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
 
 	"github.com/cleonte/golings/golings/exercises"
 	"github.com/fatih/color"
@@ -13,13 +12,15 @@ import (
 
 func VerifyCmd(infoFile string) *cobra.Command {
 	return &cobra.Command{
-		Use:   "verify",
-		Short: "Verify all exercises",
-		Run: func(cmd *cobra.Command, args []string) {
+		Use:           "verify",
+		Short:         "Verify all exercises",
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		RunE: func(cmd *cobra.Command, args []string) error {
 			allExercises, err := exercises.List(infoFile)
 			if err != nil {
 				color.Red(err.Error())
-				os.Exit(1)
+				return err
 			}
 
 			bar := progressbar.NewOptions(
@@ -39,7 +40,7 @@ func VerifyCmd(infoFile string) *cobra.Command {
 			)
 			if err := bar.RenderBlank(); err != nil {
 				color.Red(err.Error())
-				os.Exit(1)
+				return err
 			}
 
 			for _, exercise := range allExercises {
@@ -59,12 +60,13 @@ func VerifyCmd(infoFile string) *cobra.Command {
 					color.White("Check the output below: \n\n")
 					color.Red(result.Err)
 					color.Red(result.Out)
-					os.Exit(1)
+					return errors.New("verification failed")
 				}
 			}
 
 			color.Green("Congratulations!!!")
 			color.Green("You passed all the exercises")
+			return nil
 		},
 	}
 }

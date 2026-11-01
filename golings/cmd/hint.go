@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"os"
-
 	"github.com/cleonte/golings/golings/exercises"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
@@ -10,10 +8,12 @@ import (
 
 func HintCmd(infoFile string) *cobra.Command {
 	return &cobra.Command{
-		Use:   "hint <exercise name>",
-		Short: "Get a hint for an exercise",
-		Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-		Run: func(cmd *cobra.Command, args []string) {
+		Use:           "hint <exercise name>",
+		Short:         "Get a hint for an exercise",
+		Args:          cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+		SilenceUsage:  true,
+		SilenceErrors: true,
+		RunE: func(cmd *cobra.Command, args []string) error {
 			var exercise exercises.Exercise
 			var err error
 			if args[0] == "next" {
@@ -24,9 +24,10 @@ func HintCmd(infoFile string) *cobra.Command {
 
 			if err != nil {
 				color.Red(err.Error())
-				os.Exit(1)
+				return err
 			}
 			color.Yellow(exercise.Hint)
+			return nil
 		},
 	}
 }
