@@ -46,11 +46,7 @@ example specific exercise : golings run variables1`,
 			}
 
 			if err != nil {
-				color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
-				color.White("Check the output below: \n\n")
-				color.Red(result.Err)
-				color.Red(result.Out)
-				color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
+				printFailure(result)
 			} else {
 				color.Green("✅ Successfully tested %s!\n\n", result.Exercise.Path)
 				color.Green("Congratulations!\n\n")

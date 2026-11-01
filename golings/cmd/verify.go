@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cleonte/golings/golings/exercises"
+	"github.com/cleonte/golings/golings/ui"
 	"github.com/fatih/color"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
@@ -54,12 +55,9 @@ func VerifyCmd(infoFile string) *cobra.Command {
 					continue
 				}
 
-				if result.Err != "" {
+				if err != nil {
 					fmt.Print("\n\n")
-					color.Cyan("Failed to compile the exercise %s\n\n", exercise.Path)
-					color.White("Check the output below: \n\n")
-					color.Red(result.Err)
-					color.Red(result.Out)
+					ui.PrintFailure(color.Output, exercise, result.Failure())
 					return errors.New("verification failed")
 				}
 			}

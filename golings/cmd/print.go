@@ -67,11 +67,7 @@ func RunNextExercise(infoFile string) {
 		return
 	}
 	if err != nil {
-		color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
-		color.White("Check the output below: \n\n")
-		color.Red(result.Err)
-		color.Red(result.Out)
-		color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
+		printFailure(result)
 	} else {
 		color.Green("Congratulations!\n\n")
 		color.Green("Here is the output of your program:\n\n")
@@ -107,4 +103,10 @@ func localGo() string {
 		return "the installed version"
 	}
 	return v
+}
+
+// printFailure explains why the exercise failed and where to find help.
+func printFailure(result exercises.Result) {
+	ui.PrintFailure(color.Output, result.Exercise, result.Failure())
+	color.Yellow("If you feel stuck, ask a hint by executing `golings hint %s`", result.Exercise.Name)
 }

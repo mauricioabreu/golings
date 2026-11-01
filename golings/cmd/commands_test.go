@@ -45,6 +45,32 @@ hint = "remove the unused variable"
 	return info
 }
 
+// writeFailingTestInfo creates a test-mode exercise whose test fails and
+// returns the path of an info file listing it.
+func writeFailingTestInfo() string {
+	dir := GinkgoT().TempDir()
+	Expect(os.WriteFile(filepath.Join(dir, "x_test.go"), []byte(`package x
+
+import "testing"
+
+func TestBroken(t *testing.T) { t.Fatal("not yet") }
+`), 0o644)).To(Succeed())
+
+	wd, err := os.Getwd()
+	Expect(err).NotTo(HaveOccurred())
+	rel, err := filepath.Rel(wd, filepath.Join(dir, "x_test.go"))
+	Expect(err).NotTo(HaveOccurred())
+
+	info := filepath.Join(dir, "info.toml")
+	Expect(os.WriteFile(info, []byte(`[[exercises]]
+name = "broken-test"
+path = "`+rel+`"
+mode = "test"
+hint = ""
+`), 0o644)).To(Succeed())
+	return info
+}
+
 var _ = Describe("More commands", func() {
 	var out *bytes.Buffer
 
@@ -104,6 +130,13 @@ var _ = Describe("More commands", func() {
 			Expect(out.String()).To(ContainSubstring("Failed to compile the exercise"))
 			Expect(out.String()).NotTo(ContainSubstring("You passed all the exercises"))
 		})
+		It("fails when a test-mode exercise has failing tests", func() {
+			verify := cmd.VerifyCmd(writeFailingTestInfo())
+
+			Expect(verify.Execute()).To(HaveOccurred())
+			Expect(out.String()).To(ContainSubstring("Tests failed for the exercise"))
+			Expect(out.String()).To(ContainSubstring("not yet"))
+		})
 		It("fails when the info file does not exist", func() {
 			verify := cmd.VerifyCmd("../fixtures/info404.toml")
 
@@ -129,6 +162,7 @@ var _ = Describe("More commands", func() {
 
 			Expect(out.String()).To(ContainSubstring("Failed to compile the exercise"))
 			Expect(out.String()).To(ContainSubstring("declared and not used"))
+			Expect(out.String()).To(ContainSubstring("a := 1"))
 			Expect(out.String()).To(ContainSubstring("golings hint broken"))
 		})
 	})
