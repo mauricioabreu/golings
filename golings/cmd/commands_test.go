@@ -146,6 +146,28 @@ var _ = Describe("More commands", func() {
 		})
 	})
 
+	Describe("Doctor", func() {
+		It("passes for a workspace with all its exercise files", func() {
+			doctor := cmd.DoctorCmd("../fixtures/success1/info.toml")
+
+			Expect(doctor.Execute()).To(Succeed())
+			Expect(out.String()).To(ContainSubstring("Go toolchain"))
+			Expect(out.String()).To(ContainSubstring("Exercise files: all present"))
+		})
+		It("fails when exercise files are missing", func() {
+			doctor := cmd.DoctorCmd("../fixtures/info.toml")
+
+			Expect(doctor.Execute()).To(HaveOccurred())
+			Expect(out.String()).To(ContainSubstring("missing"))
+		})
+		It("fails when there is no info file", func() {
+			doctor := cmd.DoctorCmd("../fixtures/info404.toml")
+
+			Expect(doctor.Execute()).To(HaveOccurred())
+			Expect(out.String()).To(ContainSubstring("Exercise manifest"))
+		})
+	})
+
 	Describe("Root", func() {
 		It("registers every command", func() {
 			root := cmd.NewRootCmd("test")
@@ -154,7 +176,7 @@ var _ = Describe("More commands", func() {
 			for _, c := range root.Commands() {
 				names = append(names, c.Name())
 			}
-			Expect(names).To(ContainElements("hint", "list", "run", "verify", "watch"))
+			Expect(names).To(ContainElements("doctor", "hint", "list", "run", "verify", "watch"))
 			Expect(root.Version).To(Equal("test"))
 		})
 	})

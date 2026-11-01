@@ -130,6 +130,12 @@ To compile and run all the exercises:
 golings verify
 ```
 
+If something does not work, check your setup (Go version, exercise files, what the race detector needs):
+
+```sh
+golings doctor
+```
+
 If you need help with CLI commands:
 
 ```sh
