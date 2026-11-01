@@ -30,7 +30,7 @@ var _ = Describe("Exercises", func() {
 				`))
 				Expect(err).NotTo(HaveOccurred())
 
-				defer os.Remove(file.Name())
+				defer func() { _ = os.Remove(file.Name()) }()
 
 				ex := exercises.Exercise{Path: file.Name()}
 
@@ -44,7 +44,7 @@ var _ = Describe("Exercises", func() {
 				file, err := os.CreateTemp("/tmp", "exercise*.go")
 				Expect(err).NotTo(HaveOccurred())
 
-				defer os.Remove(file.Name())
+				defer func() { _ = os.Remove(file.Name()) }()
 
 				ex := exercises.Exercise{Path: file.Name()}
 

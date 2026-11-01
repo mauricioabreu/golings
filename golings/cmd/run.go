@@ -38,7 +38,7 @@ example specific exercise : golings run variables1`,
 
 			result, err := exercise.Run()
 
-			spinner.Close()
+			spinner.Close() // nolint
 
 			if err != nil {
 				color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
