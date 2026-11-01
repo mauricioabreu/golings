@@ -404,6 +404,60 @@ Increment has a pointer receiver, so only *Counter has it in its method set, not
 For more information: https://go.dev/ref/spec#Method_sets"""
 
 [[exercises]]
+name = "interfaces1"
+path = "exercises/interfaces/interfaces1/main.go"
+mode = "compile"
+hint = """
+A type satisfies an interface by having all of its methods, there is nothing to declare. The compiler tells you which method is missing: add it to the type that lacks it.
+
+For more information: https://go.dev/tour/methods/10"""
+
+[[exercises]]
+name = "interfaces2"
+path = "exercises/interfaces/interfaces2/main_test.go"
+mode = "test"
+hint = """
+Both functions take shapes of any type: call the Area method on each element of the slice and let the interface do the work. For largest, start with no shape and keep the one with the biggest area so far.
+
+For more information: https://go.dev/ref/spec#Interface_types"""
+
+[[exercises]]
+name = "interfaces3"
+path = "exercises/interfaces/interfaces3/main_test.go"
+mode = "test"
+hint = """
+A type assertion v.(int) panics if v holds something else. The form n, ok := v.(int) never panics: ok tells you whether it worked.
+
+For more information: https://go.dev/ref/spec#Type_assertions"""
+
+[[exercises]]
+name = "interfaces4"
+path = "exercises/interfaces/interfaces4/main_test.go"
+mode = "test"
+hint = """
+A type switch looks like switch v := v.(type) { case int: ... }. Inside each case, v has that case's type. There is also a case nil, and a default for everything else. You will need fmt to build some of the strings.
+
+For more information: https://go.dev/tour/methods/16"""
+
+[[exercises]]
+name = "interfaces5"
+path = "exercises/interfaces/interfaces5/main_test.go"
+mode = "test"
+hint = """
+An interface value holds a type and a value. An error that holds a nil *ValidationError has a type, so it is not equal to nil. Return the literal nil when there is no error, instead of a variable that happens to be nil.
+
+For more information: https://go.dev/doc/faq#nil_error"""
+
+[[exercises]]
+name = "interfaces6"
+path = "exercises/interfaces/interfaces6/main.go"
+mode = "compile"
+hint = """
+Embedding means writing a type name in a struct or interface without a field name. In a struct it promotes the methods of that type, and the embedded value is a field you can set by the type name: Service{Logger: Logger{...}}. In an interface it adds the methods of that interface.
+
+For more information: https://go.dev/doc/effective_go#embedding"""
+
+[[exercises]]
 name = "anonymous_functions1"
 path = "exercises/anonymous_functions/anonymous_functions1/main.go"
 mode = "compile"
