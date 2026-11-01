@@ -77,6 +77,9 @@ func TestLearnerJourney(t *testing.T) {
 	out, code = run(t, bin, ws, "init")
 	expect(t, out, code, 1, "already a golings workspace")
 
+	out, code = run(t, bin, ws, "watch", "--help")
+	expect(t, out, code, 0, "--plain")
+
 	out, code = run(t, bin, ws, "doctor")
 	expect(t, out, code, 0, "Exercise files: all present")
 

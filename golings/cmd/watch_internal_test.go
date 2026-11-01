@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"io"
+	"os"
 	"runtime"
 	"strings"
 	"sync"
@@ -172,4 +173,21 @@ func TestWatchLoopWorksWithPlainReaders(t *testing.T) {
 
 	g.Eventually(finished).Should(BeClosed(), "input ended")
 	g.Expect([]int32{c.run.Load(), c.hint.Load(), c.list.Load()}).To(Equal([]int32{1, 1, 1}))
+}
+
+func TestIsTerminal(t *testing.T) {
+	g := NewWithT(t)
+
+	g.Expect(isTerminal(strings.NewReader("not a file"))).To(BeFalse())
+	g.Expect(isTerminal(&bytes.Buffer{})).To(BeFalse())
+
+	file, err := os.CreateTemp(t.TempDir(), "plain")
+	g.Expect(err).NotTo(HaveOccurred())
+	t.Cleanup(func() { _ = file.Close() })
+	g.Expect(isTerminal(file)).To(BeFalse(), "a regular file is not a terminal")
+
+	reader, writer, err := os.Pipe()
+	g.Expect(err).NotTo(HaveOccurred())
+	t.Cleanup(func() { _ = reader.Close(); _ = writer.Close() })
+	g.Expect(isTerminal(reader)).To(BeFalse(), "a pipe is not a terminal")
 }

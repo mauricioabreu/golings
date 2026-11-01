@@ -101,7 +101,9 @@ $env:CGO_ENABLED=1
 golings watch
 ```
 
-This command will run golings in interactive mode. Every time you save a file it will verify if the code is correct.
+This opens a full-screen view: your progress at the top and the result of the current exercise below. Every time you save a file it runs the exercise again. Press `q` to quit.
+
+If you prefer plain line-by-line output, or when input or output is not a terminal (for example when piping), use `golings watch --plain`. There you can type `hint` or `list` and press Enter, and `exit` to quit.
 
 To run the next pending exercise:
 
