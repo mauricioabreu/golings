@@ -1,7 +1,7 @@
 {
 	"name": "golings",
 	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
-	"postCreateCommand": "go install github.com/mauricioabreu/golings/golings@latest",
+	"postCreateCommand": "go install github.com/cleonte/golings/golings@latest",
 	"features": {
 		"ghcr.io/devcontainers/features/go:1": {
 			"version": "latest"

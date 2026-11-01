@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cleonte/golings/golings/exercises"
 	"github.com/fatih/color"
-	"github.com/mauricioabreu/golings/golings/exercises"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
@@ -38,7 +38,7 @@ example specific exercise : golings run variables1`,
 
 			result, err := exercise.Run()
 
-			spinner.Close()
+			spinner.Close() // nolint
 
 			if err != nil {
 				color.Cyan("Failed to compile the exercise %s\n\n", result.Exercise.Path)
@@ -72,7 +72,7 @@ func RunSpinner(exercise string) *progressbar.ProgressBar {
 		}),
 	)
 	go func() {
-		for x := 0; x < 100; x++ {
+		for range 100 {
 			spinner.Add(1) // nolint
 			time.Sleep(250 * time.Millisecond)
 		}

@@ -3,9 +3,9 @@ package cmd
 import (
 	"os"
 
+	"github.com/cleonte/golings/golings/exercises"
+	"github.com/cleonte/golings/golings/ui"
 	"github.com/fatih/color"
-	"github.com/mauricioabreu/golings/golings/exercises"
-	"github.com/mauricioabreu/golings/golings/ui"
 	"github.com/spf13/cobra"
 )
 

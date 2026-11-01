@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cleonte/golings/golings/exercises"
 	"github.com/fatih/color"
-	"github.com/mauricioabreu/golings/golings/exercises"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )

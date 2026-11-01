@@ -13,12 +13,15 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: 1.19
-      - uses: actions/checkout@v3
+          go-version: stable
+          cache: true
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v8
         with:
           version: latest
           working-directory: golings
+          # fixtures/error1 is intentionally broken, so lint the other packages explicitly
+          args: . ./cmd/... ./exercises/... ./ui/... ./fixtures/next/... ./fixtures/pending1/... ./fixtures/success1/...

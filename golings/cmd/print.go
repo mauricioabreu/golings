@@ -6,9 +6,9 @@ import (
 	"os/exec"
 	"runtime"
 
+	"github.com/cleonte/golings/golings/exercises"
+	"github.com/cleonte/golings/golings/ui"
 	"github.com/fatih/color"
-	"github.com/mauricioabreu/golings/golings/exercises"
-	"github.com/mauricioabreu/golings/golings/ui"
 )
 
 func PrintHint(infoFile string) {
@@ -44,11 +44,11 @@ func RunNextExercise(infoFile string) {
 		color.Green("You have completed all %d of the currently available exercises.", total)
 		color.Blue("If you enjoyed working through this introduction to Golang,")
 		color.Blue("please give the github repository a star")
-		color.White("> https://github.com/mauricioabreu/golings <\n\n\n")
+		color.White("> https://github.com/cleonte/golings <\n\n\n")
 
 		color.Yellow("To quit out of watch, please type `exit` and hit enter:")
 
-		return;
+		return
 	}
 
 	exercise, err := exercises.NextPending(infoFile)
