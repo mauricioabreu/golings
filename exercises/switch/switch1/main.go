@@ -8,6 +8,7 @@ import "fmt"
 
 func main() {
 	status := "open"
+	// TODO: Switch on the status.
 	switch {
 	case "open":
 		fmt.Println("status is open")

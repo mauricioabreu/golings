@@ -13,6 +13,7 @@ type Point struct {
 func main() {
 	// new(T) allocates a zero value of type T and returns a pointer to it.
 	count := new(int)
+	// TODO: Add one to the number the pointer points to.
 	count++
 	fmt.Println("count:", *count)
 

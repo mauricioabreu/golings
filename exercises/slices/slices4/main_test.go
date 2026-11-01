@@ -11,6 +11,7 @@ import (
 
 func TestGetOnlyFirstName(t *testing.T) {
 	names := []string{"John", "Maria", "Carl", "Peter"}
+	// TODO: Get the first name.
 	firstName := names[3]
 
 	if firstName != "John" {
@@ -20,6 +21,7 @@ func TestGetOnlyFirstName(t *testing.T) {
 
 func TestGetFirstTwoNames(t *testing.T) {
 	names := []string{"John", "Maria", "Carl", "Peter"}
+	// TODO: Get the first two names.
 	firstTwoNames := names[5:10]
 	expectedFirstTwoNames := []string{"John", "Maria"}
 
@@ -30,6 +32,7 @@ func TestGetFirstTwoNames(t *testing.T) {
 
 func TestGetLastTwoNames(t *testing.T) {
 	names := []string{"John", "Maria", "Carl", "Peter"}
+	// TODO: Get the last two names.
 	lastTwoNames := names[5:10]
 	expectedLastTwoNames := []string{"Carl", "Peter"}
 

@@ -31,6 +31,7 @@ func sendAndReceive(buf *bytes.Buffer, messages chan string) {
 		close(messages)
 	}()
 
+	// TODO: Receive every message until the channel is closed, and print them separated by a space.
 	greeting := <-messages
 	fmt.Fprint(buf, greeting)
 

@@ -12,6 +12,7 @@ func main() {
 		"John": "+01 333 666",
 	}
 
+	// TODO: Range over the phone book, getting the name and the phone of each contact.
 	for := range {
 		fmt.Printf("%s has the %s phone\n", name, phone)
 	}

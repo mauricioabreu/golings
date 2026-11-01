@@ -9,6 +9,7 @@ import "testing"
 // reverse returns the text with its characters in the opposite order.
 func reverse(text string) string {
 	// Reversing the bytes would tear apart every character that takes more than one.
+	// TODO: Reverse the characters.
 	return text
 }
 

@@ -36,6 +36,7 @@ func print(buf *bytes.Buffer) {
 		go func(i int) {
 			defer wg.Done()
 			mu.Lock()
+			// TODO: Every goroutine has to print its message to buf.
 			//fmt.Fprintf(buf, "Hello from goroutine %d!\n", i)
 			mu.Unlock()
 		}(i)

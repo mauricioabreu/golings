@@ -12,6 +12,7 @@ type Rectangle struct {
 
 // Area returns the area of the rectangle.
 // main calls it as r.Area(): make it a method of Rectangle.
+// TODO: Make this a method of Rectangle.
 func Area(r Rectangle) int {
 	return r.Width * r.Height
 }

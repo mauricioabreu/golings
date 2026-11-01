@@ -16,6 +16,7 @@ func (e *ValidationError) Error() string {
 
 // validate returns an error if the age is negative, and nil if it is fine.
 func validate(age int) error {
+	// TODO: Return no error at all when the age is fine.
 	var err *ValidationError
 	if age < 0 {
 		err = &ValidationError{Message: "age can't be negative"}

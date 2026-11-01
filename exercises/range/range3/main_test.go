@@ -14,6 +14,7 @@ func TestFilterEvenNumbers(t *testing.T) {
 
 	evenNumbers := []int{} // use range to filter even numbers
 
+	// TODO: Keep only the even numbers in evenNumbers.
 	for range numbers {
 	}
 

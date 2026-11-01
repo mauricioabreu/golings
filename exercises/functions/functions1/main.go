@@ -5,5 +5,6 @@
 package main
 
 func main() {
+	// TODO: Define call_me, a function without parameters, so that this call works.
 	call_me()
 }

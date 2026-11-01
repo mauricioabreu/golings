@@ -20,6 +20,7 @@ func (s Square) Area() float64 {
 	return s.Side * s.Side
 }
 
+// TODO: Make Triangle a Shape: its area is the base times the height, divided by two.
 type Triangle struct {
 	Base, Height float64
 }

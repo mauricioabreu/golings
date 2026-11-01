@@ -20,6 +20,7 @@ func (c Counter) Value() int {
 
 // incrementAll adds one to every counter in the slice.
 func incrementAll(counters []Counter) {
+	// TODO: Increment the counters in the slice, not copies of them.
 	for _, c := range counters {
 		c.Increment()
 	}

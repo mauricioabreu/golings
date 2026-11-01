@@ -12,6 +12,7 @@ type Person struct {
 
 // greeting says hello to the person, or to nobody when there is no person.
 func greeting(p *Person) string {
+	// TODO: When there is nobody to greet, don't follow the nil pointer.
 	return "Hello, " + p.Name + "!"
 }
 

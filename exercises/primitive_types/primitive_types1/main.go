@@ -7,6 +7,7 @@ package main
 import "fmt"
 
 func main() {
+	// TODO: The store closes: give storeIsOpen a new value.
 	storeIsOpen := true
 	if storeIsOpen {
 		fmt.Println("The store is open, let's buy some clothes!")

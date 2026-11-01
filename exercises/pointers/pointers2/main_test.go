@@ -8,11 +8,13 @@ import "testing"
 
 // increment adds one to the number.
 func increment(n int) {
+	// TODO: Change the caller's number, not a copy of it.
 	n++
 }
 
 // swap exchanges the two numbers.
 func swap(a, b int) {
+	// TODO: Swap the caller's numbers, not copies of them.
 	a, b = b, a
 }
 

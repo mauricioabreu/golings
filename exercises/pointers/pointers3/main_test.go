@@ -13,11 +13,13 @@ type Person struct {
 
 // newPerson creates a person and returns a pointer to it.
 func newPerson(name string, age int) *Person {
+	// TODO: Return a pointer to a new person.
 	return nil
 }
 
 // haveBirthday makes the person one year older.
 func haveBirthday(p *Person) {
+	// TODO: Make the person one year older.
 }
 
 func TestNewPerson(t *testing.T) {

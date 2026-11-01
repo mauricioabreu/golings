@@ -24,6 +24,7 @@ func updateCounter() int {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
+			// TODO: Protect the counter from goroutines updating it at the same time.
 			counter++ // Many goroutines trying to update the counter? We need some protection here!
 		}()
 	}

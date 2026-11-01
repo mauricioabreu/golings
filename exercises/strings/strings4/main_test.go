@@ -9,6 +9,7 @@ import "testing"
 // repeatWithSeparator returns the word n times, with sep between the copies:
 // ("go", 3, "-") gives "go-go-go".
 func repeatWithSeparator(word string, n int, sep string) string {
+	// TODO: Build the result without copying the whole string on every step.
 	result := ""
 	for i := 0; i < n; i++ {
 		if i > 0 {

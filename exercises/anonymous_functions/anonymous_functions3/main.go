@@ -16,6 +16,7 @@ func updateStatus() func() string {
 
 	return func() string {
 		index++
+		// TODO: Return the status that goes with the index.
 		return "What should I return?"
 	}
 }

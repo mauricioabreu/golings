@@ -7,6 +7,7 @@ package main
 import "fmt"
 
 func main() {
+	// TODO: integer and float are not Go types. Use the right ones.
 	var n1 integer = 101
 	if n1 > 100 {
 		fmt.Println("It is a big number")

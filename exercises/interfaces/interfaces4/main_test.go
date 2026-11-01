@@ -15,6 +15,7 @@ import "testing"
 //	nil                -> "nothing"
 //	anything else      -> "something else"
 func describe(v any) string {
+	// TODO: Handle each kind of value from the list above.
 	return "something else"
 }
 

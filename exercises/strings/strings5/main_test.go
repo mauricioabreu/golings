@@ -12,11 +12,13 @@ import (
 // wordCount returns how many words the text has. Words are separated by any
 // amount of whitespace: spaces, tabs, new lines.
 func wordCount(text string) int {
+	// TODO: Count the words, whatever whitespace separates them.
 	return len(strings.Split(text, " "))
 }
 
 // normalize returns the name without the spaces around it, in lower case.
 func normalize(name string) string {
+	// TODO: Trim the spaces around the name and make it lower case.
 	return name
 }
 

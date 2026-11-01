@@ -11,6 +11,7 @@ type Rectangle struct {
 }
 
 // Scale multiplies both sides of the rectangle by factor.
+// TODO: Scale has to change the rectangle it is called on, not a copy.
 func (r Rectangle) Scale(factor int) {
 	r.Width *= factor
 	r.Height *= factor

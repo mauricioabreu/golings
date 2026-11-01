@@ -17,6 +17,7 @@ func (l Logger) Log(message string) {
 // Service should be able to log. Embed a Logger in it: the methods of an
 // embedded field are available on the outer struct.
 type Service struct {
+	// TODO: Embed a Logger, so that a Service can log.
 	name string
 }
 
@@ -31,6 +32,7 @@ type Stopper interface {
 // Runner requires both methods. Build it by embedding the two interfaces
 // above instead of repeating their methods.
 type Runner interface {
+	// TODO: Require Stop as well, by embedding Stopper.
 	Starter
 }
 

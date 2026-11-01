@@ -7,7 +7,7 @@ package main_test
 import "testing"
 
 func bigger(a int, b int) int {
-	// Complete this function to return the bigger number
+	// TODO: Complete this function to return the bigger number
 	// Use only if statements
 	return 0
 }

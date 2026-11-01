@@ -11,6 +11,7 @@ import "fmt"
 type Celsius float64
 
 // ToFahrenheit converts the temperature to degrees Fahrenheit.
+// TODO: Declare the method on a type you defined.
 func (c float64) ToFahrenheit() float64 {
 	return c*9/5 + 32
 }

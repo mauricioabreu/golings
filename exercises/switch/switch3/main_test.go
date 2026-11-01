@@ -7,7 +7,7 @@ package main_test
 import "testing"
 
 func weekDay(day int) string {
-	// Return the day of the week based on the
+	// TODO: Return the day of the week based on the
 	// integer. Use a switch case to satisfy all test cases below
 	return "Sunday"
 }

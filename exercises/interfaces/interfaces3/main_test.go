@@ -9,11 +9,13 @@ import "testing"
 // asInt returns the int inside v and true, or 0 and false if v holds anything else.
 // It must not panic.
 func asInt(v any) (int, bool) {
+	// TODO: Use a type assertion that can't panic.
 	return 0, false
 }
 
 // firstString returns the first string among the values, or "" if there is none.
 func firstString(values []any) string {
+	// TODO: Look for the first string among the values.
 	return ""
 }
 

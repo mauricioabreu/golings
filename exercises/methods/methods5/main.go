@@ -23,6 +23,7 @@ type Incrementer interface {
 func main() {
 	c := Counter{}
 
+	// TODO: Put into i a value whose type has the Increment method.
 	var i Incrementer = c
 	i.Increment()
 

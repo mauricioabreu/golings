@@ -28,11 +28,13 @@ func (t Triangle) Area() float64 {
 
 // totalArea adds up the areas of all the shapes.
 func totalArea(shapes []Shape) float64 {
+	// TODO: Add up the areas of the shapes.
 	return 0
 }
 
 // largest returns the shape with the biggest area, or nil if there are no shapes.
 func largest(shapes []Shape) Shape {
+	// TODO: Find the shape with the biggest area.
 	return nil
 }
 

@@ -13,6 +13,7 @@ func main() {
 	colors[1] = "green"
 	colors[2] = "blue"
 
+	// TODO: Print the first and the last color: pick them from the array by index.
 	fmt.Printf("First color is %s\n", colors[])
 	fmt.Printf("Last color is %s\n", colors[])
 }

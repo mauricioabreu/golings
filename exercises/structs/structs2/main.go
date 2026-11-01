@@ -7,7 +7,7 @@ package main
 import "fmt"
 
 type Person struct {
-	// don't just create the phone field here. embed a new struct
+	// TODO: Don't just create the phone field here: embed a new struct, ContactDetails.
 	name string
 	age int
 }

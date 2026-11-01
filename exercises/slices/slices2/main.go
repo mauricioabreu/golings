@@ -8,6 +8,7 @@ import "fmt"
 
 func main() {
 	names := [4]string{"John", "Maria", "Carl", "Peter"}
+	// TODO: Slice the array to get its last two names.
 	lastTwoNames := names[] // after figuring out the answer, try with other low/high bounds
 	fmt.Println(lastTwoNames)
 }

@@ -12,6 +12,7 @@ func TestGetPhone(t *testing.T) {
 		"John": "+01 333 666",
 	}
 
+	// TODO: Look up the phone of Ana.
 	phone, _ := phoneBook["Anna"] // something seems wrong here
 	expectedPhone := "+01 101 102"
 	if phone != expectedPhone {
@@ -25,6 +26,7 @@ func TestInsertPhone(t *testing.T) {
 		"John": "+01 333 666",
 	}
 
+	// TODO: Add Laura (+11 99 98 97) to the phone book before looking her up.
 	phone, _ := phoneBook["Laura"] // don't change this line
 	expectedPhone := "+11 99 98 97"
 	if phone != expectedPhone {
@@ -38,6 +40,7 @@ func TestDeletePhone(t *testing.T) {
 		"John": "+01 333 666",
 	} // don't change the original map
 
+	// TODO: Remove one of the contacts from the phone book.
 	totalPhones := len(phoneBook)
 	expectedTotalPhones := 1
 	if totalPhones != expectedTotalPhones {

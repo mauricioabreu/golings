@@ -8,6 +8,7 @@ import "testing"
 
 // countCharacters returns how many characters the text has, not how many bytes.
 func countCharacters(text string) int {
+	// TODO: Count characters, not bytes.
 	return len(text)
 }
 
