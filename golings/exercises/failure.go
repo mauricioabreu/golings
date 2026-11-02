@@ -23,6 +23,20 @@ const (
 	TimeoutFailure
 )
 
+// String describes the failure in a few words, for lists: "does not compile".
+func (k FailureKind) String() string {
+	switch k {
+	case CompileFailure:
+		return "does not compile"
+	case TestFailure:
+		return "has failing tests"
+	case TimeoutFailure:
+		return "does not finish"
+	default:
+		return "crashes"
+	}
+}
+
 // Diagnostic is a single compiler message such as `main.go:10:6: undefined: x`.
 type Diagnostic struct {
 	File    string

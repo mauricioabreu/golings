@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"slices"
 	"strings"
 
 	tea "charm.land/bubbletea/v2"
@@ -57,6 +58,7 @@ const (
 	modeSolution
 	modeConfirmSolution
 	modeConfirmReset
+	modeCheck // the result of checking every exercise
 )
 
 type Model struct {
@@ -76,6 +78,15 @@ type Model struct {
 	topic    string // e.g. "Topic: slices (2/5)", empty when the exercise has none
 	exercise exercises.Exercise
 
+	// Checking every exercise (the c key). Like runs, the results of a check
+	// that was cancelled carry an older id and are ignored.
+	checkID     int
+	checkCtx    context.Context
+	checkCancel context.CancelFunc
+	checkItems  []checkItem
+	checkNext   int // index of the next exercise to start
+	checkActive int // how many are running now
+
 	// The run in progress. Results of earlier runs carry an older id and are
 	// ignored: a save during a run cancels it and starts a new one.
 	runID  int
@@ -89,6 +100,13 @@ type startMsg struct{}
 type changesMsg struct{ files []string }
 
 type changesClosedMsg struct{}
+
+type checkDoneMsg struct {
+	id     int
+	index  int
+	result exercises.Result
+	err    error
+}
 
 type runDoneMsg struct {
 	id     int
@@ -130,10 +148,19 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, tea.Batch(m.startRun(), m.waitForChanges())
 
 	case changesMsg:
+		if m.checking() {
+			// A save should not throw away a check that is half way (golings
+			// itself saves a file when n takes out a marker). Leaving the check
+			// with esc runs the exercise again.
+			return m, m.waitForChanges()
+		}
 		return m, tea.Batch(m.startRun(), m.waitForChanges())
 
 	case changesClosedMsg:
 		// The watcher stopped; whatever is on screen stays, and q still works.
+
+	case checkDoneMsg:
+		return m, m.finishCheck(msg)
 
 	case runDoneMsg:
 		if msg.id == m.runID {
@@ -147,6 +174,7 @@ func (m *Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 	key := msg.String()
 	if key == "q" || key == "ctrl+c" {
 		m.stopRun()
+		m.stopCheck()
 		return m, tea.Quit
 	}
 	m.notice = ""
@@ -165,8 +193,18 @@ func (m *Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		return m, m.reset()
 	}
 
+	// While checking, only leaving, scrolling and a second c (which says it is
+	// already going) make sense.
+	if m.mode == modeCheck && !slices.Contains([]string{"esc", "c", "down", "j", "up", "k", "pgdown", "space", "pgup"}, key) {
+		return m, nil
+	}
+
 	switch key {
 	case "esc":
+		if m.mode == modeCheck {
+			// The run in progress was stopped for the check: run it again.
+			return m, m.startRun()
+		}
 		m.mode, m.scroll = modeResult, 0
 	case "h":
 		m.toggle(modeHint)
@@ -174,6 +212,10 @@ func (m *Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		m.askToShowSolution()
 	case "r":
 		m.askToReset()
+	case "n":
+		return m, m.next()
+	case "c":
+		return m, m.startCheck()
 	case "down", "j":
 		m.scroll = min(m.scroll+1, m.maxScroll())
 	case "up", "k":
@@ -259,6 +301,7 @@ func (m *Model) stopRun() {
 // starts running it.
 func (m *Model) startRun() tea.Cmd {
 	m.stopRun()
+	m.stopCheck()
 	m.mode, m.scroll = modeResult, 0
 
 	_, done, total, err := exercises.Progress(m.cfg.InfoFile)
@@ -385,6 +428,8 @@ func (m *Model) maxScroll() int {
 // lines is everything the body would show, before cutting it to the screen.
 func (m *Model) lines() []string {
 	switch m.mode {
+	case modeCheck:
+		return m.checkLines()
 	case modeHint:
 		return m.hintLines()
 	case modeSolution:
@@ -471,7 +516,7 @@ func (m *Model) footer() string {
 	case m.mode != modeResult:
 		return dimStyle.Render("esc back   ↑↓ scroll   q quit")
 	case m.hasExercise():
-		return dimStyle.Render("h hint   s solution   r reset   ↑↓ scroll   q quit")
+		return dimStyle.Render("h hint   s solution   r reset   n next   c check all   ↑↓ scroll   q quit")
 	}
 	return dimStyle.Render("q quit")
 }
