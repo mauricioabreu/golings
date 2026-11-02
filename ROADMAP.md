@@ -31,7 +31,7 @@ Go version policy: the project floor is **Go 1.26** (latest deps such as x/sys, 
 - [x] `--plain` line mode, and automatic fallback when input or output is not a terminal.
 - [x] Key: `n` to move on to the next exercise (takes out the marker once the exercise works).
 - [x] Key: `c` to check all (runs every exercise four at a time, lists which work, which do not and which were skipped, and flags finished exercises that broke).
-- [ ] Key: list and jump to any exercise (a Bubbles list; confirm adding that dependency first).
+- [x] Key: `l` lists every exercise (Bubbles list, with a filter by name or topic) and opens the one picked; `n` goes back to the first pending one.
 - [ ] Condense the data race report like panics are condensed (the `WARNING: DATA RACE` block is long and has absolute paths).
 
 ## Phase 3 — Missing core topics (done)

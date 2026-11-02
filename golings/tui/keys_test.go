@@ -26,6 +26,8 @@ func press(m *Model, keys ...string) tea.Cmd {
 			msg = tea.KeyPressMsg{Code: tea.KeyDown}
 		case "up":
 			msg = tea.KeyPressMsg{Code: tea.KeyUp}
+		case "enter":
+			msg = tea.KeyPressMsg{Code: tea.KeyEnter}
 		}
 		_, cmd = m.Update(msg)
 	}

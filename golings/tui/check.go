@@ -47,6 +47,7 @@ func (m *Model) next() tea.Cmd {
 	}
 
 	name := m.exercise.Name
+	m.pinned = ""
 	cmd := m.startRun()
 	m.notice = name + " is done."
 	return cmd

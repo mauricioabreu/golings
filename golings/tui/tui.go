@@ -12,6 +12,7 @@ import (
 	"slices"
 	"strings"
 
+	"charm.land/bubbles/v2/list"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	"github.com/cleonte/golings/golings/exercises"
@@ -59,6 +60,7 @@ const (
 	modeConfirmSolution
 	modeConfirmReset
 	modeCheck // the result of checking every exercise
+	modeList  // every exercise, to jump to one
 )
 
 type Model struct {
@@ -77,6 +79,10 @@ type Model struct {
 	skipped  int
 	topic    string // e.g. "Topic: slices (2/5)", empty when the exercise has none
 	exercise exercises.Exercise
+	// pinned is the exercise picked from the list. It is the one that runs
+	// until n moves on, instead of the first pending one.
+	pinned string
+	list   list.Model
 
 	// Checking every exercise (the c key). Like runs, the results of a check
 	// that was cancelled carry an older id and are ignored.
@@ -140,6 +146,9 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.width, m.height = msg.Width, msg.Height
+		if m.mode == modeList {
+			m.list.SetSize(m.width, m.available())
+		}
 
 	case tea.KeyPressMsg:
 		return m.handleKey(msg)
@@ -166,11 +175,22 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.id == m.runID {
 			m.status, m.result, m.runErr = statusFinished, msg.result, msg.err
 		}
+
+	default:
+		// What the list asks for itself, e.g. the matches of a filter.
+		if m.mode == modeList {
+			var cmd tea.Cmd
+			m.list, cmd = m.list.Update(msg)
+			return m, cmd
+		}
 	}
 	return m, nil
 }
 
 func (m *Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
+	if m.mode == modeList {
+		return m.listKey(msg)
+	}
 	key := msg.String()
 	if key == "q" || key == "ctrl+c" {
 		m.stopRun()
@@ -216,6 +236,8 @@ func (m *Model) handleKey(msg tea.KeyPressMsg) (tea.Model, tea.Cmd) {
 		return m, m.next()
 	case "c":
 		return m, m.startCheck()
+	case "l":
+		m.openList()
 	case "down", "j":
 		m.scroll = min(m.scroll+1, m.maxScroll())
 	case "up", "k":
@@ -318,12 +340,12 @@ func (m *Model) startRun() tea.Cmd {
 	case total == 0:
 		m.status = statusNothingToRun
 		return nil
-	case done == total:
+	case done == total && m.pinned == "":
 		m.status = statusAllDone
 		return nil
 	}
 
-	exercise, err := exercises.NextPending(m.cfg.InfoFile)
+	exercise, err := m.nextExercise()
 	if err != nil {
 		m.status, m.message = statusError, "Failed to find the next exercise"
 		return nil
@@ -340,6 +362,17 @@ func (m *Model) startRun() tea.Cmd {
 		result, err := run(ctx, exercise)
 		return runDoneMsg{id: id, result: result, err: err}
 	}
+}
+
+// nextExercise is the one picked from the list, or else the first pending one.
+func (m *Model) nextExercise() (exercises.Exercise, error) {
+	if m.pinned != "" {
+		if exercise, err := exercises.Find(m.pinned, m.cfg.InfoFile); err == nil {
+			return exercise, nil
+		}
+		m.pinned = ""
+	}
+	return exercises.NextPending(m.cfg.InfoFile)
 }
 
 func (m *Model) topicLine(exercise exercises.Exercise) string {
@@ -430,6 +463,8 @@ func (m *Model) lines() []string {
 	switch m.mode {
 	case modeCheck:
 		return m.checkLines()
+	case modeList:
+		return m.listLines()
 	case modeHint:
 		return m.hintLines()
 	case modeSolution:
@@ -513,10 +548,14 @@ func (m *Model) footer() string {
 		return warnStyle.Render(m.notice)
 	case m.mode == modeConfirmSolution || m.mode == modeConfirmReset:
 		return dimStyle.Render("y yes   any other key: no   q quit")
+	case m.mode == modeList && m.list.SettingFilter():
+		return dimStyle.Render("enter apply filter   esc cancel")
+	case m.mode == modeList:
+		return dimStyle.Render("enter open   / filter   ↑↓ move   esc back   q quit")
 	case m.mode != modeResult:
 		return dimStyle.Render("esc back   ↑↓ scroll   q quit")
 	case m.hasExercise():
-		return dimStyle.Render("h hint   s solution   r reset   n next   c check all   ↑↓ scroll   q quit")
+		return dimStyle.Render("h hint   s solution   r reset   n next   l list   c check all   ↑↓ scroll   q quit")
 	}
 	return dimStyle.Render("q quit")
 }

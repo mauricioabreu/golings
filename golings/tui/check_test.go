@@ -374,5 +374,5 @@ func TestFooterShowsTheNewKeys(t *testing.T) {
 	m, cmd := start(t, Config{InfoFile: newWorkspace(t, "!a/a1"), Run: (&fakeRuns{}).run})
 	runCmds(t, m, cmd)
 
-	g.Expect(m.View().Content).To(ContainSubstring("n next   c check all"))
+	g.Expect(m.View().Content).To(ContainSubstring("n next   l list   c check all"))
 }
