@@ -525,6 +525,51 @@ hint = """
 2 - You may need to call `anonymous_func` once more."""
 
 [[exercises]]
+name = "closures1"
+path = "exercises/closures/closures1/main.go"
+mode = "compile"
+hint = """
+The type of the returned function is func() int, so the function you return has to match it: it must declare and return an int. It still uses count from newCounter, even though newCounter has already returned.
+
+For more information: https://go.dev/tour/moretypes/25"""
+
+[[exercises]]
+name = "closures2"
+path = "exercises/closures/closures2/main_test.go"
+mode = "test"
+hint = """
+count lives outside newCounter, so every counter changes the same variable. Declare the variable inside newCounter: each call then creates a new one, and only the function returned by that call can see it.
+
+For more information: https://go.dev/ref/spec#Function_literals"""
+
+[[exercises]]
+name = "closures3"
+path = "exercises/closures/closures3/main_test.go"
+mode = "test"
+hint = """
+total := total + amount declares a new variable called total, which hides the one balance reads. Assign to the existing variable instead: total += amount.
+
+For more information: https://go.dev/doc/effective_go#redeclaration"""
+
+[[exercises]]
+name = "closures4"
+path = "exercises/closures/closures4/main_test.go"
+mode = "test"
+hint = """
+The variable n is declared before the loop, so there is only one, and every adder reads it after the loop has finished. Declare the number in the for statement instead, for i, n := range numbers: Go 1.22 gives each iteration its own n.
+
+For more information: https://go.dev/blog/loopvar-preview"""
+
+[[exercises]]
+name = "closures5"
+path = "exercises/closures/closures5/main_test.go"
+mode = "test"
+hint = """
+A function can return another function that uses its parameters: multiplier's result multiplies by factor. For counted, make a counter variable inside it. The wrapped function increments it and calls fn, and calls returns it.
+
+For more information: https://go.dev/ref/spec#Function_literals"""
+
+[[exercises]]
 name = "generics1"
 path = "exercises/generics/generics1/main.go"
 mode = "compile"
