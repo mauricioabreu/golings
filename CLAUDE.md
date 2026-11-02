@@ -11,7 +11,7 @@ Upstream is Apache-2.0: keep LICENSE, keep attribution to the original author in
 
 ## Repo layout (as of upstream HEAD)
 - `golings/` — the CLI (Go module `github.com/cleonte/golings`): `cmd/`, `exercises/` (loader/runner code), `ui/`, `fixtures/`, `golings.go`.
-- `exercises/<topic>/<name>/` — the learner-facing exercises (19 topics, 75 exercises).
+- `exercises/<topic>/<name>/` — the learner-facing exercises (20 topics, 81 exercises).
 - `info.toml` — the exercise manifest (name, dir, mode, hint). Every exercise must be listed here, in learning order.
 - `Makefile` — `make test`, `make watch`, `make run`.
 - `.github/workflows/` — `test.yml` (build and test) and `lint.yml`.

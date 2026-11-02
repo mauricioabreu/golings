@@ -570,6 +570,60 @@ A function can return another function that uses its parameters: multiplier's re
 For more information: https://go.dev/ref/spec#Function_literals"""
 
 [[exercises]]
+name = "defer1"
+path = "exercises/defer/defer1/main.go"
+mode = "compile"
+hint = """
+defer needs a function call. A function literal on its own is only a value: call it by adding parentheses after the closing brace.
+
+For more information: https://go.dev/ref/spec#Defer_statements"""
+
+[[exercises]]
+name = "defer2"
+path = "exercises/defer/defer2/main_test.go"
+mode = "test"
+hint = """
+Deferred calls run last in, first out. The usual way to get the right order is to defer the clean-up right after the line that needs it: open the file, defer closing it, then open the connection, defer closing that.
+
+For more information: https://go.dev/tour/flowcontrol/13"""
+
+[[exercises]]
+name = "defer3"
+path = "exercises/defer/defer3/main_test.go"
+mode = "test"
+hint = """
+The arguments of a deferred call are evaluated when the defer statement runs, so the deferred call keeps the value x had back then. A deferred function literal is different: it reads x when it runs. Wrap the call in one, and call it.
+
+For more information: https://go.dev/blog/defer-panic-and-recover"""
+
+[[exercises]]
+name = "defer4"
+path = "exercises/defer/defer4/main_test.go"
+mode = "test"
+hint = """
+A defer inside a loop waits until the whole function returns, so every resource stays open until then. Move the body of the loop into a function of its own: its deferred call runs when that function returns, which is once per iteration.
+
+For more information: https://go.dev/doc/effective_go#defer"""
+
+[[exercises]]
+name = "defer5"
+path = "exercises/defer/defer5/main_test.go"
+mode = "test"
+hint = """
+recover only works inside a deferred function. Defer a function literal that calls recover, and when it returns something other than nil assign an error to the named result err. Do the division after the defer statement.
+
+For more information: https://go.dev/blog/defer-panic-and-recover"""
+
+[[exercises]]
+name = "defer6"
+path = "exercises/defer/defer6/main_test.go"
+mode = "test"
+hint = """
+Because err is a named result, a deferred function runs after the return statement has set it and can change it again. Defer a function literal that wraps err with fmt.Errorf and %w, only if err is not nil. Do the work after the defer statement.
+
+For more information: https://go.dev/ref/spec#Return_statements"""
+
+[[exercises]]
 name = "generics1"
 path = "exercises/generics/generics1/main.go"
 mode = "compile"
