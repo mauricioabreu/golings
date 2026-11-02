@@ -44,3 +44,13 @@ If you have `make` installed it is easy as running `make test`
 There are specific templates that will guide you through opening issues or pull requests.
 
 Thank you! ❤️
+
+## Regenerating the demo GIFs
+
+The GIFs in the README are recorded from scripts with [vhs](https://github.com/charmbracelet/vhs) (`brew install vhs`, which also installs `ttyd`). Install the golings of your checkout first, then run a tape:
+
+```sh
+go install ./golings
+vhs demo-tui.tape   # misc/demo-tui.gif: the full-screen `golings watch`
+vhs demo.tape       # misc/demo.gif: `golings run`
+```

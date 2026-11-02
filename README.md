@@ -105,6 +105,8 @@ This opens a full-screen view: your progress at the top and the result of the cu
 
 If you prefer plain line-by-line output, or when input or output is not a terminal (for example when piping), use `golings watch --plain`. There you can type `hint` or `list` and press Enter, and `exit` to quit.
 
+![golings watch](misc/demo-tui.gif)
+
 To run the next pending exercise:
 
 ```sh
