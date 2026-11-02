@@ -458,6 +458,51 @@ Embedding means writing a type name in a struct or interface without a field nam
 For more information: https://go.dev/doc/effective_go#embedding"""
 
 [[exercises]]
+name = "errors1"
+path = "exercises/errors/errors1/main.go"
+mode = "compile"
+hint = """
+A function that can fail returns an error as its last value. Receive both results, number, err := ..., and use err: check it against nil before using the number.
+
+For more information: https://go.dev/blog/error-handling-and-go"""
+
+[[exercises]]
+name = "errors2"
+path = "exercises/errors/errors2/main_test.go"
+mode = "test"
+hint = """
+errors.New creates a new error every time you call it, and two errors are only equal when they are the same value, even if their text matches. Return the variables declared at the top, ErrNotFound and ErrInvalidQuantity, so that callers can compare against them.
+
+For more information: https://go.dev/blog/go1.13-errors"""
+
+[[exercises]]
+name = "errors3"
+path = "exercises/errors/errors3/main_test.go"
+mode = "test"
+hint = """
+The verb %v only puts the text of the error into the new one. The verb %w keeps the error itself inside, which is what errors.Is looks for.
+
+For more information: https://go.dev/blog/go1.13-errors"""
+
+[[exercises]]
+name = "errors4"
+path = "exercises/errors/errors4/main_test.go"
+mode = "test"
+hint = """
+A type assertion only looks at the outermost error. errors.As walks the whole chain of wrapped errors and, when it finds the type you ask for, stores it in the variable you pass by pointer: var target *ValidationError; errors.As(err, &target).
+
+For more information: https://pkg.go.dev/errors#As"""
+
+[[exercises]]
+name = "errors5"
+path = "exercises/errors/errors5/main_test.go"
+mode = "test"
+hint = """
+Keep the problems in a slice of errors instead of returning at the first one. errors.Join combines them into one error that errors.Is can look through, and it returns nil when it gets no errors at all.
+
+For more information: https://pkg.go.dev/errors#Join"""
+
+[[exercises]]
 name = "anonymous_functions1"
 path = "exercises/anonymous_functions/anonymous_functions1/main.go"
 mode = "compile"

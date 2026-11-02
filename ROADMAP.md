@@ -37,7 +37,7 @@ Add in learning order; 3–6 exercises each, hints in `info.toml`.
 2. ~~**pointers**~~ (done: 5 exercises, pointers1-5) — address/deref, pointer vs value params, nil pointers, `new`.
 3. ~~**methods**~~ (done: 5 exercises, methods1-5) — value vs pointer receivers, method sets.
 4. ~~**interfaces**~~ (done: 6 exercises, interfaces1-6) — implicit satisfaction, empty interface/`any`, type assertions and switches, the nil-interface gotcha, embedding.
-5. **errors** — sentinel errors, wrapping with `%w`, `errors.Is/As/Join`, custom error types.
+5. ~~**errors**~~ (done: 5 exercises, errors1-5) — sentinel errors, wrapping with `%w`, `errors.Is/As/Join`, custom error types.
 6. **closures** — captured variables, per-iteration loop vars (Go 1.22 semantics).
 7. **defer / panic / recover** — ordering, argument evaluation time, recovering.
 8. **packages and modules** — exported names, `internal`, imports, `init`.
