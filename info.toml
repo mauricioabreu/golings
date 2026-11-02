@@ -763,3 +763,66 @@ To prevent panics, avoid sending messages to channels that have been closed.
 
 Note: Channels can be iterated using `for-range` loops.
 """
+
+[[exercises]]
+name = "concurrent4"
+path = "exercises/concurrent/concurrent4/main_test.go"
+mode = "test"
+hint = """
+A send on an unbuffered channel waits until another goroutine receives, and here the same goroutine would do the receiving later: it deadlocks. A buffered channel, make(chan int, size), accepts that many values without a receiver.
+
+For more information: https://go.dev/tour/concurrency/3"""
+
+[[exercises]]
+name = "concurrent5"
+path = "exercises/concurrent/concurrent5/main_test.go"
+mode = "test"
+hint = """
+go starts a goroutine and carries on without waiting for it, so squares can return before the goroutines have written their results. The WaitGroup counts them: wg.Wait() blocks until every wg.Done() has been called.
+
+For more information: https://pkg.go.dev/sync#WaitGroup"""
+
+[[exercises]]
+name = "concurrent6"
+path = "exercises/concurrent/concurrent6/main_test.go"
+mode = "test"
+hint = """
+select waits on several channel operations and runs the one that is ready first. time.After(limit) returns a channel that receives a value once the limit has passed: use it as the second case.
+
+For more information: https://go.dev/tour/concurrency/5"""
+
+[[exercises]]
+name = "concurrent7"
+path = "exercises/concurrent/concurrent7/main_test.go"
+mode = "test"
+hint = """
+A plain send blocks until someone receives, so a cancelled spin would stay stuck on it. Put the send in a select with a second case that receives from ctx.Done(), and return from that case.
+
+For more information: https://go.dev/blog/context"""
+
+[[exercises]]
+name = "concurrent8"
+path = "exercises/concurrent/concurrent8/main_test.go"
+mode = "test"
+hint = """
+A worker pool is a fixed number of goroutines that all read from the same jobs channel, and send their results on another. Close the jobs channel when there are no more jobs so that the workers' range loops end, and close the results channel after a WaitGroup says all the workers are done.
+
+For more information: https://go.dev/blog/pipelines"""
+
+[[exercises]]
+name = "concurrent9"
+path = "exercises/concurrent/concurrent9/main_test.go"
+mode = "test"
+hint = """
+Start one goroutine per input, each forwarding its values to out, so that a slow input does not hold up the others. Count them with a WaitGroup, and close out in one more goroutine that waits for the group.
+
+For more information: https://go.dev/blog/pipelines"""
+
+[[exercises]]
+name = "concurrent10"
+path = "exercises/concurrent/concurrent10/main_test.go"
+mode = "test"
+hint = """
+Checking a flag and then setting it is not safe when many goroutines do it at the same time: two of them can both see it unset. sync.Once runs a function exactly once, however many goroutines call Do, and everyone waits for it to finish.
+
+For more information: https://pkg.go.dev/sync#Once"""

@@ -2,7 +2,7 @@
 
 [![build and test](https://github.com/cleonte/golings/actions/workflows/test.yml/badge.svg)](https://github.com/cleonte/golings/actions/workflows/test.yml)
 
-![gopher](misc/gopher-dance.gif)
+<p align="center"><img src="misc/gopher-dance.gif" width="256" alt="A dancing gopher"></p>
 
 > rustlings but for golang this time
 
@@ -178,3 +178,9 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 * [rustlings](https://github.com/rust-lang/rustlings)
 * [ziglings](https://github.com/ratfactor/ziglings)
+
+## Credits
+
+golings was created by [Mauricio Abreu](https://github.com/mauricioabreu/golings), and this fork builds on his work.
+
+The dancing gopher is pixel art by [Egon Elbre](https://github.com/egonelbre/gophers) (CC0), exported from his `dance.ase` at 8x, based on the Go gopher designed by [Renée French](https://reneefrench.blogspot.com/) (CC BY 4.0).

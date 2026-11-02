@@ -1,11 +1,18 @@
 {
 	"name": "golings",
-	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+	"image": "mcr.microsoft.com/devcontainers/base:trixie",
 	"postCreateCommand": "go install github.com/cleonte/golings/golings@latest",
 	"features": {
 		"ghcr.io/devcontainers/features/go:1": {
 			"version": "latest"
 		},
 		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.go"
+			]
+		}
 	}
 }
