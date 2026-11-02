@@ -41,7 +41,7 @@ Add in learning order; 3–6 exercises each, hints in `info.toml`.
 6. ~~**closures**~~ (done: 5 exercises, closures1-5) — captured variables, per-iteration loop vars (Go 1.22 semantics).
 7. ~~**defer / panic / recover**~~ (done: 6 exercises, defer1-6) — ordering, argument evaluation time, recovering.
 8. **packages and modules** — exported names, `internal`, imports, `init`.
-9. **testing** — table tests, subtests, `t.Helper`, benchmarks with `b.Loop` (1.24).
+9. ~~**testing**~~ (done: 5 exercises, testing1-5) — table tests, subtests, `t.Helper`, benchmarks with `b.Loop` (1.24).
 
 ## Phase 4 — Modern Go features
 - [ ] Go 1.21: `min`/`max`/`clear` builtins; `slices` (Sort, SortFunc, BinarySearch, Contains, Index) and `maps` (Keys, Values, Clone) packages.

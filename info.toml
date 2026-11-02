@@ -624,6 +624,51 @@ Because err is a named result, a deferred function runs after the return stateme
 For more information: https://go.dev/ref/spec#Return_statements"""
 
 [[exercises]]
+name = "testing1"
+path = "exercises/testing/testing1/main_test.go"
+mode = "test"
+hint = """
+t.Run(name, func(t *testing.T) { ... }) runs a subtest with that name. Call the check inside it, with the case. The subtest gets its own *testing.T, so a failure is reported under the name of the case.
+
+For more information: https://go.dev/blog/subtests"""
+
+[[exercises]]
+name = "testing2"
+path = "exercises/testing/testing2/main_test.go"
+mode = "test"
+hint = """
+t.Helper() tells the testing package that this function is a helper, so a failure is reported at the line of the test that called it. Call it first. Logging is not failing: use t.Errorf to mark the test as failed.
+
+For more information: https://pkg.go.dev/testing#T.Helper"""
+
+[[exercises]]
+name = "testing3"
+path = "exercises/testing/testing3/main_test.go"
+mode = "test"
+hint = """
+t.TempDir() returns a new folder for the test and removes it, with everything in it, when the test and its subtests are over. You do not need os.MkdirTemp anymore. Without it, t.Cleanup(func) registers a function to run at the end of the test.
+
+For more information: https://pkg.go.dev/testing#T.TempDir"""
+
+[[exercises]]
+name = "testing4"
+path = "exercises/testing/testing4/main_test.go"
+mode = "test"
+hint = """
+go test runs an example and compares what it prints with the comment that starts with Output: at the end of the function. Read the failure: it shows what the example printed and what the comment says. Whitespace around the output is ignored, the rest has to match.
+
+For more information: https://go.dev/blog/examples"""
+
+[[exercises]]
+name = "testing5"
+path = "exercises/testing/testing5/main_test.go"
+mode = "test"
+hint = """
+for b.Loop() { ... } replaces for i := 0; i < b.N; i++ { ... }. The benchmark function then runs once, so the setup before the loop is not repeated, and the timer only counts the loop.
+
+For more information: https://go.dev/blog/testing-b-loop"""
+
+[[exercises]]
 name = "generics1"
 path = "exercises/generics/generics1/main.go"
 mode = "compile"
