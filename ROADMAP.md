@@ -40,7 +40,7 @@ Add in learning order; 3–6 exercises each, hints in `info.toml`.
 5. ~~**errors**~~ (done: 5 exercises, errors1-5) — sentinel errors, wrapping with `%w`, `errors.Is/As/Join`, custom error types.
 6. ~~**closures**~~ (done: 5 exercises, closures1-5) — captured variables, per-iteration loop vars (Go 1.22 semantics).
 7. ~~**defer / panic / recover**~~ (done: 6 exercises, defer1-6) — ordering, argument evaluation time, recovering.
-8. **packages and modules** — exported names, `internal`, imports, `init`.
+8. **packages and modules** — packages done in 4 single-file exercises (packages1-4: exported names, `init`, initialization order, import aliases); modules, `internal` and multi-package layouts need exercises that span several files, which the tool does not support yet. Original item: — exported names, `internal`, imports, `init`.
 9. ~~**testing**~~ (done: 5 exercises, testing1-5) — table tests, subtests, `t.Helper`, benchmarks with `b.Loop` (1.24).
 
 ## Phase 4 — Modern Go features

@@ -314,6 +314,42 @@ func (s *StructHere) doSomething() {
 """
 
 [[exercises]]
+name = "packages1"
+path = "exercises/packages/packages1/main.go"
+mode = "compile"
+hint = """
+A name is exported, and can be used from another package, only if it starts with an upper case letter. The compiler even tells you the name it has: look at the part in parentheses.
+
+For more information: https://go.dev/tour/basics/3"""
+
+[[exercises]]
+name = "packages2"
+path = "exercises/packages/packages2/main_test.go"
+mode = "test"
+hint = """
+A function called init, with no parameters and no results, runs automatically when the package is loaded, before main or the tests. You never call it yourself.
+
+For more information: https://go.dev/doc/effective_go#init"""
+
+[[exercises]]
+name = "packages3"
+path = "exercises/packages/packages3/main_test.go"
+mode = "test"
+hint = """
+All the package-level variables are initialized before any init function runs, so total is calculated while base is still 0. Initialize base in its declaration, var base = 10, and total will see the value.
+
+For more information: https://go.dev/ref/spec#Package_initialization"""
+
+[[exercises]]
+name = "packages4"
+path = "exercises/packages/packages4/main.go"
+mode = "compile"
+hint = """
+Two imports that end in the same name cannot both be called rand. Put a name before the path of one of them, like cryptorand "crypto/rand", and use that name for its functions.
+
+For more information: https://go.dev/ref/spec#Import_declarations"""
+
+[[exercises]]
 name = "pointers1"
 path = "exercises/pointers/pointers1/main.go"
 mode = "compile"
